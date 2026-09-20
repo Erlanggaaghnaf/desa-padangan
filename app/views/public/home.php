@@ -85,8 +85,14 @@
                 Kabupaten Tulungagung
             </p>
         </div>
-        <div class="w-full lg:w-1/2 h-64 md:h-80 rounded-2xl overflow-hidden shadow-sm border border-gray-200 bg-gray-200 flex items-center justify-center">
-            <img src="assets/images/peta.jpg" alt="Peta Wilayah" class="w-full h-full object-cover">
+        <div class="w-full lg:w-1/2 h-64 md:h-80 rounded-2xl overflow-hidden shadow-sm border border-gray-200 relative">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.6898594747126!2d111.9543243750075!3d-8.030877891995878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e78fb59fc34d539%3A0xeb4f5483057548d6!2sBalai%20Desa%20Padangan!5e0!3m2!1sid!2sid!4v1789902686862!5m2!1sid!2sid" 
+                class="absolute inset-0 w-full h-full border-0" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="strict-origin-when-cross-origin">
+            </iframe>
         </div>
     </section>
 

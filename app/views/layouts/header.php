@@ -12,8 +12,17 @@
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased relative" style="font-family: 'Plus Jakarta Sans', sans-serif;">
 
-    <!-- NAVBAR (Padding lg:px-[120px] agar konsisten dengan Figma) -->
-    <nav id="main-navbar" class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 md:px-8 lg:px-[120px] py-4 text-white bg-transparent transition-all duration-300">
+
+    <?php 
+    // 1. Deteksi halaman saat ini dari URL
+    $current_page = isset($_GET['url']) ? $_GET['url'] : 'home';
+
+    // 2. Jika di Beranda = transparan. Jika di halaman lain = langsung hijau.
+    $nav_bg = ($current_page === 'home') ? 'bg-transparent' : 'bg-[#2F855A] shadow-md';
+    ?>
+
+    <!-- 3. Sisipkan variabel $nav_bg dan tambahkan atribut data-page -->
+    <nav id="navbar" data-page="<?= $current_page; ?>" class="flex justify-between items-center fixed top-0 left-0 w-full z-50 transition-all duration-300 <?= $nav_bg; ?> px-4 py-4 md:px-8 lg:px-[120px] text-white">
         <div class="flex items-center gap-2">
             <img src="assets/images/logo.png" alt="Logo" class="w-10 h-10 relative z-50">
             <div class="relative z-50">
@@ -24,8 +33,8 @@
         
         <!-- Menu Desktop -->
         <ul class="hidden md:flex gap-8 font-medium text-base">
-            <li><a href="#" class="hover:text-green-300 transition-colors">Beranda</a></li>
-            <li><a href="#" class="hover:text-green-300 transition-colors">Profil Desa</a></li>
+            <li><a href="/index.php?url=home" class="hover:text-green-300 transition-colors">Beranda</a></li>
+            <li><a href="/index.php?url=informasi" class="hover:text-green-300 transition-colors">Profil Desa</a></li>
             <li><a href="#" class="hover:text-green-300 transition-colors">SOTK</a></li>
             <li><a href="#" class="hover:text-green-300 transition-colors">Peta Wilayah</a></li>
             <li><a href="#" class="hover:text-green-300 transition-colors">Berita</a></li>

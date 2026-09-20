@@ -24,17 +24,20 @@
 <main class="px-4 md:px-8 lg:px-[120px] py-12 space-y-20">
 
     <!-- 4. SAMBUTAN KEPALA DESA -->
-    <section class="flex flex-col md:flex-row gap-8 items-center bg-[#F7F9FC] p-6 md:p-10 rounded-3xl border border-gray-100 shadow-sm">
+    <section class="flex flex-col md:flex-row gap-8 items-start bg-[#F7F9FC] p-6 md:p-10 rounded-3xl border border-gray-100 shadow-sm">
         <div class="w-48 h-48 md:w-64 md:h-64 flex-shrink-0">
             <img src="assets/images/kepala-desa.jpg" alt="Kepala Desa" class="w-full h-full object-cover rounded-2xl shadow-lg border-4 border-white">
+            <div class="mt-3 text-center">
+                <p class="font-bold text-[#172033]">Slamet Riyadi, S.Pd.</p>
+            </div>
         </div>
-        <div>
+        <div >
             <h2 class="text-2xl md:text-3xl font-bold text-[#172033] mb-4">Sambutan Kepala Desa</h2>
             <div class="h-1 w-28 bg-[#2F855A] rounded-full mb-4"></div>
             <p class="text-gray-600 leading-relaxed mb-4 text-sm md:text-base">
                 Selamat datang di website resmi Desa Padangan. Melalui portal ini, kami berkomitmen untuk memberikan transparansi informasi, mempermudah pelayanan publik, dan memperkenalkan potensi desa kepada masyarakat luas.
             </p>
-            <p class="font-bold text-[#172033]">Slamet Riyadi, S.Pd.</p>
+            
         </div>
     </section>
 

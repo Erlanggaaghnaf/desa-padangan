@@ -9,31 +9,71 @@
 </button>
 
 <!-- 2. MODAL FORM PENGADUAN (Otomatis ikut terbawa saat komponen dipanggil) -->
-<div id="pengaduanModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hidden px-4">
-    <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6 relative">
-        <button onclick="toggleModal('pengaduanModal')" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl leading-none">&times;</button>
-        <h3 class="text-2xl font-bold mb-6 text-center text-[#172033]">Pengaduan Desa</h3>
+<div id="pengaduanModal" class="fixed inset-0 z-50 flex items-center justify-end bg-black/60 hidden px-4">
+    <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
+        
+        <!-- Tombol Tutup (X) -->
+        <button onclick="toggleModal('pengaduanModal')" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-700 w-9 h-9 rounded-xl flex items-center justify-center text-lg font-bold transition-colors">
+            &times;
+        </button>
+
+        <!-- Header Modal -->
+        <div class="text-center mb-6 pr-6 pl-6">
+            <h3 class="text-2xl font-bold text-[#172033] mb-1">Pengaduan Desa</h3>
+            <p class="text-xs md:text-sm text-gray-500">Sampaikan pengaduan, keluhan, atau masukan kepada Pemerintah Desa Padangan.</p>
+        </div>
         
         <form action="#" method="POST">
+            <!-- Nama Lengkap -->
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                <input type="text" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm" placeholder="Masukkan nama Anda">
+                <label class="block text-sm font-bold text-[#172033] mb-1.5 text-start">Nama Lengkap<span class="text-red-500">*</span></label>
+                <input type="text" class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm text-gray-700 bg-white shadow-sm" placeholder="Rafie Firman">
             </div>
+
+            <!-- No. Telp / WhatsApp -->
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-1">NIK (Nomor Induk Kependudukan)</label>
-                <input type="number" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm" placeholder="16 digit NIK">
+                <label class="block text-sm font-bold text-[#172033] mb-1.5 text-start">No. Telp/WhatsApp <span class="text-red-500">*</span></label>
+                <input type="text" class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm text-gray-700 bg-white shadow-sm" placeholder="+62 811223344556">
             </div>
+
+            <!-- Pesan / Pengaduan -->
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Pesan / Laporan</label>
-                <textarea rows="4" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm" placeholder="Tuliskan detail laporan Anda"></textarea>
+                <label class="block text-sm font-bold text-[#172033] mb-1.5 text-start">Pengaduan <span class="text-red-500">*</span></label>
+                <textarea rows="4" class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm text-gray-700 bg-white shadow-sm resize-none" placeholder="Tuliskan detail laporan Anda"></textarea>
             </div>
+
+            <!-- Lampiran dengan Pratinjau Kotak File SVG -->
             <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Unggah Bukti Foto (Opsional)</label>
-                <input type="file" class="w-full border border-gray-300 rounded-xl file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-[#2F855A] hover:file:bg-green-100 text-sm">
+                <label class="block text-sm font-bold text-[#172033] mb-1.5 text-start">Lampiran</label>
+                <label class="border border-dashed border-gray-300 rounded-2xl p-4 text-center relative bg-gray-50/50 hover:bg-gray-50 transition-colors flex flex-col items-center justify-center cursor-pointer block">
+                    <!-- Tombol Hapus File di Pojok Kanan Atas Box -->
+                    <button type="button" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-sm font-bold">&times;</button>
+                    
+                    <!-- Input file asli yang disembunyikan tapi aktif -->
+                    <input type="file" id="fileInput" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" accept="image/*,.pdf">
+
+                    <!-- Tampilan Ikon dan Teks di dalam Box -->
+                    <div class="flex flex-col items-center justify-center py-2 pointer-events-none">
+                        <svg class="w-8 h-8 text-gray-700 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        <p id="fileName" class="text-sm font-bold text-gray-800">Pilih foto atau dokumen bukti</p>
+                        <p class="text-xs text-gray-400 mt-0.5">Format: JPG, PNG, atau PDF (Maks. 5MB)</p>
+                    </div>
+                </label>
             </div>
-            <button type="button" class="w-full bg-[#2F855A] hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-colors">
-                Kirim Laporan
-            </button>
+
+            <!-- Tombol Kirim dengan Ikon SVG Send di Kanan Bawah -->
+            <div class="flex justify-end">
+                <button type="button" class="bg-[#2F855A] hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors flex items-center gap-2 shadow-md">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                    Kirim
+                </button>
+            </div>
         </form>
     </div>
 </div>

@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Pustaka Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased relative" style="font-family: 'Plus Jakarta Sans', sans-serif;">
 
@@ -34,10 +36,11 @@
         <!-- Menu Desktop -->
         <ul class="hidden md:flex gap-8 font-medium text-base">
             <li><a href="/index.php?url=home" class="hover:text-green-300 transition-colors">Beranda</a></li>
-            <li><a href="/index.php?url=informasi" class="hover:text-green-300 transition-colors">Profil Desa</a></li>
-            <li><a href="#" class="hover:text-green-300 transition-colors">SOTK</a></li>
-            <li><a href="#" class="hover:text-green-300 transition-colors">Peta Wilayah</a></li>
-            <li><a href="#" class="hover:text-green-300 transition-colors">Berita</a></li>
+            <li><a href="/index.php?url=informasi" class="hover:text-green-300 transition-colors">Informasi Desa</a></li>
+            <li><a href="/index.php?url=DataDesa" class="hover:text-green-300 transition-colors">Data Desa</a></li>
+            <li><a href="/index.php?url=Layanan" class="hover:text-green-300 transition-colors">Layanan</a></li>
+            <li><a href="/index.php?url=Berita" class="hover:text-green-300 transition-colors">Berita</a></li>
+            <li><a href="#" class="hover:text-green-300 transition-colors">Galeri</a></li>
         </ul>
         
         <!-- Hamburger Icon (Mobile) -->
@@ -47,10 +50,11 @@
 
         <!-- MENU MOBILE -->
         <div id="mobile-menu" class="absolute top-[70px] right-4 w-56 bg-[#2F855A] rounded-xl shadow-2xl flex flex-col gap-3 text-base font-semibold text-white transform opacity-0 scale-95 pointer-events-none transition-all duration-300 md:hidden p-5 z-40 border border-green-700">
-            <a href="#" class="mobile-link hover:text-green-300 border-b border-green-700 pb-2">Beranda</a>
-            <a href="#" class="mobile-link hover:text-green-300 border-b border-green-700 pb-2">Profil Desa</a>
-            <a href="#" class="mobile-link hover:text-green-300 border-b border-green-700 pb-2">SOTK</a>
-            <a href="#" class="mobile-link hover:text-green-300 border-b border-green-700 pb-2">Peta Wilayah</a>
-            <a href="#" class="mobile-link hover:text-green-300">Berita</a>
+            <a href="/index.php?url=home" class="mobile-link hover:text-green-300 border-b border-green-700 pb-2">Beranda</a>
+            <a href="/index.php?url=informasi" class="mobile-link hover:text-green-300 border-b border-green-700 pb-2">Informasi Desa</a>
+            <a href="/index.php?url=DataDesa" class="mobile-link hover:text-green-300 border-b border-green-700 pb-2">Data Desa</a>
+            <a href="/index.php?url=Layanan" class="mobile-link hover:text-green-300 border-b border-green-700 pb-2">Layanan</a>
+            <a href="/index.php?url=Berita" class="mobile-link hover:text-green-300 border-b border-green-700 pb-2">Berita</a>
+            <a href="/index.php?url=Galeri" class="mobile-link hover:text-green-300">Galeri</a>
         </div>
     </nav>

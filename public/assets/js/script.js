@@ -1,8 +1,40 @@
+// --- FITUR MODAL ---
 function toggleModal(modalID){
     document.getElementById(modalID).classList.toggle("hidden");
 }
 
-// 1. Perbaikan typo 'wwindow' menjadi 'window'
+// --- FITUR MENANDAI MENU AKTIF (GARIS BAWAH) ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Ambil nama halaman dari URL (misal: dari ?url=Galeri menjadi "galeri")
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentPage = urlParams.get('url');
+    
+    // Jika kosong (hanya localhost:8000), berarti sedang di halaman Home/Beranda
+    if (!currentPage) {
+        currentPage = 'home';
+    }
+    currentPage = currentPage.toLowerCase();
+
+    // Ambil semua elemen <a> di dalam navbar desktop dan mobile
+    const navLinks = document.querySelectorAll('#navbar a, #mobile-menu a');
+
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href) {
+            // Cek apakah link ini mengarah ke halaman yang sedang aktif
+            const isMatch = href.toLowerCase().includes(currentPage);
+            // Cek khusus untuk halaman beranda (jika href hanya "/" atau mengarah ke Home)
+            const isHomeMatch = currentPage === 'home' && (href === '/' || href.toLowerCase().includes('home'));
+
+            if (isMatch || isHomeMatch) {
+                // Styling garis bawah putih yang sama untuk desktop maupun mobile
+                link.classList.add('border-b-2', 'border-white', 'pb-1', 'font-bold');
+            }
+        }
+    });
+});
+
+// --- LOGIKA WARNA NAVBAR SAAT DI-SCROLL ---
 window.addEventListener('scroll', function() {
     const navbar = document.getElementById('navbar');
     // Cek apakah ini halaman beranda dari atribut data-page yang kita buat di PHP
@@ -22,11 +54,11 @@ window.addEventListener('scroll', function() {
     }
 });
 
+// --- LOGIKA HAMBURGER MENU (MOBILE) ---
 const hamburgerBtn = document.getElementById('hamburger-btn');
 const mobileMenu = document.getElementById('mobile-menu');
 const mobileLinks = document.querySelectorAll('.mobile-link');
-// 2. Perbaikan ID dari 'main-navbar' menjadi 'navbar'
-const navbar = document.getElementById('navbar');
+const navbarMobile = document.getElementById('navbar');
 
 hamburgerBtn.addEventListener('click', () => {
     mobileMenu.classList.toggle('opacity-0');
@@ -36,13 +68,13 @@ hamburgerBtn.addEventListener('click', () => {
     if (mobileMenu.classList.contains('opacity-0')) {
         hamburgerBtn.innerHTML = '☰';
         if (window.scrollY <= 50) {
-            navbar.classList.add('bg-transparent');
-            navbar.classList.remove('bg-[#2F855A]', 'shadow-md');
+            navbarMobile.classList.add('bg-transparent');
+            navbarMobile.classList.remove('bg-[#2F855A]', 'shadow-md');
         }
     } else {
         hamburgerBtn.innerHTML = '✕';
-        navbar.classList.remove('bg-transparent');
-        navbar.classList.add('bg-[#2F855A]', 'shadow-md');
+        navbarMobile.classList.remove('bg-transparent');
+        navbarMobile.classList.add('bg-[#2F855A]', 'shadow-md');
     }
 });
 

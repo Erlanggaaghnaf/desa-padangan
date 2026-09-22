@@ -9,7 +9,7 @@
 </button>
 
 <!-- 2. MODAL FORM PENGADUAN (Otomatis ikut terbawa saat komponen dipanggil) -->
-<div id="pengaduanModal" class="fixed inset-0 z-50 flex items-center justify-end bg-black/60 hidden px-4">
+<div id="pengaduanModal" class="hidden fixed inset-0 z-[60] bg-black/60 flex items-center justify-end p-4 overflow-y-auto pt-24 pb-10 backdrop-blur-sm transition-opacity duration-300">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
         
         <!-- Tombol Tutup (X) -->

@@ -1,20 +1,20 @@
 <?php include '../app/views/layouts/header.php'; ?>
 
 <!-- HEADER HALAMAN -->
-<section class="bg-[#F7F9FC] pt-32 pb-12 px-4 md:px-8 lg:px-[120px] text-center border-b border-gray-200">
-    <h1 class="text-3xl md:text-5xl font-extrabold text-[#172033] mb-3">Berita Desa Padangan</h1>
-    <p class="text-gray-500 text-sm md:text-base max-w-xl mx-auto">Informasi dan kabar terbaru dari Desa Padangan</p>
+<section class="bg-[#F7F9FC] pt-32 pb-12 px-4 md:px-8 lg:px-[120px] text-center border-b border-gray-200 reveal-up">
+    <h1 class="text-3xl md:text-5xl font-extrabold text-[#172033] mb-3 reveal-left">Berita Desa Padangan</h1>
+    <p class="text-gray-500 text-sm md:text-base max-w-xl mx-auto reveal-right">Informasi dan kabar terbaru dari Desa Padangan</p>
 </section>
 
 <!-- KONTEN UTAMA BERITA -->
-<main class="px-4 md:px-8 lg:px-[120px] py-12 max-w-7xl mx-auto space-y-12">
+<main class="px-4 md:px-8 lg:px-[120px] py-12 max-w-7xl mx-auto space-y-12 reveal-up">
 
     <!-- GRID KARTU BERITA (Tambahkan class 'berita-item' pada setiap article) -->
-    <div id="berita-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div id="berita-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal-up">
         
         <!-- Nanti bagian ini bisa Anda ganti dengan perulangan foreach dari Database -->
         <!-- Berita Item 1 -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
+        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
             <div>
                 <img src="/assets/images/berita1.jpg" alt="Musyawarah" class="w-full h-48 object-cover">
                 <div class="p-6 space-y-3">
@@ -31,7 +31,7 @@
         </article>
 
         <!-- Berita Item 2 -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
+        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
             <div>
                 <img src="/assets/images/berita2.jpg" alt="Jalan" class="w-full h-48 object-cover">
                 <div class="p-6 space-y-3">
@@ -48,7 +48,7 @@
         </article>
 
         <!-- Berita Item 3 -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
+        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
             <div>
                 <img src="/assets/images/berita3.jpg" alt="UMKM" class="w-full h-48 object-cover">
                 <div class="p-6 space-y-3">
@@ -65,7 +65,7 @@
         </article>
 
         <!-- Berita Item 4 -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
+        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
             <div>
                 <img src="/assets/images/berita4.jpg" alt="Tahun Baru" class="w-full h-48 object-cover">
                 <div class="p-6 space-y-3">
@@ -82,7 +82,7 @@
         </article>
 
         <!-- Berita Item 5 -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
+        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
             <div>
                 <img src="/assets/images/berita5.jpg" alt="RKPDes" class="w-full h-48 object-cover">
                 <div class="p-6 space-y-3">
@@ -99,7 +99,7 @@
         </article>
 
         <!-- Berita Item 6 -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
+        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
             <div>
                 <img src="/assets/images/berita6.jpg" alt="Prestasi" class="w-full h-48 object-cover">
                 <div class="p-6 space-y-3">
@@ -116,7 +116,7 @@
         </article>
         
         <!-- Berita Item 7 (Contoh untuk menguji fitur pindah ke Halaman 2) -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
+        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
             <div>
                 <img src="/assets/images/berita7.jpg" alt="Panen Raya" class="w-full h-48 object-cover bg-gray-200">
                 <div class="p-6 space-y-3">

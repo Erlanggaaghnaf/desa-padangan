@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Resmi Desa Padangan</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Panggil file CSS eksternal -->
+    <link rel="stylesheet" href="/assets/css/style.css?v=<?php echo time(); ?>">
     <!-- Pustaka Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased relative" style="font-family: 'Plus Jakarta Sans', sans-serif;">
 
@@ -40,7 +44,8 @@
             <li><a href="/index.php?url=DataDesa" class="hover:text-green-300 transition-colors">Data Desa</a></li>
             <li><a href="/index.php?url=Layanan" class="hover:text-green-300 transition-colors">Layanan</a></li>
             <li><a href="/index.php?url=Berita" class="hover:text-green-300 transition-colors">Berita</a></li>
-            <li><a href="#" class="hover:text-green-300 transition-colors">Galeri</a></li>
+            <li><a href="/index.php?url=Galeri" class="hover:text-green-300 transition-colors">Galeri</a></li>
+            <li><a href="/index.php?url=Ppid" class="hover:text-green-300 transition-colors">PPID</a></li>
         </ul>
         
         <!-- Hamburger Icon (Mobile) -->
@@ -55,6 +60,7 @@
             <a href="/index.php?url=DataDesa" class="mobile-link hover:text-green-300 border-b border-green-700 pb-2">Data Desa</a>
             <a href="/index.php?url=Layanan" class="mobile-link hover:text-green-300 border-b border-green-700 pb-2">Layanan</a>
             <a href="/index.php?url=Berita" class="mobile-link hover:text-green-300 border-b border-green-700 pb-2">Berita</a>
-            <a href="/index.php?url=Galeri" class="mobile-link hover:text-green-300">Galeri</a>
+            <a href="/index.php?url=Galeri" class="mobile-link hover:text-green-300 border-b border-green-700 pb-2">Galeri</a>
+            <a href="/index.php?url=Ppid" class="mobile-link hover:text-green-300">PPID</a>
         </div>
     </nav>

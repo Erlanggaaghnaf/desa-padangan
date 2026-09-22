@@ -4,8 +4,10 @@
 <!-- HEADER HALAMAN -->
 <section class="bg-[#F7F9FC] pt-32 pb-12 px-4 md:px-8 lg:px-[120px] relative border-b border-gray-200">
     <div class="max-w-3xl">
-        <h1 class="text-3xl md:text-5xl font-extrabold text-[#172033] mb-4">Data Desa</h1>
-        <p class="text-gray-500 text-sm md:text-base">Menyajikan data statistik demografi penduduk Desa Padangan meliputi jumlah penduduk, usia, pekerjaan, pendidikan, status perkawinan, dan agama.</p>
+        <h1 class="text-3xl md:text-5xl font-extrabold text-[#172033] mb-4 reveal-left">Data Desa</h1>
+        <p class="text-gray-500 text-sm md:text-base reveal-right">
+            Menyajikan data statistik demografi penduduk Desa Padangan meliputi jumlah penduduk, usia, pekerjaan, pendidikan, status perkawinan, dan agama.
+        </p>
     </div>
 </section>
 
@@ -13,7 +15,7 @@
 <main class="px-4 md:px-8 lg:px-[120px] py-12 space-y-16">
 
     <!-- NAVIGASI TAB MENU STATISTIK -->
-    <div class="flex justify-start lg:justify-center overflow-x-auto border-b border-gray-200 gap-6 md:gap-10 text-sm md:text-base font-semibold whitespace-nowrap hide-scrollbar px-4 lg:px-0">
+    <div class="flex justify-start lg:justify-center overflow-x-auto border-b border-gray-200 gap-6 md:gap-10 text-sm md:text-base font-semibold whitespace-nowrap hide-scrollbar px-4 lg:px-0 reveal-up">
         
         <a href="#kependudukan" class="pb-4 border-b-2 border-[#2F855A] text-[#2F855A] flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
@@ -43,8 +45,8 @@
 
     <!-- 1. DATA KEPENDUDUKAN -->
     <section id="kependudukan" class="scroll-mt-32">
-        <h2 class="text-2xl font-bold text-[#172033] mb-6">Data Kependudukan</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <h2 class="text-2xl font-bold text-[#172033] mb-6 reveal-left">Data Kependudukan</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 reveal-up">
             <!-- Total Penduduk -->
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
                 <div class="p-4 bg-green-50 rounded-xl text-[#2F855A]">
@@ -81,10 +83,10 @@
 
     <!-- 2. KELOMPOK UMUR -->
     <section id="umur" class="scroll-mt-32">
-        <h2 class="text-2xl font-bold text-[#172033] mb-1">Kelompok Umur</h2>
-        <p class="text-gray-500 text-sm mb-6">Distribusi penduduk Desa Padangan berdasarkan umur dan jenis kelamin</p>
+        <h2 class="text-2xl font-bold text-[#172033] mb-1 reveal-left">Kelompok Umur</h2>
+        <p class="text-gray-500 text-sm mb-6 reveal-right">Distribusi penduduk Desa Padangan berdasarkan umur dan jenis kelamin</p>
         
-        <div class="bg-white p-6 md:p-10 rounded-3xl border border-gray-100 shadow-sm">
+        <div class="bg-white p-6 md:p-10 rounded-3xl border border-gray-100 shadow-sm reveal-up">
             
             <!-- Wadah Canvas Chart.js -->
             <div class="w-full max-w-4xl mx-auto h-[420px] md:h-[480px] mb-8 relative">
@@ -103,10 +105,10 @@
 
             <!-- Summary Text Sesuai Desain -->
             <div class="space-y-4">
-                <div class="bg-[#F7F9FC] p-5 rounded-2xl border border-gray-100 text-sm md:text-base text-gray-700 leading-relaxed">
+                <div class="bg-[#F7F9FC] p-5 rounded-2xl border border-gray-100 text-sm md:text-base text-gray-700 leading-relaxed reveal-left">
                     <p>Untuk jenis kelamin <strong>laki-laki</strong>, kelompok umur <strong>15–19</strong>, dan <strong>20–24</strong> adalah kelompok umur tertinggi dengan jumlah <strong>299 orang atau 4.41%</strong>. Sedangkan, kelompok umur <strong>65+</strong> adalah yang terendah dengan jumlah <strong>80 orang atau 1.18%</strong>.</p>
                 </div>
-                <div class="bg-[#F7F9FC] p-5 rounded-2xl border border-gray-100 text-sm md:text-base text-gray-700 leading-relaxed">
+                <div class="bg-[#F7F9FC] p-5 rounded-2xl border border-gray-100 text-sm md:text-base text-gray-700 leading-relaxed reveal-right">
                     <p>Untuk jenis kelamin <strong>perempuan</strong>, kelompok umur <strong>10–14, 15–19, 20–24, 25–29, 30–34, dan 35–39</strong> adalah kelompok umur tertinggi dengan jumlah <strong>299 orang atau 4.41%</strong>. Sedangkan, kelompok umur <strong>65+</strong> adalah yang terendah dengan jumlah <strong>141 orang atau 2.08%</strong>.</p>
                 </div>
             </div>
@@ -115,18 +117,18 @@
 
    <!-- 3. BERDASARKAN PENDIDIKAN -->
     <section id="pendidikan" class="scroll-mt-32">
-        <h2 class="text-2xl font-bold text-[#172033] mb-1">Berdasarkan Pendidikan</h2>
-        <p class="text-gray-500 text-sm mb-6">Tingkat pendidikan warga Desa Padangan</p>
+        <h2 class="text-2xl font-bold text-[#172033] mb-1 reveal-left">Berdasarkan Pendidikan</h2>
+        <p class="text-gray-500 text-sm mb-6 reveal-right">Tingkat pendidikan warga Desa Padangan</p>
 
-        <div class="bg-white p-6 md:p-10 rounded-3xl border border-gray-100 shadow-sm grid grid-cols-1 lg:grid-cols-4 gap-8 items-center">
+        <div class="bg-white p-6 md:p-10 rounded-3xl border border-gray-100 shadow-sm grid grid-cols-1 lg:grid-cols-4 gap-8 items-center reveal-up">
             
             <!-- Wadah Canvas Chart.js (Mengambil 3 kolom di layar besar) -->
-            <div class="lg:col-span-3 h-[360px] md:h-[400px] relative">
+            <div class="lg:col-span-3 h-[360px] md:h-[400px] relative reveal-left">
                 <canvas id="pendidikanChart"></canvas>
             </div>
 
             <!-- Kartu Ringkasan Informasi (Mengambil 1 kolom di kanan) -->
-            <div class="bg-[#2F855A]/10 p-6 rounded-2xl border border-gray-100 flex flex-col items-center text-center justify-center h-full">
+            <div class="bg-[#2F855A]/10 p-6 rounded-2xl border border-gray-100 flex flex-col items-center text-center justify-center h-full reveal-right">
                 <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-[#2F855A] mb-3">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
                 </div>
@@ -142,10 +144,10 @@
 
     <!-- 4. BERDASARKAN PEKERJAAN -->
     <section id="pekerjaan" class="scroll-mt-32">
-        <h2 class="text-2xl font-bold text-[#172033] mb-2">Berdasarkan Pekerjaan</h2>
-        <p class="text-gray-500 text-sm mb-6">Jumlah penduduk berdasarkan profesi / pekerjaan utama.</p>
+        <h2 class="text-2xl font-bold text-[#172033] mb-2 reveal-left">Berdasarkan Pekerjaan</h2>
+        <p class="text-gray-500 text-sm mb-6 reveal-right">Jumlah penduduk berdasarkan profesi / pekerjaan utama.</p>
 
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 reveal-up">
             <!-- Pekerjaan Cards -->
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center flex flex-col items-center justify-center">
                 <div class="w-10 h-10 bg-green-50 rounded-lg text-[#2F855A] flex items-center justify-center mb-4">
@@ -233,10 +235,10 @@
 
     <!-- 5. STATUS PERKAWINAN -->
     <section id="perkawinan" class="scroll-mt-32">
-        <h2 class="text-2xl font-bold text-[#172033] mb-2">Status Perkawinan</h2>
-        <p class="text-gray-500 text-sm mb-6">Jumlah penduduk berdasarkan status perkawinan.</p>
+        <h2 class="text-2xl font-bold text-[#172033] mb-2 reveal-left">Status Perkawinan</h2>
+        <p class="text-gray-500 text-sm mb-6 reveal-right">Jumlah penduduk berdasarkan status perkawinan.</p>
 
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 reveal-up">
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center flex flex-col items-center justify-center">
                 <div class="w-10 h-10 bg-green-50 rounded-lg text-[#2F855A] flex items-center justify-center mb-4">
                     <svg width="22" height="27" viewBox="0 0 22 27" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -278,10 +280,10 @@
 
     <!-- 6. BERDASARKAN AGAMA -->
     <section id="agama" class="scroll-mt-32">
-        <h2 class="text-2xl font-bold text-[#172033] mb-2">Berdasarkan Agama</h2>
-        <p class="text-gray-500 text-sm mb-6">Jumlah penduduk berdasarkan agama yang dianut.</p>
+        <h2 class="text-2xl font-bold text-[#172033] mb-2 reveal-left">Berdasarkan Agama</h2>
+        <p class="text-gray-500 text-sm mb-6 reveal-right">Jumlah penduduk berdasarkan agama yang dianut.</p>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 reveal-up">
             
             <!-- Islam -->
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center flex flex-col items-center justify-center">

@@ -2,27 +2,27 @@
 
 <!-- HEADER HALAMAN -->
 <section class="bg-[#F7F9FC] pt-32 pb-12 px-4 md:px-8 lg:px-[120px] text-center border-b border-gray-200">
-    <h1 class="text-3xl md:text-5xl font-extrabold text-[#172033] mb-3">Informasi & Panduan Layanan Administrasi</h1>
-    <p class="text-gray-500 text-sm md:text-base max-w-xl mx-auto">Panduan persyaratan dan alur pelayanan administrasi Desa Padangan</p>
+    <h1 class="text-3xl md:text-5xl font-extrabold text-[#172033] mb-3 reveal-left">Informasi & Panduan Layanan Administrasi</h1>
+    <p class="text-gray-500 text-sm md:text-base max-w-xl mx-auto reveal-right">Panduan persyaratan dan alur pelayanan administrasi Desa Padangan</p>
     
     <!-- TOMBOL FILTER KATEGORI -->
-    <div class="flex flex-wrap justify-center gap-3 mt-8">
-        <button onclick="filterLayanan('semua')" class="filter-btn px-6 py-2.5 rounded-full text-sm font-semibold transition-all bg-[#2F855A] text-white shadow-sm">Semua Layanan</button>
-        <button onclick="filterLayanan('kependudukan')" class="filter-btn px-6 py-2.5 rounded-full text-sm font-semibold transition-all bg-white text-gray-600 border border-gray-200 hover:bg-gray-50">Kependudukan</button>
-        <button onclick="filterLayanan('surat')" class="filter-btn px-6 py-2.5 rounded-full text-sm font-semibold transition-all bg-white text-gray-600 border border-gray-200 hover:bg-gray-50">Surat Keterangan</button>
-        <button onclick="filterLayanan('izin')" class="filter-btn px-6 py-2.5 rounded-full text-sm font-semibold transition-all bg-white text-gray-600 border border-gray-200 hover:bg-gray-50">Izin Dagang & Nikah</button>
+    <div class="flex flex-wrap justify-center gap-3 mt-8 reveal-up">
+        <button onclick="filterLayanan('semua')" class="filter-btn px-6 py-2.5 rounded-full text-sm font-semibold transition-all bg-[#2F855A] text-white shadow-sm reveal-up">Semua Layanan</button>
+        <button onclick="filterLayanan('kependudukan')" class="filter-btn px-6 py-2.5 rounded-full text-sm font-semibold transition-all bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 reveal-up">Kependudukan</button>
+        <button onclick="filterLayanan('surat')" class="filter-btn px-6 py-2.5 rounded-full text-sm font-semibold transition-all bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 reveal-up">Surat Keterangan</button>
+        <button onclick="filterLayanan('izin')" class="filter-btn px-6 py-2.5 rounded-full text-sm font-semibold transition-all bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 reveal-up">Izin Dagang & Nikah</button>
     </div>
 </section>
 
 <!-- KONTEN DAFTAR LAYANAN -->
-<main class="px-4 md:px-8 lg:px-[120px] py-12 space-y-10 max-w-5xl mx-auto">
+<main class="px-4 md:px-8 lg:px-[120px] py-12 space-y-10 max-w-5xl mx-auto reveal-up">
 
     <!-- KATEGORI 1: KEPENDUDUKAN -->
-    <div class="kategori-section" data-kategori="kependudukan">
-        <h2 class="text-xl font-bold text-[#172033] mb-2">Kependudukan</h2>
-        <p class="text-gray-500 text-sm mb-4">Layanan yang berkaitan dengan dokumen kependudukan.</p>
+    <div class="kategori-section reveal-up" data-kategori="kependudukan">
+        <h2 class="text-xl font-bold text-[#172033] mb-2 reveal-left">Kependudukan</h2>
+        <p class="text-gray-500 text-sm mb-4 reveal-right">Layanan yang berkaitan dengan dokumen kependudukan.</p>
 
-        <div class="space-y-4">
+        <div class="space-y-4 reveal-up">
             <!-- Accordion Item 1: KTP -->
             <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden transition-all">
                 <button onclick="toggleAccordion('ktp-content', 'ktp-icon')" class="w-full flex items-center justify-between p-5 text-left font-semibold text-[#172033] hover:bg-gray-50/50">
@@ -91,9 +91,9 @@
     </div>
 
     <!-- KATEGORI 2: SURAT KETERANGAN -->
-    <div class="kategori-section" data-kategori="surat">
-        <h2 class="text-xl font-bold text-[#172033] mb-2">Surat Keterangan</h2>
-        <p class="text-gray-500 text-sm mb-4">Layanan yang berkaitan dengan surat keterangan.</p>
+    <div class="kategori-section reveal-up" data-kategori="surat">
+        <h2 class="text-xl font-bold text-[#172033] mb-2 reveal-left">Surat Keterangan</h2>
+        <p class="text-gray-500 text-sm mb-4 reveal-right">Layanan yang berkaitan dengan surat keterangan.</p>
 
         <div class="space-y-4">
             <!-- SKTM -->
@@ -131,9 +131,9 @@
     </div>
 
     <!-- KATEGORI 3: IZIN DAGANG & NIKAH -->
-    <div class="kategori-section" data-kategori="izin">
-        <h2 class="text-xl font-bold text-[#172033] mb-2">Surat Lainnya & Perizinan</h2>
-        <p class="text-gray-500 text-sm mb-4">Layanan perizinan usaha dan surat nikah.</p>
+    <div class="kategori-section reveal-up" data-kategori="izin">
+        <h2 class="text-xl font-bold text-[#172033] mb-2 reveal-left">Surat Lainnya & Perizinan</h2>
+        <p class="text-gray-500 text-sm mb-4 reveal-right">Layanan perizinan usaha dan surat nikah.</p>
 
         <div class="space-y-4">
             <!-- Izin Dagang -->

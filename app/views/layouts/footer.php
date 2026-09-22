@@ -1,14 +1,14 @@
 <!-- FOOTER -->
-    <footer class="bg-[#2F855A] text-white pt-12 pb-6 mt-12">
+    <footer class="bg-[#2F855A] text-white pt-12 pb-6 mt-12 reveal-up">
         <div class="px-4 md:px-8 lg:px-[120px] grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4 reveal-left">
                 <img src="assets/images/logo.png" alt="Logo" class="w-24 h-24 md:w-32 md:h-32">
                 <div>
                     <h3 class="font-bold text-xl mb-1">Pemerintah Desa Padangan</h3>
                     <p class="text-sm text-green-100">Kecamatan Ngantru, <br> Kabupaten Tulungagung</p>
                 </div>
             </div>
-            <div>
+            <div class="reveal-up">
                 <h4 class="font-bold text-xl mb-2">Alamat</h4>
                 <ul class="text-sm text-green-100 space-y-2">
                     <li class="flex items-center gap-3"> 
@@ -34,7 +34,7 @@
                     </li>
                 </ul>
             </div>
-            <div>
+            <div class="reveal-right">
                 <h4 class="font-bold text-xl mb-2">Jam Operasional</h4>
                 <ul class="text-sm text-green-100 space-y-2">
                     <li> <span class="font-bold">Senin - Kamis</span> <br> 08.00 - 15.00 WIB</li>
@@ -45,12 +45,13 @@
         </div>
         
         <!-- Garis Border 90% di Tengah & Responsif -->
-        <div class="flex justify-center text-center text-sm md:text-base text-green-200 border-t-2 w-[90%] mx-auto border-white pt-6">
+        <div class="flex justify-center text-center text-sm md:text-base text-green-200 border-t-2 w-[90%] mx-auto border-white pt-6 reveal-up">
             &copy; 2026 Desa Padangan, Tulungagung. Hak Cipta Dilindungi.
         </div>
     </footer>
 
     <script src="assets/js/Script.js"></script>
+    <script src="assets/js/ScrollReveal.js"></script>
     
 </body>
 </html>

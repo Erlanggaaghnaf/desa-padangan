@@ -1,16 +1,16 @@
 <!-- HERO SECTION (Rasio proporsional desktop mendekati 1440x800px) -->
-<section class="relative w-full h-[60vh] md:h-[75vh] lg:h-[800px] bg-cover bg-center flex items-center justify-center text-center px-4" 
+<section id="hero-section" class="relative w-full h-[65vh] md:h-[75vh] lg:h-[800px] bg-cover bg-center flex items-center justify-center text-center px-4 overflow-hidden" 
          style="background-image: url('assets/images/Hero.png');">
 
     <div class="absolute inset-0 bg-black/50 z-10"></div>
     <div class="relative z-20 text-white max-w-3xl">
-        <p class="text-sm font-semibold drop-shadow-lg md:text-base uppercase tracking-wider mb-2">Selamat Datang di</p>
-        <h2 class="text-3xl md:text-5xl font-extrabold drop-shadow-xl mb-3">Website Resmi Desa Padangan</h2>
-        <p class="text-lg md:text-xl text-gray-200 drop-shadow-xl font-semibold">Kecamatan Ngantru, Kabupaten Tulungagung</p>
+        <p class="text-sm font-semibold drop-shadow-lg md:text-base uppercase tracking-wider mb-2 reveal-up">Selamat Datang di</p>
+        <h2 class="text-3xl md:text-5xl font-extrabold drop-shadow-xl mb-3 reveal-left">Website Resmi Desa Padangan</h2>
+        <p class="text-lg md:text-xl text-gray-200 drop-shadow-xl font-semibold reveal-right">Kecamatan Ngantru, Kabupaten Tulungagung</p>
     </div>
 
     <!-- Floating Card Statistik Pengunjung (Kiri Bawah dengan margin 120px di desktop) -->
-    <div class="absolute bottom-6 md:bottom-12 left-4 md:left-8 lg:left-[120px] z-30">
+    <div class="absolute bottom-6 md:bottom-12 left-4 md:left-8 lg:left-[120px] z-30 reveal-left">
         <?php include '../app/views/components/visitor_card.php'; ?>
     </div>
     
@@ -24,14 +24,14 @@
 <main class="px-4 md:px-8 lg:px-[120px] py-12 space-y-20">
 
     <!-- 4. SAMBUTAN KEPALA DESA -->
-    <section class="flex flex-col md:flex-row gap-8 items-start bg-[#F7F9FC] p-6 md:p-10 rounded-3xl border border-gray-100 shadow-sm">
+    <section class="flex flex-col md:flex-row gap-8 items-center bg-[#F7F9FC] p-6 md:p-10 rounded-3xl border border-gray-100 shadow-sm reveal-up">
         <div class="w-48 h-48 md:w-64 md:h-64 flex-shrink-0">
-            <img src="assets/images/kepala-desa.jpg" alt="Kepala Desa" class="w-full h-full object-cover rounded-2xl shadow-lg border-4 border-white">
+            <img src="assets/images/kepala-desa.jpg" alt="Kepala Desa" class="w-full h-full object-cover rounded-2xl shadow-lg border-4 border-white reveal-left">
             <div class="mt-3 text-center">
-                <p class="font-bold text-[#172033]">Slamet Riyadi, S.Pd.</p>
+                <p class="font-bold text-[#172033] reveal-left">Slamet Riyadi, S.Pd.</p>
             </div>
         </div>
-        <div >
+        <div class="reveal-right">
             <h2 class="text-2xl md:text-3xl font-bold text-[#172033] mb-4">Sambutan Kepala Desa</h2>
             <div class="h-1 w-28 bg-[#2F855A] rounded-full mb-4"></div>
             <p class="text-gray-600 leading-relaxed mb-4 text-sm md:text-base">
@@ -43,15 +43,15 @@
 
     <!-- 5. SOTK (Struktur Organisasi) -->
     <section>
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-2">
-            <div>
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-2 reveal-up">
+            <div class="reveal-left">
                 <h3 class="text-2xl font-bold text-[#172033]">SOTK</h3>
                 <p class="text-sm text-gray-500">Profil Struktur Organisasi Tata Kerja Desa Padangan</p>
             </div>
-            <a href="#" class="text-sm text-[#2563B8] font-semibold hover:underline">Lihat Semua Perangkat &rarr;</a>
+            <a href="#" class="text-sm text-[#2563B8] font-semibold hover:underline reveal-right">Lihat Semua Perangkat &rarr;</a>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 reveal-up">
             <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
                 <img src="assets/images/perangkat1.jpg" alt="Perangkat" class="w-full h-56 object-cover object-top mb-3">
                 <h4 class="font-bold text-[#172033] text-sm md:text-base px-2">Slamet Riyadi, S.Pd</h4>
@@ -76,8 +76,8 @@
     </section>
 
     <!-- 6. PETA WILAYAH -->
-    <section class="flex flex-col lg:flex-row justify-between items-center gap-8">
-        <div class="lg:w-1/2">
+    <section class="flex flex-col lg:flex-row justify-between items-center gap-8 reveal-up">
+        <div class="lg:w-1/2 reveal-left">
             <h3 class="text-2xl font-bold text-[#172033] mb-2">PETA WILAYAH</h3>
             <p class="text-sm text-gray-500 leading-relaxed">
                 Peta batas wilayah administratif Desa Padangan,<br>
@@ -85,7 +85,7 @@
                 Kabupaten Tulungagung
             </p>
         </div>
-        <div class="w-full lg:w-1/2 h-64 md:h-80 rounded-2xl overflow-hidden shadow-sm border border-gray-200 relative">
+        <div class="w-full lg:w-1/2 h-64 md:h-80 rounded-2xl overflow-hidden shadow-sm border border-gray-200 relative reveal-right">
             <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.6898594747126!2d111.9543243750075!3d-8.030877891995878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e78fb59fc34d539%3A0xeb4f5483057548d6!2sBalai%20Desa%20Padangan!5e0!3m2!1sid!2sid!4v1789902686862!5m2!1sid!2sid" 
                 class="absolute inset-0 w-full h-full border-0" 
@@ -97,16 +97,16 @@
     </section>
 
     <!-- 7. BERITA DESA -->
-    <section>
+    <section class="reveal-up">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-2">
-            <div>
+            <div class="reveal-left">
                 <h3 class="text-2xl font-bold text-[#172033]">Berita Desa</h3>
                 <p class="text-sm text-gray-500">Simak perkembangan terbaru dari Desa Padangan</p>
             </div>
-            <a href="#" class="text-sm text-[#2563B8] font-semibold hover:underline">Lihat Semua Berita &rarr;</a>
+            <a href="/index.php?url=Berita" class="text-sm text-[#2563B8] font-semibold hover:underline reveal-right">Lihat Semua Berita &rarr;</a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 reveal-up">
             <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow">
                 <img src="assets/images/berita1.jpg" class="w-full h-40 object-cover" alt="Berita">
                 <div class="p-4 flex flex-col flex-grow">
@@ -164,12 +164,12 @@
 
     <!-- 8. POTENSI DESA -->
     <section>
-        <div class="mb-6">
+        <div class="mb-6 reveal-left">
             <h3 class="text-2xl font-bold text-[#172033]">Potensi Desa</h3>
             <p class="text-sm text-gray-500">Ragam potensi ekonomi dan sumber daya alam</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 reveal-up">
             <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 flex gap-4 items-center hover:shadow-md transition-shadow">
                 <img src="assets/images/potensi1.jpg" class="w-24 h-24 rounded-xl object-cover flex-shrink-0" alt="Pertanian">
                 <div>
@@ -194,14 +194,14 @@
     <!-- 9. GALERI DESA -->
     <section>
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-2">
-            <div>
+            <div class="reveal-left">
                 <h3 class="text-2xl font-bold text-[#172033]">Galeri Desa</h3>
                 <p class="text-sm text-gray-500">Dokumentasi kegiatan masyarakat dan pembangunan</p>
             </div>
-            <a href="#" class="text-sm text-[#2563B8] font-semibold hover:underline">Lihat Semua Foto &rarr;</a>
+            <a href="#" class="text-sm text-[#2563B8] font-semibold hover:underline reveal-right">Lihat Semua Foto &rarr;</a>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 reveal-up">
             <div class="relative rounded-2xl overflow-hidden group h-40 shadow-sm">
                 <img src="assets/images/galeri1.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Galeri">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-3">

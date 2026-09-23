@@ -33,8 +33,8 @@
                 </div>
             </div>
             <div class="text-right">
-                <p id="current-date" class="text-xs font-bold text-gray-700">Kamis, 17 September 2026</p>
-                <p id="current-time" class="text-[10px] md:text-[11px] text-gray-400 mt-0.5">10:34 WIB</p>
+                <p id="current-date" class="text-xs font-bold text-gray-700">Memuat tanggal...</p>
+                <p id="current-time" class="text-[10px] md:text-[11px] text-gray-400 mt-0.5">--:--:-- WIB</p>
             </div>
         </header>
 
@@ -359,10 +359,12 @@
             checkboxes.forEach(cb => cb.checked = source.checked);
         }
 
+        // --- SKRIP WAKTU REAL-TIME ---
         function updateDateTime() {
             const now = new Date();
             const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-            const optionsTime = { hour: '2-digit', minute: '2-digit', hour12: false };
+            const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            
             document.getElementById('current-date').innerText = now.toLocaleDateString('id-ID', optionsDate);
             document.getElementById('current-time').innerText = now.toLocaleTimeString('id-ID', optionsTime) + ' WIB';
         }
@@ -370,6 +372,9 @@
         // Inisialisasi awal saat halaman dimuat
         renderTable();
         updateDateTime();
+        
+        // Panggil ulang setiap detik (1000ms)
+        setInterval(updateDateTime, 1000);
     </script>
 </body>
 </html>

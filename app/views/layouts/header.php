@@ -16,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased relative" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+<body class="bg-gray-50 text-gray-800 antialiased relative " style="font-family: 'Plus Jakarta Sans', sans-serif;">
 
 
     <?php 

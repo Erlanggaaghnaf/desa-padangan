@@ -1,4 +1,5 @@
 <!-- 1. TOMBOL PENGADUAN (Dipanggil di Hero Section atau bagian lain) -->
+<div class="reveal-right relative">
 <button onclick="toggleModal('pengaduanModal')" class="bg-[#2F855A] hover:bg-green-700 text-white px-5 md:px-6 py-3 rounded-full shadow-2xl font-semibold flex items-center gap-2 transform transition-transform hover:-translate-y-1">
     <span class="flex items-center">
         <svg width="20" height="20" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg"> 
@@ -7,6 +8,7 @@
     </span>
     <span class="text-sm md:text-base">Pengaduan Desa</span>
 </button>
+</div>
 
 <!-- 2. MODAL FORM PENGADUAN (Otomatis ikut terbawa saat komponen dipanggil) -->
 <div id="pengaduanModal" class="hidden fixed inset-0 z-[60] bg-black/60 flex items-center justify-end p-4 overflow-y-auto pt-24 pb-10 backdrop-blur-sm transition-opacity duration-300">

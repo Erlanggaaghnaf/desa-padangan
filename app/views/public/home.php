@@ -10,7 +10,7 @@
     </div>
 
     <!-- Floating Card Statistik Pengunjung (Kiri Bawah dengan margin 120px di desktop) -->
-    <div class="absolute bottom-6 md:bottom-12 left-4 md:left-8 lg:left-[120px] z-30 reveal-left">
+    <div class="absolute bottom-6 md:bottom-12 left-4 md:left-8 lg:left-[120px] z-30">
         <?php include '../app/views/components/visitor_card.php'; ?>
     </div>
     

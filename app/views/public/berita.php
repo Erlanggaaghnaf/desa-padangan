@@ -144,7 +144,7 @@
 </main>
 
 <!-- WIDGET MELAYANG (FIXED) DI POJOK KIRI & KANAN BAWAH -->
-<div class="flex justify-between items-center w-full mt-8 gap-4">
+<div class="flex justify-between items-center w-full mt-8 gap-4 px-4 md:px-8 ">
         <!-- Kunjungan (Kiri Mentok) -->
         <div class="z-20">
             <?php include '../app/views/components/visitor_card.php'; ?>

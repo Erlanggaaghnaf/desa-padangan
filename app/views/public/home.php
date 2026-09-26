@@ -8,20 +8,10 @@
         <h2 class="text-3xl md:text-5xl font-extrabold drop-shadow-xl mb-3 reveal-left">Website Resmi Desa Padangan</h2>
         <p class="text-lg md:text-xl text-gray-200 drop-shadow-xl font-semibold reveal-right">Kecamatan Ngantru, Kabupaten Tulungagung</p>
     </div>
-
-    <!-- Floating Card Statistik Pengunjung (Kiri Bawah dengan margin 120px di desktop) -->
-    <div class="absolute bottom-6 md:bottom-12 left-4 md:left-8 lg:left-[120px] z-30">
-        <?php include '../app/views/components/visitor_card.php'; ?>
-    </div>
-    
-   <!-- Memanggil Komponen Tombol Pengaduan (Kanan Bawah) -->
-    <div class="absolute bottom-6 md:bottom-12 right-4 md:right-8 lg:right-[120px] z-30">
-        <?php include '../app/views/components/pengaduan_widget.php'; ?>
-    </div>
 </section>
 
 <!-- MAIN CONTENT WRAPPER (Padding horizontal responsif dengan target lg:px-[120px]) -->
-<main class="px-4 md:px-8 lg:px-[120px] py-12 space-y-20">
+<main class="overflow-hidden px-4 md:px-8 lg:px-[120px] py-12 space-y-20">
 
     <!-- 4. SAMBUTAN KEPALA DESA -->
     <section class="flex flex-col md:flex-row gap-8 items-center bg-[#F7F9FC] p-6 md:p-10 rounded-3xl border border-gray-100 shadow-sm reveal-up">

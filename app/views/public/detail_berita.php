@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <div class="px-5 pb-5">
-                    <a href="#" class="text-sm font-semibold text-[#2F855A] hover:underline">Baca selengkapnya &rarr;</a>
+                    <a href="detail_berita" class="text-sm font-semibold text-[#2F855A] hover:underline">Baca selengkapnya &rarr;</a>
                 </div>
             </article>
 
@@ -106,16 +106,6 @@
 
         </div>
     </section>
-
-    <!-- KOMPONEN WIDGET BAWAH -->
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between pt-8 border-t border-gray-200 gap-6">
-        <!-- Komponen Visibilitas -->
-        <?php include '../app/views/components/visitor_card.php'; ?>
-        
-        <!-- Komponen Pengaduan -->
-        <?php include '../app/views/components/pengaduan_widget.php'; ?>
-    </div>
-
 </div>
 
 <!-- MODAL LIGHTBOX UNTUK GAMBAR (Tersembunyi secara default) -->

@@ -4,19 +4,6 @@
 <section class="bg-[#F7F9FC] pt-32 pb-12 px-4 md:px-8 lg:px-[120px]">
     <h1 class="text-3xl md:text-5xl font-extrabold text-[#172033] mb-4 reveal-left">Informasi Desa</h1>
     <p class="text-gray-500 text-sm md:text-base max-w-2xl reveal-right">Mengenal lebih dekat sejarah, visi misi, letak geografis, dan struktur pemerintahan Desa Padangan.</p>
-    <!-- Panggilan Komponen Widget -->
-
-     <div class="flex justify-between items-center w-full mt-8 gap-4">
-        <!-- Kunjungan (Kiri Mentok) -->
-        <div class="z-20">
-            <?php include '../app/views/components/visitor_card.php'; ?>
-        </div>
-
-        <!-- Pengaduan (Kanan Mentok) -->
-        <div class="z-20 flex-shrink-0">
-            <?php include '../app/views/components/pengaduan_widget.php'; ?>
-        </div>
-    </div>
 </section>
 
 <!-- MAIN CONTENT WRAPPER -->

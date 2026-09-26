@@ -14,7 +14,7 @@
 <body class="bg-[#F4F6F9] flex h-screen overflow-hidden" onclick="closeAllDropdowns(event)">
 
     <!-- MEMANGGIL KOMPONEN SIDEBAR -->
-    <?php include '../app/views/components/admin_sidebar.php'; ?>
+    <?php include '../app/views/components/admin/admin_sidebar.php'; ?>
 
     <!-- KONTEN UTAMA KANAN -->
     <main class="flex-1 flex flex-col h-screen overflow-y-auto md:ml-64 transition-all relative">

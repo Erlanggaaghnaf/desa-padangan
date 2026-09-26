@@ -50,7 +50,22 @@
         </div>
     </footer>
 
-    <script src="assets/js/Script.js"></script>
+    <!-- widget -->
+    <div class="fixed bottom-4 left-0 w-full px-3 md:px-5 lg:px-6 flex justify-between items-end z-50 pointer-events-none">
+
+        <!-- Kunjungan -->
+        <div class="pointer-events-auto scale-90 origin-bottom-left md:scale-100 transition-transform">
+            <?php include '../app/views/components/public/visitor_card.php'; ?>
+        </div>
+
+        <!-- Pengaduan -->
+        <div class="pointer-events-auto flex-shrink-0">
+            <?php include '../app/views/components/public/pengaduan_widget.php'; ?>
+        </div>
+
+    </div>
+
+    <script src="assets/js/script.js"></script>
     <script src="assets/js/ScrollReveal.js"></script>
     
 </body>

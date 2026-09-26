@@ -7,7 +7,7 @@
 </section>
 
 <!-- KONTEN UTAMA -->
-<main class="px-4 md:px-8 lg:px-[120px] py-12 max-w-7xl mx-auto space-y-16">
+<main class="px-4 md:px-8 lg:px-[120px] py-12 max-w-7xl mx-auto space-y-16 reveal-up">
 
     <!-- SECTION 1: INFOGRAFIS APBDES -->
     <section id="apbdes-section">

@@ -40,21 +40,6 @@
         <?php endfor; ?>
         
     </div>
-
-    <!-- KOMPONEN WIDGET & PAGINATION -->
-    <div class="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-gray-200 gap-6">
-        
-        <!-- Panggil Komponen Widget Visibilitas / Kunjungan -->
-        <?php include '../app/views/components/visitor_card.php'; ?>
-
-        <!-- Container untuk Tombol Navigasi Pagination (Di-generate oleh JS) -->
-        <div id="pagination-container" class="flex items-center gap-2"></div>
-
-        <!-- Panggil Komponen Widget Tombol Pengaduan -->
-        <?php include '../app/views/components/pengaduan_widget.php'; ?>
-
-    </div>
-
 </main>
 
 <!-- MODAL LIGHTBOX UNTUK GALERI -->

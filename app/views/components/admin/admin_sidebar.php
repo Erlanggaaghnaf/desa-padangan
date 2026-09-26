@@ -55,14 +55,8 @@ $current_url = $_GET['url'] ?? 'AdminDashboard';
                 Manajemen Berita
             </a>
 
-            <!-- Menu Manajemen Potensi Desa -->
-            <a href="index.php?url=AdminPotensi" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'AdminPotensi') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"></path></svg>
-                Manajemen Potensi Desa
-            </a>
-
             <!-- Menu Master Data -->
-            <a href="index.php?url=AdminMaster" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'AdminMaster') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
+            <a href="index.php?url=AdminMasterData" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'AdminMasterData') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                 Master Data
             </a>

@@ -152,35 +152,6 @@
         </div>
     </section>
 
-    <!-- 8. POTENSI DESA -->
-    <section>
-        <div class="mb-6 reveal-left">
-            <h3 class="text-2xl font-bold text-[#172033]">Potensi Desa</h3>
-            <p class="text-sm text-gray-500">Ragam potensi ekonomi dan sumber daya alam</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 reveal-up">
-            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 flex gap-4 items-center hover:shadow-md transition-shadow">
-                <img src="assets/images/potensi1.jpg" class="w-24 h-24 rounded-xl object-cover flex-shrink-0" alt="Pertanian">
-                <div>
-                    <h4 class="font-bold text-[#2F855A] flex items-center gap-2 mb-1">
-                        <span class="text-lg">🌾</span> Pertanian
-                    </h4>
-                    <p class="text-xs text-gray-500 line-clamp-3">Desa Padangan dikenal dengan hasil bumi unggulan berupa padi dan jagung yang menjadi sumber utama perekonomian warga.</p>
-                </div>
-            </div>
-            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 flex gap-4 items-center hover:shadow-md transition-shadow">
-                <img src="assets/images/potensi2.jpg" class="w-24 h-24 rounded-xl object-cover flex-shrink-0" alt="Peternakan">
-                <div>
-                    <h4 class="font-bold text-[#2F855A] flex items-center gap-2 mb-1">
-                        <span class="text-lg">🐄</span> Peternakan
-                    </h4>
-                    <p class="text-xs text-gray-500 line-clamp-3">Sektor peternakan sapi perah dan kambing etawa menjadi salah satu komoditas penyumbang PADes.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- 9. GALERI DESA -->
     <section>
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-2">

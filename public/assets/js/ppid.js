@@ -81,33 +81,4 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
-    // --- LOGIKA ANIMASI PROGRESS BAR APBDES ---
-    // Menggunakan IntersectionObserver agar animasi berjalan HANYA saat elemen terlihat di layar
-    const progressBars = document.querySelectorAll('.progress-animate');
-    const apbdesSection = document.getElementById('apbdes-section');
-
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.3 // Animasi berjalan ketika 30% dari bagian APBDes terlihat di layar
-    };
-
-    const progressObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Ambil semua progress bar di dalam section
-                progressBars.forEach(bar => {
-                    // Ambil target lebar dari atribut data-width
-                    const targetWidth = bar.getAttribute('data-width');
-                    // Terapkan lebar tersebut sehingga transisi CSS memainkannya
-                    bar.style.width = targetWidth;
-                });
-                // Hentikan pantauan setelah animasi selesai agar tidak berulang terus
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    if (apbdesSection) {
-        progressObserver.observe(apbdesSection);
-    }
+   

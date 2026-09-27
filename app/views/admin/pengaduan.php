@@ -1,11 +1,50 @@
+<?php
+// Panggil koneksi database menggunakan core/Database.php dari folder app/views/admin/ (naik dua tingkat)
+require_once __DIR__ . '/../../core/Database.php';
+
+$db = new Database();
+$conn =$db->getConnection();
+
+// --- PROSES UPDATE STATUS ---
+if (isset($_GET['update_id']) && isset($_GET['status'])) {
+    $id_update = (int)$_GET['update_id'];
+    $status_baru =$_GET['status'];
+    
+    $stmt_update =$conn->prepare("UPDATE pengaduan SET status = :status WHERE id = :id");
+    $stmt_update->execute([':status' => $status_baru, ':id' =>$id_update]);
+    
+    header("Location: pengaduan.php");
+    exit();
+}
+
+// --- AMBIL DATA DARI DATABASE ---
+$stmt =$conn->prepare("SELECT * FROM pengaduan ORDER BY created_at DESC");
+$stmt->execute();
+$rows =$stmt->fetchAll();
+
+$data_array = [];
+foreach ($rows as $row) {$tanggal_formatted = date('d M Y', strtotime($row['created_at']));$data_array[] = [
+        'id'     => $row['id'],
+        'date'   => $tanggal_formatted,
+        'name'   => $row['nama'],
+        'phone'  => $row['kontak'],
+        'title'  => $row['judul'],
+        'detail' => $row['isi'],
+        'status' => $row['status'],
+        'foto'   => $row['foto']
+    ];
+}
+
+$json_data = json_encode($data_array);
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manajemen Pengaduan - Administrator Desa Padangan</title>
-    <!-- Favicon Logo Desa -->
-    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <!-- Favicon Logo Desa (Path disesuaikan ke public/assets/images/logo.png) -->
+    <link rel="icon" type="image/png" href="/desa-padangan/public/assets/images/logo.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,8 +54,8 @@
 </head>
 <body class="bg-[#F4F6F9] flex h-screen overflow-hidden">
 
-    <!-- MEMANGGIL KOMPONEN SIDEBAR -->
-    <?php include '../app/views/components/admin/admin_sidebar.php'; ?>
+    <!-- MEMANGGIL KOMPONEN SIDEBAR (Path: app/views/components/admin/admin_sidebar.php) -->
+    <?php include __DIR__ . '/../components/admin/admin_sidebar.php'; ?>
 
     <!-- KONTEN UTAMA KANAN -->
     <main class="flex-1 flex flex-col h-screen overflow-y-auto md:ml-64 transition-all">
@@ -107,7 +146,7 @@
                                 </th>
                                 <th class="p-3.5">Tanggal</th>
                                 <th class="p-3.5">Nama Pelapor</th>
-                                <th class="p-3.5">Detail Laporan</th>
+                                <th class="p-3.5">Judul / Detail Laporan</th>
                                 <th class="p-3.5">Status</th>
                                 <th class="p-3.5 rounded-r-xl text-center">Aksi</th>
                             </tr>
@@ -173,6 +212,7 @@
 
                     <div class="bg-gray-50/70 border border-gray-200/80 rounded-2xl p-4 space-y-2">
                         <div class="flex items-center gap-2 text-xs font-bold text-gray-700">📝 Uraian Pengaduan</div>
+                        <p id="modalTitle" class="text-xs font-bold text-gray-800 pl-6"></p>
                         <p id="modalDetail" class="text-xs text-gray-600 pl-6 leading-relaxed">-</p>
                     </div>
                 </div>
@@ -183,8 +223,8 @@
                             <div class="flex items-center gap-2 text-xs font-bold text-gray-700">📎 Lampiran Foto</div>
                             <span class="text-[11px] font-semibold bg-emerald-50 text-[#2F855A] px-2.5 py-0.5 rounded-full border border-emerald-200/60">Foto Bukti</span>
                         </div>
-                        <div class="space-y-3 max-h-[360px] overflow-y-auto pr-1">
-                            <img src="assets/images/Hero.png" alt="Lampiran Bukti" class="w-full h-44 object-cover rounded-xl border border-gray-200 shadow-xs">
+                        <div class="space-y-3 max-h-[360px] overflow-y-auto pr-1 flex justify-center items-center bg-white rounded-xl border border-gray-200 p-2">
+                            <img id="modalImageBukti" src="" alt="Lampiran Bukti" class="w-full h-44 object-cover rounded-xl shadow-xs">
                         </div>
                     </div>
                     <p class="text-[10px] text-gray-400 text-center pt-2">ℹ️ Dokumen foto resmi dari pelapor.</p>
@@ -196,19 +236,11 @@
 
     <!-- Skrip Logika Dinamis & Pagination -->
     <script>
-        // Data Dummy Pengaduan (Bisa diubah/ditambah untuk menguji pagination)
-        let complaintsData = [
-            { id: 1, date: '17 Sep 2026', name: 'Siti Muslimah', phone: '+62 8763 4928 8363', detail: 'Jalan di depan balai desa terdapat lubang yang cukup besar dan mengganggu. Aspal sudah terkelupas dengan kedalaman 30 cm, sehingga membahayakan pengguna jalan terutama saat hujan.', status: 'Belum Ditangani' },
-            { id: 2, date: '16 Sep 2026', name: 'Budi Santoso', phone: '+62 8123 4567 890', detail: 'Lampu penerangan jalan menuju Dusun Krajan sudah beberapa hari tidak menyala.', status: 'Selesai' },
-            { id: 3, date: '05 Sep 2026', name: 'Ahmad Fauzi', phone: '+62 8567 8901 234', detail: 'Saluran air di Dusun Krajan tersumbat sehingga air meluber ke jalan.', status: 'Selesai' },
-            { id: 4, date: '27 Agu 2026', name: 'Nur Aini', phone: '+62 8901 2345 678', detail: 'Terdapat tumpukan sampah yang belum diangkut di sekitar pasar desa.', status: 'Selesai' },
-            { id: 5, date: '12 Agu 2026', name: 'Dwi Prasetyo', phone: '+62 8345 6789 012', detail: 'Beberapa bagian jalan desa rusak dan menjadi licin setelah hujan deras.', status: 'Belum Ditangani' },
-            { id: 6, date: '02 Agu 2026', name: 'Rina Wijaya', phone: '+62 8211 2233 445', detail: 'Fasilitas bermain anak di lapangan desa perlu dicat ulang dan diperbaiki.', status: 'Belum Ditangani' },
-            { id: 7, date: '28 Jul 2026', name: 'Joko Widodo', phone: '+62 8112 3344 556', detail: 'Pohon di pinggir jalan utama hampir tumbang dan membahayakan kabel listrik.', status: 'Selesai' }
-        ];
+        // Data dari Database PHP
+        let complaintsData = <?php echo $json_data; ?>;
 
         let currentPage = 1;
-        let rowsPerPage = 3; // Menampilkan 3 data per halaman agar tombol pagination aktif
+        let rowsPerPage = 5; 
         let selectedComplaintId = null;
 
         function toggleSidebar() {
@@ -225,7 +257,7 @@
 
             // Filter data berdasarkan pencarian & status
             let filtered = complaintsData.filter(item => {
-                const matchesSearch = item.name.toLowerCase().includes(searchVal) || item.detail.toLowerCase().includes(searchVal);
+                const matchesSearch = item.name.toLowerCase().includes(searchVal) || item.detail.toLowerCase().includes(searchVal) || item.title.toLowerCase().includes(searchVal);
                 const matchesStatus = (statusVal === "" || item.status === statusVal);
                 return matchesSearch && matchesStatus;
             });
@@ -247,25 +279,33 @@
                 tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-400">Tidak ada data pengaduan ditemukan.</td></tr>`;
             } else {
                 paginatedData.forEach(item => {
-                    let badgeClass = item.status === 'Selesai' 
-                        ? 'bg-emerald-50 text-[#2F855A] border-emerald-200/60' 
-                        : 'bg-amber-50 text-amber-700 border-amber-200/60';
+                let badgeClass = item.status === 'Selesai' 
+                    ? 'bg-emerald-50 text-[#2F855A] border-emerald-200/60' 
+                    : 'bg-amber-50 text-amber-700 border-amber-200/60';
 
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-gray-50/80 transition-colors">
-                            <td class="p-3.5 text-center"><input type="checkbox" class="row-checkbox rounded accent-[#2F855A] cursor-pointer"></td>
-                            <td class="p-3.5 whitespace-nowrap text-gray-600 font-medium">${item.date}</td>
-                            <td class="p-3.5 font-semibold text-gray-900">${item.name}</td>
-                            <td class="p-3.5 text-gray-600 max-w-xs truncate">${item.detail}</td>
-                            <td class="p-3.5 whitespace-nowrap">
-                                <span class="px-2.5 py-1 rounded-full text-[11px] font-medium border ${badgeClass}">${item.status}</span>
-                            </td>
-                            <td class="p-3.5 text-center whitespace-nowrap">
-                                <button onclick="openModal(${item.id})" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-emerald-50 hover:text-[#2F855A] hover:border-emerald-200 transition-all font-medium cursor-pointer"><span>👁️</span> Lihat Detail</button>
-                            </td>
-                        </tr>
-                    `;
-                });
+                let isChecked = item.status === 'Selesai' ? 'checked' : '';
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50/80 transition-colors">
+                        <!-- Checkbox interaktif untuk mengubah status secara langsung -->
+                        <td class="p-3.5 text-center">
+                            <input type="checkbox" class="row-checkbox rounded accent-[#2F855A] cursor-pointer" ${isChecked} onchange="ubahStatusCheckbox(${item.id}, this)">
+                        </td>
+                        <td class="p-3.5 whitespace-nowrap text-gray-600 font-medium">${item.date}</td>
+                        <td class="p-3.5 font-semibold text-gray-900">${item.name}</td>
+                        <td class="p-3.5 text-gray-600 max-w-xs">
+                            <span class="font-bold text-gray-800 block truncate">${item.title}</span>
+                            <span class="truncate block text-gray-500">${item.detail}</span>
+                        </td>
+                        <td class="p-3.5 whitespace-nowrap">
+                            <span class="px-2.5 py-1 rounded-full text-[11px] font-medium border ${badgeClass}">${item.status}</span>
+                        </td>
+                        <td class="p-3.5 text-center whitespace-nowrap">
+                            <button onclick="openModal(${item.id})" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-emerald-50 hover:text-[#2F855A] hover:border-emerald-200 transition-all font-medium cursor-pointer"><span>👁️</span> Lihat Detail</button>
+                        </td>
+                    </tr>
+                `;
+            });
             }
 
             renderPaginationNumbers(totalPages);
@@ -296,11 +336,10 @@
         }
 
         function nextPage() {
-            // Hitung total halaman saat ini
             const searchVal = document.getElementById('searchInput').value.toLowerCase();
             const statusVal = document.getElementById('statusFilter').value;
             let filtered = complaintsData.filter(item => {
-                const matchesSearch = item.name.toLowerCase().includes(searchVal) || item.detail.toLowerCase().includes(searchVal);
+                const matchesSearch = item.name.toLowerCase().includes(searchVal) || item.detail.toLowerCase().includes(searchVal) || item.title.toLowerCase().includes(searchVal);
                 const matchesStatus = (statusVal === "" || item.status === statusVal);
                 return matchesSearch && matchesStatus;
             });
@@ -330,8 +369,20 @@
                 document.getElementById('modalName').innerText = complaint.name;
                 document.getElementById('modalPhone').innerText = complaint.phone;
                 document.getElementById('modalDate').innerText = complaint.date;
+                document.getElementById('modalTitle').innerText = complaint.title;
                 document.getElementById('modalDetail').innerText = complaint.detail;
                 document.getElementById('modalStatusSelect').value = complaint.status;
+                
+                // Menampilkan gambar bukti menggunakan path absolut dari root web server (localhost/desa-padangan/public/...)
+                const imgBukti = document.getElementById('modalImageBukti');
+                if (complaint.foto && complaint.foto !== '') {
+                    // Menggunakan path mutlak dari root folder 'public'
+                    imgBukti.src = '/desa-padangan/public/uploads/pengaduan/' + complaint.foto;
+                    imgBukti.style.display = 'block';
+                } else {
+                    imgBukti.src = '/desa-padangan/public/assets/images/Hero.png'; // Fallback gambar default
+                }
+
                 document.getElementById('detailModal').classList.remove('hidden');
             }
         }
@@ -344,14 +395,17 @@
         function saveStatusChange() {
             if (selectedComplaintId !== null) {
                 const newStatus = document.getElementById('modalStatusSelect').value;
-                const complaint = complaintsData.find(i => i.id === selectedComplaintId);
-                if (complaint) {
-                    complaint.status = newStatus;
-                    renderTable();
-                    closeModal();
-                    alert("Status pengaduan berhasil diperbarui!");
-                }
+                window.location.href = 'pengaduan.php?update_id=' + selectedComplaintId + '&status=' + encodeURIComponent(newStatus);
             }
+        }
+
+        // Fungsi untuk mengubah status langsung saat checkbox diklik
+        function ubahStatusCheckbox(id, checkbox) {
+            // Jika dicentang menjadi Selesai, jika tidak menjadi Belum Ditangani
+            const newStatus = checkbox.checked ? 'Selesai' : 'Belum Ditangani';
+            
+            // Mengarahkan ke URL parameter update yang sudah disiapkan di PHP atas
+            window.location.href = 'pengaduan.php?update_id=' + id + '&status=' + encodeURIComponent(newStatus);
         }
 
         function toggleSelectAll(source) {
@@ -372,8 +426,6 @@
         // Inisialisasi awal saat halaman dimuat
         renderTable();
         updateDateTime();
-        
-        // Panggil ulang setiap detik (1000ms)
         setInterval(updateDateTime, 1000);
     </script>
 </body>

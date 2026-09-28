@@ -44,6 +44,23 @@ class AdminController extends Controller
     {
         $data['title'] = 'Dashboard Administrator';
 
+        // Panggil model Pengaduan untuk statistik pengaduan
+        $pengaduanModel = $this->model('PengaduanModel');
+        $data['statistik'] = $pengaduanModel->getStatistikPengaduan();
+
+        // Panggil model Visitor untuk statistik kunjungan website
+        $visitorModel = $this->model('VisitorModel');
+        $data['visitor_stats'] = $visitorModel->getVisitorStats();
+
+        // Cek pilihan semester dari dropdown (default semester 2: Juli - Des)
+        $semester = isset($_GET['semester']) ? (int)$_GET['semester'] : 2;
+        $data['selected_semester'] = $semester;
+
+        // Ambil data bulanan untuk grafik
+        $monthlyData = $visitorModel->getMonthlyStats(2026, $semester);
+        $data['chart_labels'] = ($semester == 1) ? ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'] : ['Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        $data['chart_data'] = $monthlyData;
+
         $this->view('admin/dashboard', $data);
     }
 

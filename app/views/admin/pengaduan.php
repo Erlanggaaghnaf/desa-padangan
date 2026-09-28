@@ -92,8 +92,8 @@ $json_data = json_encode($data_array);
                     <div>
                         <p class="text-xs font-semibold text-gray-500 mb-1">Total Pengaduan</p>
                         <h3 id="statTotal" class="text-3xl font-extrabold text-[#172033]">0</h3>
-                        <p class="text-[11px] text-gray-400 mt-3 flex items-center gap-1">
-                            <span>📅</span> Diperbarui hari ini
+                        <p id="card-date-1" class="text-[11px] text-gray-400 mt-3 flex items-center gap-1">
+                            <span>📅</span> Memuat tanggal...
                         </p>
                     </div>
                     <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-[#2F855A] flex items-center justify-center">
@@ -106,8 +106,8 @@ $json_data = json_encode($data_array);
                     <div>
                         <p class="text-xs font-semibold text-gray-500 mb-1">Telah Diselesaikan</p>
                         <h3 id="statSelesai" class="text-3xl font-extrabold text-[#172033]">0</h3>
-                        <p class="text-[11px] text-gray-400 mt-3 flex items-center gap-1">
-                            <span>📅</span> Diperbarui hari ini
+                        <p id="card-date-2" class="text-[11px] text-gray-400 mt-3 flex items-center gap-1">
+                            <span>📅</span> Memuat tanggal...
                         </p>
                     </div>
                     <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
@@ -228,8 +228,8 @@ $json_data = json_encode($data_array);
                             <div class="flex items-center gap-2 text-xs font-bold text-gray-700">📎 Lampiran Foto</div>
                             <span class="text-[11px] font-semibold bg-emerald-50 text-[#2F855A] px-2.5 py-0.5 rounded-full border border-emerald-200/60">Foto Bukti</span>
                         </div>
-                        <div class="space-y-3 max-h-[360px] overflow-y-auto pr-1 flex justify-center items-center bg-white rounded-xl border border-gray-200 p-2">
-                            <img id="modalImageBukti" src="" alt="Lampiran Bukti" class="w-full h-44 object-cover rounded-xl shadow-xs">
+                        <div class="space-y-3 max-h-[360px] overflow-y-auto pr-2 flex flex-col gap-3 items-center bg-white rounded-xl border border-gray-200 p-4 pt-4">
+                            <div id="modalImageBukti" class="flex flex-col gap-3 w-full items-center"></div>
                         </div>
                     </div>
                     <p class="text-[10px] text-gray-400 text-center pt-2">ℹ️ Dokumen foto resmi dari pelapor.</p>
@@ -378,14 +378,22 @@ $json_data = json_encode($data_array);
                 document.getElementById('modalDetail').innerText = complaint.detail;
                 document.getElementById('modalStatusSelect').value = complaint.status;
                 
-                // Menampilkan gambar bukti menggunakan path absolut dari root web server (localhost/desa-padangan/public/...)
-                const imgBukti = document.getElementById('modalImageBukti');
+                // Menampilkan lampiran foto (bisa lebih dari satu)
+                const containerFoto = document.getElementById('modalImageBukti'); // Ubah wadah jadi container
+                containerFoto.innerHTML = '';
+
                 if (complaint.foto && complaint.foto !== '') {
-                    // Menggunakan path mutlak dari root folder 'public'
-                    imgBukti.src = '/desa-padangan/public/uploads/pengaduan/' + complaint.foto;
-                    imgBukti.style.display = 'block';
+                    const fotoArray = complaint.foto.split(',');
+                    // Di dalam fungsi openModal() pada bagian perulangan foto:
+                    fotoArray.forEach(namaFoto => {
+                        const img = document.createElement('img');
+                        img.src = '/desa-padangan/public/uploads/pengaduan/' + namaFoto.trim();
+                        // Ubah ukuran lebar menjadi w-full atau batasi max-w-sm agar rapi ke bawah
+                        img.className = 'w-full max-w-xs h-48 object-cover rounded-xl shadow-xs border border-gray-200';
+                        containerFoto.appendChild(img);
+                    });
                 } else {
-                    imgBukti.src = '/desa-padangan/public/assets/images/Hero.png'; // Fallback gambar default
+                    containerFoto.innerHTML = '<span class="text-xs text-gray-400">Tidak ada lampiran foto.</span>';
                 }
 
                 document.getElementById('detailModal').classList.remove('hidden');
@@ -414,14 +422,22 @@ $json_data = json_encode($data_array);
             checkboxes.forEach(cb => cb.checked = source.checked);
         }
 
-        // --- SKRIP WAKTU REAL-TIME ---
+       // --- SKRIP WAKTU REAL-TIME ---
         function updateDateTime() {
             const now = new Date();
             const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
             const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
             
-            document.getElementById('current-date').innerText = now.toLocaleDateString('id-ID', optionsDate);
-            document.getElementById('current-time').innerText = now.toLocaleTimeString('id-ID', optionsTime) + ' WIB';
+            const formattedDate = now.toLocaleDateString('id-ID', optionsDate);
+            const formattedTime = now.toLocaleTimeString('id-ID', optionsTime) + ' WIB';
+
+            // Header atas
+            document.getElementById('current-date').innerText = formattedDate;
+            document.getElementById('current-time').innerText = formattedTime;
+
+            // Tanggal di bawah kartu statistik pengaduan
+            document.getElementById('card-date-1').innerHTML = `<span>📅</span> Diperbarui ${formattedDate}`;
+            document.getElementById('card-date-2').innerHTML = `<span>📅</span> Diperbarui ${formattedDate}`;
         }
 
         // Inisialisasi awal saat halaman dimuat

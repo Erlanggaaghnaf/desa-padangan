@@ -1,3 +1,7 @@
+<?php
+// Mengambil data statistik kunjungan yang dikirim oleh Controller
+$kunjungan_hari_ini = $data['visitor_stats']['hari_ini'] ?? 0;
+?>
 <div class="reveal-left relative">
 <div class="bg-white px-4 md:px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-gray-100 transform transition-transform hover:-translate-y-1">
     <div class="bg-blue-50 p-2 rounded-xl text-blue-600">
@@ -8,7 +12,7 @@
     </div>
     <div class="text-left">
         <p class="text-[10px] md:text-xs text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Kunjungan Hari Ini</p>
-        <p class="font-bold text-gray-900 text-sm md:text-lg leading-none">1,245</p>
+        <p class="font-bold text-gray-900 text-sm md:text-lg leading-none"><?= number_format($kunjungan_hari_ini); ?></p>
     </div>
 </div>
 </div>

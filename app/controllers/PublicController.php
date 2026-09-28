@@ -1,48 +1,87 @@
 <?php
 
-
 class PublicController extends Controller
 {
+    /**
+     * Helper privat untuk mencatat kunjungan dan mengambil datanya agar bisa digunakan di semua halaman publik
+     */
+    private function recordAndGetVisitor()
+    {
+        $visitorModel = $this->model('VisitorModel');
+        $visitorModel->recordVisitor();
+        return $visitorModel->getVisitorStats();
+    }
+
     public function home()
     {
-        $this->view('layouts/header');
-        $this->view('public/home');
-        $this->view('layouts/footer');
+        $data['visitor_stats'] = $this->recordAndGetVisitor();
+
+        $this->view('layouts/header', $data);
+        $this->view('public/home', $data);
+        $this->view('layouts/footer', $data);
     }
 
     public function informasi()
     {
-        $this->view('public/informasi');
+        $data['visitor_stats'] = $this->recordAndGetVisitor();
+
+        $this->view('layouts/header', $data);
+        $this->view('public/informasi', $data);
+        $this->view('layouts/footer', $data);
     }
 
     public function layanan()
     {
-        $this->view('public/layanan');
+        $data['visitor_stats'] = $this->recordAndGetVisitor();
+
+        $this->view('layouts/header', $data);
+        $this->view('public/layanan', $data);
+        $this->view('layouts/footer', $data);
     }
 
     public function dataDesa()
     {
-        $this->view('public/data_desa');
+        $data['visitor_stats'] = $this->recordAndGetVisitor();
+
+        $this->view('layouts/header', $data);
+        $this->view('public/data_desa', $data);
+        $this->view('layouts/footer', $data);
     }
 
     public function berita()
     {
-        $this->view('public/berita');
+        $data['visitor_stats'] = $this->recordAndGetVisitor();
+
+        $this->view('layouts/header', $data);
+        $this->view('public/berita', $data);
+        $this->view('layouts/footer', $data);
     }
 
     public function galeri()
     {
-        $this->view('public/galeri');
+        $data['visitor_stats'] = $this->recordAndGetVisitor();
+
+        $this->view('layouts/header', $data);
+        $this->view('public/galeri', $data);
+        $this->view('layouts/footer', $data);
     }
 
     public function ppid()
     {
-        $this->view('public/ppid');
+        $data['visitor_stats'] = $this->recordAndGetVisitor();
+
+        $this->view('layouts/header', $data);
+        $this->view('public/ppid', $data);
+        $this->view('layouts/footer', $data);
     }
 
     public function pengaduan()
     {
-        $this->view('public/pengaduan');
+        $data['visitor_stats'] = $this->recordAndGetVisitor();
+
+        $this->view('layouts/header', $data);
+        $this->view('public/pengaduan', $data);
+        $this->view('layouts/footer', $data);
     }
 
     // Fungsi untuk memproses data yang dikirim dari form pengaduan
@@ -50,49 +89,55 @@ class PublicController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
-            // 1. Tangkap dan bersihkan data teks dari form
+            // 1. Tangkap data teks sesuai kolom yang diminta
             $data = [
-                'nama'     => htmlspecialchars($_POST['nama']),
-                'kontak'   => htmlspecialchars($_POST['kontak']),
-                'kategori' => htmlspecialchars($_POST['kategori']),
-                'judul'    => htmlspecialchars($_POST['judul']),
-                'isi'      => htmlspecialchars($_POST['isi']),
-                'lokasi'   => htmlspecialchars($_POST['lokasi'])
+                'nama'   => htmlspecialchars($_POST['nama']),
+                'kontak' => htmlspecialchars($_POST['kontak']),
+                'judul'  => htmlspecialchars($_POST['judul']),
+                'isi'    => htmlspecialchars($_POST['isi'])
             ];
 
-            $nama_file_foto = null; 
+            $uploaded_fotos = [];
 
-            // 2. Proses Upload File Foto (jika ada)
-            if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
-                $file_tmp  = $_FILES['foto']['tmp_name'];
-                $nama_file  = str_replace(" ", "_", $_FILES['foto']['name']);
-                $nama_file_foto = time() . '_' . $nama_file;
-                
-                // Sesuaikan path folder tujuan penyimpanan foto
+            // 2. Proses Multi-Upload File Foto (Maksimal 3 foto)
+            if (isset($_FILES['foto'])) {
                 $folder_tujuan = '../public/uploads/pengaduan/';
                 if (!file_exists($folder_tujuan)) {
                     mkdir($folder_tujuan, 0777, true);
                 }
-                
-                move_uploaded_file($file_tmp, $folder_tujuan . $nama_file_foto);
+
+                // Loop file yang di-upload
+                foreach ($_FILES['foto']['tmp_name'] as $key => $tmp_name) {
+                    if ($_FILES['foto']['error'][$key] == 0 && count($uploaded_fotos) < 3) {
+                        $file_name = $_FILES['foto']['name'][$key];
+                        $file_name_clean = str_replace(" ", "_", $file_name);
+                        $nama_file_final = time() . '_' . uniqid() . '_' . $file_name_clean;
+                        
+                        if (move_uploaded_file($tmp_name, $folder_tujuan . $nama_file_final)) {
+                            $uploaded_fotos[] = $nama_file_final;
+                        }
+                    }
+                }
             }
 
-            $pengaduanModel = $this->model('PengaduanModel'); 
-            $sukses = $pengaduanModel->tambahPengaduan($data, $nama_file_foto);
+            // Gabungkan nama foto menjadi satu string dipisahkan koma (contoh: foto1.jpg,foto2.jpg)
+            $string_nama_foto = !empty($uploaded_fotos) ? implode(',', $uploaded_fotos) : null;
 
-            // 4. Pengalihan Halaman Kembali ke Halaman Asal (Asal Klik)
+            // 3. Panggil Model
+            $pengaduanModel = $this->model('PengaduanModel');
+            $sukses = $pengaduanModel->tambahPengaduan($data, $string_nama_foto);
+
+            // 4. Redirect kembali ke halaman asal
+            $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+            $base_url = $protocol . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+            $redirect_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $base_url . '/index.php?url=public/home';
+            
             if ($sukses) {
-                // Mendefinisikan base_url secara lokal agar tidak error
-                $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
-                $base_url = $protocol . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-
-                // Mengambil URL halaman sebelumnya secara otomatis, jika kosong arahkan ke home
-                $redirect_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $base_url . '/index.php?url=public/home';
-                
                 header('Location: ' . $redirect_url);
                 exit();
             } else {
-                echo "<script>alert('Gagal menyimpan pengaduan!'); window.history.back();</script>";
+                echo "<script>alert('Gagal mengirim pengaduan!'); window.history.back();</script>";
             }
         }
     }

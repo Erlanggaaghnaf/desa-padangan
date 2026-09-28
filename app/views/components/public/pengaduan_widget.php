@@ -30,16 +30,20 @@ $base_url = $protocol . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['
         <!-- Header Modal -->
         <div class="text-center mb-6 pr-6 pl-6">
             <h3 class="text-2xl font-bold text-[#172033] mb-1">Pengaduan Desa</h3>
-            <p class="text-xs md:text-sm text-gray-500">Sampaikan pengaduan, keluhan, atau masukan kepada Pemerintah Desa Padangan.</p>
+            <p class="text-xs md:text-sm text-gray-500">Sampaikan pengaduan atau keluhan Anda kepada Pemerintah Desa Padangan.</p>
         </div>
         
-        <!-- Action mengarah ke file proses_pengaduan.php di root folder -->
-        <form action="<?= $base_url; ?>/index.php?url=public/storePengaduan" method="POST" enctype="multipart/form-data">
+        <?php 
+        $protocol = (isset($_SERVER['HTTPS']) &&$_SERVER['HTTPS'] === 'on' ? "https" : "http");
+        $base_url =$protocol . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        ?>
+
+        <form action="<?= $base_url; ?>/index.php?url=public/storePengaduan" method="POST" enctype="multipart/form-data" id="formPengaduan">
             
             <!-- Nama Lengkap -->
             <div class="mb-4">
                 <label class="block text-sm font-bold text-[#172033] mb-1.5 text-start">Nama Lengkap <span class="text-red-500">*</span></label>
-                <input type="text" name="nama" required class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm text-gray-700 bg-white shadow-sm" placeholder="Rafie Firman">
+                <input type="text" name="nama" required class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm text-gray-700 bg-white shadow-sm" placeholder="Nama Lengkap Anda">
             </div>
 
             <!-- No. Telp / WhatsApp -->
@@ -48,51 +52,128 @@ $base_url = $protocol . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['
                 <input type="text" name="kontak" required class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm text-gray-700 bg-white shadow-sm" placeholder="08123456789">
             </div>
 
-            <!-- Kategori & Judul Laporan -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                    <label class="block text-sm font-bold text-[#172033] mb-1.5 text-start">Kategori <span class="text-red-500">*</span></label>
-                    <select name="kategori" required class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm text-gray-700 bg-white shadow-sm">
-                        <option value="Infrastruktur">Infrastruktur</option>
-                        <option value="Pelayanan">Pelayanan Desa</option>
-                        <option value="Keamanan">Keamanan</option>
-                        <option value="Lainnya">Lainnya</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-[#172033] mb-1.5 text-start">Judul Laporan <span class="text-red-500">*</span></label>
-                    <input type="text" name="judul" required class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm text-gray-700 bg-white shadow-sm" placeholder="Contoh: Jalan Berlubang">
-                </div>
-            </div>
-
-            <!-- Lokasi Kejadian -->
+            <!-- Judul Laporan -->
             <div class="mb-4">
-                <label class="block text-sm font-bold text-[#172033] mb-1.5 text-start">Lokasi Kejadian</label>
-                <input type="text" name="lokasi" class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm text-gray-700 bg-white shadow-sm" placeholder="Misal: RT 02 / Dusun Krajan">
+                <label class="block text-sm font-bold text-[#172033] mb-1.5 text-start">Judul Laporan <span class="text-red-500">*</span></label>
+                <input type="text" name="judul" required class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm text-gray-700 bg-white shadow-sm" placeholder="Contoh: Lampu Jalan Mati di RT 02">
             </div>
 
-            <!-- Isi Pesan / Pengaduan -->
+            <!-- Uraian / Detail Pengaduan -->
             <div class="mb-4">
-                <label class="block text-sm font-bold text-[#172033] mb-1.5 text-start">Detail Pengaduan <span class="text-red-500">*</span></label>
-                <textarea name="isi" required rows="4" class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm text-gray-700 bg-white shadow-sm resize-none" placeholder="Tuliskan detail laporan Anda"></textarea>
+                <label class="block text-sm font-bold text-[#172033] mb-1.5 text-start">Uraian Pengaduan <span class="text-red-500">*</span></label>
+                <textarea name="isi" required rows="4" class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#2F855A] outline-none text-sm text-gray-700 bg-white shadow-sm resize-none" placeholder="Tuliskan detail laporan Anda secara lengkap..."></textarea>
             </div>
 
-            <!-- Lampiran File -->
+            <!-- Lampiran Foto (Maksimal 3 Foto dengan Tombol Silang Hapus) -->
             <div class="mb-6">
-                <label class="block text-sm font-bold text-[#172033] mb-1.5 text-start">Lampiran Foto</label>
-                <input type="file" name="foto" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-gray-50 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#2F855A] file:text-white hover:file:bg-green-700 cursor-pointer" accept="image/*">
+                <label class="block text-sm font-bold text-[#172033] mb-1.5 text-start">
+                    Lampiran Foto <span class="text-xs font-normal text-gray-500">(Maks. 3 Foto, Maks. 10 MB per foto)</span>
+                </label>
+                <input type="file" id="inputFoto" name="foto[]" multiple accept="image/*" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-gray-50 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#2F855A] file:text-white hover:file:bg-green-700 cursor-pointer">
+                
+                <!-- Pesan Error Dinamis di dalam Form -->
+                <div id="fileErrorMsg" class="hidden mt-2 p-2.5 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl flex items-center gap-2">
+                    <span>⚠️</span> <span id="errorText">Pesan error di sini</span>
+                </div>
+
+                <p class="text-[11px] text-gray-400 mt-1">Format yang didukung: JPG, JPEG, PNG.</p>
+                
+                <!-- Container Preview Foto dengan Tombol Silang -->
+                <div id="previewContainer" class="flex gap-3 mt-3 flex-wrap"></div>
             </div>
 
             <!-- Tombol Kirim -->
             <div class="flex justify-end">
-                <button type="submit" name="kirim_pengaduan" class="bg-[#2F855A] hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors flex items-center gap-2 shadow-md cursor-pointer">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                    Kirim Laporan
+                <button type="submit" class="bg-[#2F855A] hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors flex items-center gap-2 shadow-md cursor-pointer">
+                    <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.5448 1.12458L8.42817 10.2404M11.4465 17.4071C11.4782 17.486 11.5332 17.5533 11.6042 17.6C11.6753 17.6468 11.7589 17.6706 11.8439 17.6684C11.9289 17.6663 12.0112 17.6381 12.0797 17.5879C12.1482 17.5376 12.1998 17.4675 12.2273 17.3871L17.644 1.55375C17.6707 1.47991 17.6758 1.4 17.6587 1.32338C17.6416 1.24675 17.603 1.17658 17.5475 1.12106C17.492 1.06555 17.4218 1.02699 17.3452 1.00991C17.2686 0.992822 17.1887 0.997911 17.1148 1.02458L1.2815 6.44125C1.20108 6.46883 1.13103 6.52035 1.08073 6.58889C1.03044 6.65744 1.00231 6.73972 1.00014 6.82471C0.99796 6.9097 1.02183 6.99332 1.06855 7.06435C1.11527 7.13538 1.1826 7.19042 1.2615 7.22208L7.86984 9.87208C8.07874 9.95572 8.26855 10.0808 8.42781 10.2398C8.58707 10.3987 8.71249 10.5883 8.7965 10.7971L11.4465 17.4071Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>    
+                    <span>Kirim</span>
                 </button>
             </div>
         </form>
     </div>
 </div>
+
+<!-- Script untuk Preview, Validasi Maksimal 10 MB & Hapus Foto -->
+<script>
+    let selectedFiles = [];
+
+    document.getElementById('inputFoto').addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+        const errorBox = document.getElementById('fileErrorMsg');
+        const errorText = document.getElementById('errorText');
+
+        // Sembunyikan pesan error terlebih dahulu
+        errorBox.classList.add('hidden');
+
+        // Batasi total maksimal 3 file
+        if (selectedFiles.length + files.length > 3) {
+            errorText.innerText = 'Maksimal lampiran adalah 3 foto!';
+            errorBox.classList.remove('hidden');
+            this.value = ''; 
+            return;
+        }
+
+        // Validasi ukuran maksimal 10 MB per foto
+        const maxSize = 10 * 1024 * 1024; // 10 MB dalam bytes
+        let invalidSize = false;
+
+        files.forEach(file => {
+            if (file.size > maxSize) {
+                invalidSize = true;
+            }
+        });
+
+        if (invalidSize) {
+            errorText.innerText = 'Ukuran foto tidak boleh lebih dari 10 MB per file!';
+            errorBox.classList.remove('hidden');
+            this.value = ''; 
+            selectedFiles = [];
+            updateInputFiles();
+            renderPreviews();
+            return;
+        }
+
+        files.forEach(file => {
+            selectedFiles.push(file);
+        });
+
+        updateInputFiles();
+        renderPreviews();
+    });
+
+    function removePhoto(index) {
+        selectedFiles.splice(index, 1);
+        document.getElementById('fileErrorMsg').classList.add('hidden');
+        updateInputFiles();
+        renderPreviews();
+    }
+
+    function updateInputFiles() {
+        const dataTransfer = new DataTransfer();
+        selectedFiles.forEach(file => {
+            dataTransfer.items.add(file);
+        });
+        document.getElementById('inputFoto').files = dataTransfer.files;
+    }
+
+    function renderPreviews() {
+        const container = document.getElementById('previewContainer');
+        container.innerHTML = '';
+
+        selectedFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'relative w-20 h-20 rounded-xl border border-gray-200 overflow-hidden shadow-xs group';
+                div.innerHTML = `
+                    <img src="${e.target.result}" class="w-full h-full object-cover">
+                    <button type="button" onclick="removePhoto(${index})" class="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold shadow-md cursor-pointer transition-transform transform hover:scale-110">&times;</button>
+                `;
+                container.appendChild(div);
+            }
+            reader.readAsDataURL(file);
+        });
+    }
+</script>

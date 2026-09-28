@@ -1,3 +1,9 @@
+<?php 
+// Mendeteksi Base URL agar variabel $base_url dikenali
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+$base_url = $protocol . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+?>
+
 <!-- 1. TOMBOL PENGADUAN -->
 <div class="reveal-right relative">
 <button type="button" onclick="toggleModal('pengaduanModal')" class="bg-[#2F855A] hover:bg-green-700 text-white w-12 h-12 md:w-auto md:h-auto md:px-6 md:py-3 rounded-full shadow-xl font-semibold flex items-center justify-center md:gap-2 transform transition-all duration-200 hover:-translate-y-1">
@@ -28,7 +34,7 @@
         </div>
         
         <!-- Action mengarah ke file proses_pengaduan.php di root folder -->
-        <form action="../proses_pengaduan.php" method="POST" enctype="multipart/form-data">
+        <form action="<?= $base_url; ?>/index.php?url=public/storePengaduan" method="POST" enctype="multipart/form-data">
             
             <!-- Nama Lengkap -->
             <div class="mb-4">

@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Admin - Desa Padangan</title>
-    <!-- Memanggil Favicon Logo Desa -->
-    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    
+    <?php 
+    // Mendeteksi Base URL secara dinamis
+    $protocol = (isset($_SERVER['HTTPS']) &&$_SERVER['HTTPS'] === 'on' ? "https" : "http");
+    $base_url =$protocol . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+    ?>
+
+    <!-- Memanggil Favicon Logo Desa menggunakan Base URL -->
+    <link rel="icon" type="image/png" href="<?= $base_url; ?>/assets/images/logo.png">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,7 +22,7 @@
     </style>
 </head>
 <body class="relative min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat overflow-hidden" 
-      style="background-image: url('assets/images/Hero.png');">
+      style="background-image: url('<?= $base_url; ?>/assets/images/Hero.png');">
     
     <!-- Overlay Gelap Background -->
     <div class="absolute inset-0 bg-black/60 z-0"></div>
@@ -24,7 +32,7 @@
         
         <!-- Header: Logo & Institusi -->
         <div class="text-center mb-6">
-            <img src="assets/images/logo.png" alt="Logo Desa Padangan" class="w-12 h-12 mx-auto mb-3">
+            <img src="<?= $base_url; ?>/assets/images/logo.png" alt="Logo Desa Padangan" class="w-12 h-12 mx-auto mb-3">
             <h1 class="text-sm font-bold text-gray-800 tracking-wide">Pemerintah Desa Padangan</h1>
             <p class="text-[11px] text-gray-500 mt-0.5">Kabupaten Tulungagung</p>
         </div>
@@ -39,8 +47,8 @@
             <p class="text-xs text-gray-500 mt-1">login Administrator</p>
         </div>
 
-        <!-- Form Login -->
-        <form action="index.php?url=AdminLogin" method="POST" class="space-y-4">
+        <!-- Form Login (Disesuaikan dengan route baru: admin/login) -->
+        <form action="<?= $base_url; ?>/index.php?url=admin/login" method="POST" class="space-y-4">
             
             <!-- Input Username -->
             <div class="relative">
@@ -66,7 +74,7 @@
                 </button>
             </div>
 
-            <!-- PESAN ERROR DI BAWAH PASSWORD (Sesuai contoh) -->
+            <!-- PESAN ERROR DI BAWAH PASSWORD -->
             <?php if (!empty($data['error'])): ?>
                 <p class="text-xs text-red-500 text-left px-1 mt-1 font-medium">
                     <?= $data['error']; ?>

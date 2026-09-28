@@ -13,7 +13,12 @@ if (isset($_GET['update_id']) && isset($_GET['status'])) {
     $stmt_update =$conn->prepare("UPDATE pengaduan SET status = :status WHERE id = :id");
     $stmt_update->execute([':status' => $status_baru, ':id' =>$id_update]);
     
-    header("Location: pengaduan.php");
+    // Mendeteksi base_url secara dinamis
+    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+    $base_url = $protocol . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+    // Redirect kembali menggunakan sistem rute admin
+    header("Location: " . $base_url . "/index.php?url=admin/pengaduan");
     exit();
 }
 
@@ -395,17 +400,13 @@ $json_data = json_encode($data_array);
         function saveStatusChange() {
             if (selectedComplaintId !== null) {
                 const newStatus = document.getElementById('modalStatusSelect').value;
-                window.location.href = 'pengaduan.php?update_id=' + selectedComplaintId + '&status=' + encodeURIComponent(newStatus);
+                window.location.href = 'index.php?url=admin/pengaduan&update_id=' + selectedComplaintId + '&status=' + encodeURIComponent(newStatus);
             }
         }
 
-        // Fungsi untuk mengubah status langsung saat checkbox diklik
         function ubahStatusCheckbox(id, checkbox) {
-            // Jika dicentang menjadi Selesai, jika tidak menjadi Belum Ditangani
             const newStatus = checkbox.checked ? 'Selesai' : 'Belum Ditangani';
-            
-            // Mengarahkan ke URL parameter update yang sudah disiapkan di PHP atas
-            window.location.href = 'pengaduan.php?update_id=' + id + '&status=' + encodeURIComponent(newStatus);
+            window.location.href = 'index.php?url=admin/pengaduan&update_id=' + id + '&status=' + encodeURIComponent(newStatus);
         }
 
         function toggleSelectAll(source) {

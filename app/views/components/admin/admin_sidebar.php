@@ -1,6 +1,11 @@
 <?php
+// Mendeteksi Base URL secara dinamis agar path selalu terbaca di XAMPP / Hosting
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+$base_url = $protocol . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
 // Mendapatkan parameter URL saat ini untuk mendeteksi menu aktif
-$current_url = $_GET['url'] ?? 'AdminDashboard';
+// Default disetel ke 'admin/dashboard'
+$current_url = isset($_GET['url']) ? $_GET['url'] : 'admin/dashboard';
 ?>
 
 <!-- SIDEBAR UTAMA (Desktop & Mobile Drawer) -->
@@ -9,7 +14,8 @@ $current_url = $_GET['url'] ?? 'AdminDashboard';
         <!-- Header Sidebar: Logo & Instansi -->
         <div class="p-5 flex items-center justify-between border-b border-emerald-800/60">
             <div class="flex items-center gap-3">
-                <img src="assets/images/logo.png" alt="Logo" class="w-10 h-10 object-contain bg-white rounded-lg p-1">
+                <!-- Tambahkan Base URL pada gambar -->
+                <img src="<?= $base_url; ?>/assets/images/logo.png" alt="Logo" class="w-10 h-10 object-contain bg-white rounded-lg p-1">
                 <div>
                     <h2 class="text-xs font-bold tracking-wide">Pemerintah Desa</h2>
                     <h2 class="text-xs font-bold tracking-wide">Padangan</h2>
@@ -22,41 +28,41 @@ $current_url = $_GET['url'] ?? 'AdminDashboard';
             </button>
         </div>
 
-        <!-- Menu Navigasi Sidebar (Dilengkapi pengecekan halaman aktif) -->
+        <!-- Menu Navigasi Sidebar (Dilengkapi pengecekan halaman aktif dengan path baru) -->
         <nav class="p-4 space-y-1.5 text-sm font-medium overflow-y-auto max-h-[calc(100vh-180px)]">
             
             <!-- Menu Dashboard Admin -->
-            <a href="index.php?url=AdminDashboard" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'AdminDashboard') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
+            <a href="<?= $base_url; ?>/index.php?url=admin/dashboard" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'admin/dashboard') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                 Dashboard Admin
             </a>
 
             <!-- Menu Manajemen Pengaduan -->
-            <a href="index.php?url=AdminPengaduan" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'AdminPengaduan') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
+            <a href="<?= $base_url; ?>/index.php?url=admin/pengaduan" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'admin/pengaduan') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
                 Manajemen Pengaduan
             </a>
 
             <!-- Menu Manajemen Layanan -->
-            <a href="index.php?url=AdminLayanan" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'AdminLayanan') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
+            <a href="<?= $base_url; ?>/index.php?url=admin/layanan" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'admin/layanan') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                 Manajemen Layanan
             </a>
 
             <!-- Menu Manajemen Galeri -->
-            <a href="index.php?url=AdminGaleri" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'AdminGaleri') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
+            <a href="<?= $base_url; ?>/index.php?url=admin/galeri" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'admin/galeri') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 Manajemen Galeri
             </a>
 
             <!-- Menu Manajemen Berita -->
-            <a href="index.php?url=AdminBerita" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'AdminBerita') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
+            <a href="<?= $base_url; ?>/index.php?url=admin/berita" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'admin/berita') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
                 Manajemen Berita
             </a>
 
             <!-- Menu Master Data -->
-            <a href="index.php?url=AdminMasterData" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'AdminMasterData') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
+            <a href="<?= $base_url; ?>/index.php?url=admin/master-data" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= ($current_url == 'admin/master-data') ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                 Master Data
             </a>
@@ -75,7 +81,7 @@ $current_url = $_GET['url'] ?? 'AdminDashboard';
                 <p class="text-[10px] text-emerald-200">Administrator</p>
             </div>
         </div>
-        <a href="index.php?url=AdminLogin" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium text-red-200 hover:bg-red-500/20 hover:text-white transition-all">
+        <a href="<?= $base_url; ?>/index.php?url=admin/login" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium text-red-200 hover:bg-red-500/20 hover:text-white transition-all">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
             Keluar
         </a>

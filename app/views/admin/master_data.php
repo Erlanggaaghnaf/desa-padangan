@@ -46,106 +46,76 @@
                 <h2 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Data Desa</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     
-                    <!-- 1. Kependudukan -->
-                    <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between">
-                        <div class="flex items-start gap-4 mb-6">
-                            <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-[#2F855A] flex-shrink-0">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <!-- Card 1: Kependudukan -->
+                    <div onclick="toggleModal('modalKependudukan')" class="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs hover:border-[#2F855A] cursor-pointer transition-all group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-[#2F855A] flex items-center justify-center group-hover:bg-[#2F855A] group-hover:text-white transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                             </div>
-                            <div>
-                                <h3 class="font-bold text-[#172033]">Kependudukan</h3>
-                                <p class="text-xs text-gray-500 mt-1 leading-relaxed">Jumlah penduduk laki-laki dan perempuan Desa Padangan.</p>
-                            </div>
+                            <span class="text-xs font-bold text-[#2F855A] bg-emerald-50 px-2.5 py-1 rounded-lg">Kelola</span>
                         </div>
-                        <div class="flex justify-between items-end">
-                            <span class="text-[11px] text-gray-400">Diperbarui 12 Sep 2026</span>
-                            <button onclick="toggleModal('modalKependudukan')" class="bg-[#2F855A] hover:bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">Kelola &rarr;</button>
-                        </div>
+                        <h3 class="text-base font-bold text-[#172033] mb-1">Data Kependudukan</h3>
+                        <p class="text-xs text-gray-500">Atur jumlah penduduk Laki-laki dan Perempuan.</p>
                     </div>
 
-                    <!-- 2. Berdasarkan Umur -->
-                    <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between">
-                        <div class="flex items-start gap-4 mb-6">
-                            <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-[#2F855A] flex-shrink-0">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <!-- Card 2: Kelompok Umur -->
+                    <div onclick="toggleModal('modalUmur')" class="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs hover:border-[#2F855A] cursor-pointer transition-all group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-[#2F855A] flex items-center justify-center group-hover:bg-[#2F855A] group-hover:text-white transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                             </div>
-                            <div>
-                                <h3 class="font-bold text-[#172033]">Berdasarkan Umur</h3>
-                                <p class="text-xs text-gray-500 mt-1 leading-relaxed">Jumlah penduduk berdasarkan kelompok umur.</p>
-                            </div>
+                            <span class="text-xs font-bold text-[#2F855A] bg-emerald-50 px-2.5 py-1 rounded-lg">Kelola</span>
                         </div>
-                        <div class="flex justify-between items-end">
-                            <span class="text-[11px] text-gray-400">Diperbarui 10 Agu 2026</span>
-                            <button onclick="toggleModal('modalUmur')" class="bg-[#2F855A] hover:bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">Kelola &rarr;</button>
-                        </div>
+                        <h3 class="text-base font-bold text-[#172033] mb-1">Kelompok Umur</h3>
+                        <p class="text-xs text-gray-500">Atur statistik penduduk berdasarkan rentang usia.</p>
                     </div>
 
-                    <!-- 3. Pekerjaan -->
-                    <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between">
-                        <div class="flex items-start gap-4 mb-6">
-                            <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-[#2F855A] flex-shrink-0">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <!-- Card 3: Pekerjaan -->
+                    <div onclick="toggleModal('modalPekerjaan')" class="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs hover:border-[#2F855A] cursor-pointer transition-all group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-[#2F855A] flex items-center justify-center group-hover:bg-[#2F855A] group-hover:text-white transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                             </div>
-                            <div>
-                                <h3 class="font-bold text-[#172033]">Pekerjaan</h3>
-                                <p class="text-xs text-gray-500 mt-1 leading-relaxed">Jumlah penduduk berdasarkan jenis pekerjaan.</p>
-                            </div>
+                            <span class="text-xs font-bold text-[#2F855A] bg-emerald-50 px-2.5 py-1 rounded-lg">Kelola</span>
                         </div>
-                        <div class="flex justify-between items-end">
-                            <span class="text-[11px] text-gray-400">Diperbarui 12 Sep 2026</span>
-                            <button onclick="toggleModal('modalPekerjaan')" class="bg-[#2F855A] hover:bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">Kelola &rarr;</button>
-                        </div>
+                        <h3 class="text-base font-bold text-[#172033] mb-1">Pekerjaan</h3>
+                        <p class="text-xs text-gray-500">Atur statistik jenis mata pencaharian warga.</p>
                     </div>
 
-                    <!-- 4. Pendidikan -->
-                    <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between">
-                        <div class="flex items-start gap-4 mb-6">
-                            <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-[#2F855A] flex-shrink-0">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
+                    <!-- Card 4: Pendidikan -->
+                    <div onclick="toggleModal('modalPendidikan')" class="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs hover:border-[#2F855A] cursor-pointer transition-all group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-[#2F855A] flex items-center justify-center group-hover:bg-[#2F855A] group-hover:text-white transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
                             </div>
-                            <div>
-                                <h3 class="font-bold text-[#172033]">Pendidikan</h3>
-                                <p class="text-xs text-gray-500 mt-1 leading-relaxed">Jumlah penduduk berdasarkan tingkat pendidikan.</p>
-                            </div>
+                            <span class="text-xs font-bold text-[#2F855A] bg-emerald-50 px-2.5 py-1 rounded-lg">Kelola</span>
                         </div>
-                        <div class="flex justify-between items-end">
-                            <span class="text-[11px] text-gray-400">Diperbarui 12 Sep 2026</span>
-                            <button onclick="toggleModal('modalPendidikan')" class="bg-[#2F855A] hover:bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">Kelola &rarr;</button>
-                        </div>
+                        <h3 class="text-base font-bold text-[#172033] mb-1">Pendidikan</h3>
+                        <p class="text-xs text-gray-500">Atur data tingkat pendidikan penduduk.</p>
                     </div>
 
-                    <!-- 5. Perkawinan -->
-                    <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between">
-                        <div class="flex items-start gap-4 mb-6">
-                            <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-[#2F855A] flex-shrink-0">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    <!-- Card 5: Perkawinan -->
+                    <div onclick="toggleModal('modalPerkawinan')" class="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs hover:border-[#2F855A] cursor-pointer transition-all group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-[#2F855A] flex items-center justify-center group-hover:bg-[#2F855A] group-hover:text-white transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                             </div>
-                            <div>
-                                <h3 class="font-bold text-[#172033]">Perkawinan</h3>
-                                <p class="text-xs text-gray-500 mt-1 leading-relaxed">Jumlah penduduk berdasarkan status perkawinan.</p>
-                            </div>
+                            <span class="text-xs font-bold text-[#2F855A] bg-emerald-50 px-2.5 py-1 rounded-lg">Kelola</span>
                         </div>
-                        <div class="flex justify-between items-end">
-                            <span class="text-[11px] text-gray-400">Diperbarui 27 Jul 2026</span>
-                            <button onclick="toggleModal('modalPerkawinan')" class="bg-[#2F855A] hover:bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">Kelola &rarr;</button>
-                        </div>
+                        <h3 class="text-base font-bold text-[#172033] mb-1">Status Perkawinan</h3>
+                        <p class="text-xs text-gray-500">Atur statistik status pernikahan warga.</p>
                     </div>
 
-                    <!-- 6. Agama -->
-                    <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between">
-                        <div class="flex items-start gap-4 mb-6">
-                            <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-[#2F855A] flex-shrink-0">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
+                    <!-- Card 6: Agama -->
+                    <div onclick="toggleModal('modalAgama')" class="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs hover:border-[#2F855A] cursor-pointer transition-all group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-[#2F855A] flex items-center justify-center group-hover:bg-[#2F855A] group-hover:text-white transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                             </div>
-                            <div>
-                                <h3 class="font-bold text-[#172033]">Agama</h3>
-                                <p class="text-xs text-gray-500 mt-1 leading-relaxed">Jumlah penduduk berdasarkan agama yang dianut.</p>
-                            </div>
+                            <span class="text-xs font-bold text-[#2F855A] bg-emerald-50 px-2.5 py-1 rounded-lg">Kelola</span>
                         </div>
-                        <div class="flex justify-between items-end">
-                            <span class="text-[11px] text-gray-400">Diperbarui 12 Jan 2026</span>
-                            <button onclick="toggleModal('modalAgama')" class="bg-[#2F855A] hover:bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">Kelola &rarr;</button>
-                        </div>
+                        <h3 class="text-base font-bold text-[#172033] mb-1">Agama</h3>
+                        <p class="text-xs text-gray-500">Atur data pemeluk agama di desa.</p>
                     </div>
 
                 </div>
@@ -200,32 +170,43 @@
                 <button onclick="toggleModal('modalKependudukan')" class="text-gray-400 hover:text-red-500 font-bold text-xl">&times;</button>
             </div>
             <div class="p-6">
-                <h4 class="font-bold text-sm text-gray-700 mb-4">Jumlah Penduduk</h4>
+                <h4 class="font-bold text-sm text-gray-700 mb-4">Jumlah Penduduk & Keluarga</h4>
                 <div class="flex items-center justify-between mb-4">
                     <label class="text-sm font-semibold text-gray-600">Laki-laki<span class="text-red-500">*</span></label>
                     <div class="flex items-center gap-3">
-                        <input type="number" id="inputLaki" oninput="hitungTotalPenduduk()" class="border border-gray-200 rounded-xl p-2.5 w-32 md:w-48 text-sm focus:ring-[#2F855A] outline-none" placeholder="0">
+                        <input type="number" id="inputLaki" value="<?= $data['desa']['kependudukan']['laki_laki'] ?? 0 ?>" oninput="hitungTotalPenduduk()" class="border border-gray-200 rounded-xl p-2.5 w-32 md:w-48 text-sm focus:ring-[#2F855A] outline-none" placeholder="0">
                         <span class="text-sm text-gray-500">orang</span>
                     </div>
                 </div>
-                <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center justify-between mb-4">
                     <label class="text-sm font-semibold text-gray-600">Perempuan<span class="text-red-500">*</span></label>
                     <div class="flex items-center gap-3">
-                        <input type="number" id="inputPerempuan" oninput="hitungTotalPenduduk()" class="border border-gray-200 rounded-xl p-2.5 w-32 md:w-48 text-sm focus:ring-[#2F855A] outline-none" placeholder="0">
+                        <input type="number" id="inputPerempuan" value="<?= $data['desa']['kependudukan']['perempuan'] ?? 0 ?>" oninput="hitungTotalPenduduk()" class="border border-gray-200 rounded-xl p-2.5 w-32 md:w-48 text-sm focus:ring-[#2F855A] outline-none" placeholder="0">
                         <span class="text-sm text-gray-500">orang</span>
+                    </div>
+                </div>
+                <!-- Tambahan Input Kepala Keluarga -->
+                <div class="flex items-center justify-between mb-6">
+                    <label class="text-sm font-semibold text-gray-600">Kepala Keluarga<span class="text-red-500">*</span></label>
+                    <div class="flex items-center gap-3">
+                        <input type="number" id="inputKK" value="<?= $data['desa']['kependudukan']['kepala_keluarga'] ?? 0 ?>" class="border border-gray-200 rounded-xl p-2.5 w-32 md:w-48 text-sm focus:ring-[#2F855A] outline-none" placeholder="0">
+                        <span class="text-sm text-gray-500">KK</span>
                     </div>
                 </div>
                 <div class="flex items-center justify-between bg-gray-50 p-4 rounded-xl border border-gray-100">
                     <label class="text-sm font-bold text-[#172033]">Total Penduduk</label>
                     <div class="flex items-center gap-3">
-                        <input type="number" id="inputTotal" class="border-none bg-gray-200 rounded-xl p-2.5 w-32 md:w-48 text-sm font-bold text-gray-600" value="0" readonly>
+                        <?php 
+                            $tot = ($data['desa']['kependudukan']['laki_laki'] ?? 0) + ($data['desa']['kependudukan']['perempuan'] ?? 0); 
+                        ?>
+                        <input type="number" id="inputTotal" class="border-none bg-gray-200 rounded-xl p-2.5 w-32 md:w-48 text-sm font-bold text-gray-600" value="<?= $tot ?>" readonly>
                         <span class="text-sm text-gray-500">orang</span>
                     </div>
                 </div>
             </div>
             <div class="flex justify-end gap-3 p-6 border-t border-gray-100 bg-gray-50">
                 <button onclick="toggleModal('modalKependudukan')" class="px-5 py-2.5 text-sm font-bold text-red-500 border border-red-200 bg-white rounded-xl hover:bg-red-50">Batal</button>
-                <button onclick="validasiSimpan('modalKependudukan', ['inputLaki', 'inputPerempuan'])" class="px-5 py-2.5 text-sm font-bold text-white bg-[#2F855A] rounded-xl hover:bg-green-700 shadow-md">Simpan</button>
+                <button onclick="validasiSimpan('modalKependudukan')" class="px-5 py-2.5 text-sm font-bold text-white bg-[#2F855A] rounded-xl hover:bg-green-700 shadow-md">Simpan</button>
             </div>
         </div>
     </div>
@@ -242,16 +223,24 @@
                     <h4 class="font-bold text-sm text-gray-700">Kelompok Umur</h4>
                     <h4 class="font-bold text-sm text-gray-700">Jumlah</h4>
                 </div>
-                <?php foreach(['< 3 Tahun', '3 - 6 Tahun', '7 - 12 Tahun', '13 - 15 Tahun', '16 - 18 Tahun', '19 - 25 Tahun', '26 - 59 Tahun', '> 59 Tahun'] as $item): ?>
-                <div class="grid grid-cols-2 gap-4 items-center">
-                    <span class="text-sm text-gray-600"><?= $item; ?></span>
-                    <input type="number" class="input-umur border border-gray-200 rounded-lg p-2 text-sm focus:ring-[#2F855A] outline-none" placeholder="0">
+                <?php 
+                $defaultUmur = ['< 3', '3 - 6', '7 - 12', '13 - 15', '16 - 18', '19 - 25', '26 - 59', '> 59'];
+                $dbUmur = [];
+                if(isset($data['desa']['umur'])) {
+                    foreach($data['desa']['umur'] as $u) { $dbUmur[$u['rentang']] = $u['jumlah']; }
+                }
+                foreach($defaultUmur as $item): 
+                    $val = $dbUmur[$item] ?? 0;
+                ?>
+                <div class="grid grid-cols-2 gap-4 items-center item-kategori">
+                    <span class="text-sm text-gray-600 kategori-nama" data-nama="<?= $item ?>"><?= $item ?> Tahun</span>
+                    <input type="number" class="input-jumlah border border-gray-200 rounded-lg p-2 text-sm focus:ring-[#2F855A] outline-none" value="<?= $val ?>">
                 </div>
                 <?php endforeach; ?>
             </div>
             <div class="flex justify-end gap-3 p-6 border-t border-gray-100 bg-gray-50">
                 <button onclick="toggleModal('modalUmur')" class="px-5 py-2.5 text-sm font-bold text-red-500 border border-red-200 bg-white rounded-xl hover:bg-red-50">Batal</button>
-                <button onclick="validasiSimpan('modalUmur', '.input-umur')" class="px-5 py-2.5 text-sm font-bold text-white bg-[#2F855A] rounded-xl hover:bg-green-700 shadow-md">Simpan</button>
+                <button onclick="validasiSimpan('modalUmur')" class="px-5 py-2.5 text-sm font-bold text-white bg-[#2F855A] rounded-xl hover:bg-green-700 shadow-md">Simpan</button>
             </div>
         </div>
     </div>
@@ -268,16 +257,24 @@
                     <h4 class="font-bold text-sm text-gray-700">Kategori</h4>
                     <h4 class="font-bold text-sm text-gray-700">Jumlah</h4>
                 </div>
-                <?php foreach(['Petani', 'PNS', 'Wiraswasta', 'Karyawan Swasta', 'Pelajar/Mahasiswa', 'Mengurus Rumah Tangga', 'Belum/Tidak Bekerja', 'Lain-lain'] as $item): ?>
-                <div class="grid grid-cols-2 gap-4 items-center">
-                    <span class="text-sm text-gray-600"><?= $item; ?></span>
-                    <input type="number" class="input-pekerjaan border border-gray-200 rounded-lg p-2 text-sm focus:ring-[#2F855A] outline-none" placeholder="0">
+                <?php 
+                $defaultKerja = ['Petani', 'PNS', 'Wiraswasta', 'Karyawan Swasta', 'Pelajar/Mahasiswa', 'Mengurus Rumah Tangga', 'Belum/Tidak Bekerja', 'Lain-lain'];
+                $dbKerja = [];
+                if(isset($data['desa']['pekerjaan'])) {
+                    foreach($data['desa']['pekerjaan'] as $p) { $dbKerja[$p['kategori']] = $p['jumlah']; }
+                }
+                foreach($defaultKerja as $item): 
+                    $val = $dbKerja[$item] ?? 0;
+                ?>
+                <div class="grid grid-cols-2 gap-4 items-center item-kategori">
+                    <span class="text-sm text-gray-600 kategori-nama" data-nama="<?= $item ?>"><?= $item ?></span>
+                    <input type="number" class="input-jumlah border border-gray-200 rounded-lg p-2 text-sm focus:ring-[#2F855A] outline-none" value="<?= $val ?>">
                 </div>
                 <?php endforeach; ?>
             </div>
             <div class="flex justify-end gap-3 p-6 border-t border-gray-100 bg-gray-50">
                 <button onclick="toggleModal('modalPekerjaan')" class="px-5 py-2.5 text-sm font-bold text-red-500 border border-red-200 bg-white rounded-xl hover:bg-red-50">Batal</button>
-                <button onclick="validasiSimpan('modalPekerjaan', '.input-pekerjaan')" class="px-5 py-2.5 text-sm font-bold text-white bg-[#2F855A] rounded-xl hover:bg-green-700 shadow-md">Simpan</button>
+                <button onclick="validasiSimpan('modalPekerjaan')" class="px-5 py-2.5 text-sm font-bold text-white bg-[#2F855A] rounded-xl hover:bg-green-700 shadow-md">Simpan</button>
             </div>
         </div>
     </div>
@@ -294,16 +291,24 @@
                     <h4 class="font-bold text-sm text-gray-700">Tingkat Pendidikan</h4>
                     <h4 class="font-bold text-sm text-gray-700">Jumlah</h4>
                 </div>
-                <?php foreach(['Belum/Tidak bersekolah', 'SD', 'SMP', 'SMA', 'Diploma', 'S1', 'S2', 'S3'] as $item): ?>
-                <div class="grid grid-cols-2 gap-4 items-center">
-                    <span class="text-sm text-gray-600"><?= $item; ?></span>
-                    <input type="number" class="input-pendidikan border border-gray-200 rounded-lg p-2 text-sm focus:ring-[#2F855A] outline-none" placeholder="0">
+                <?php 
+                $defaultDidik = ['Belum/Tidak bersekolah', 'SD', 'SMP', 'SMA', 'Diploma', 'S1', 'S2', 'S3'];
+                $dbDidik = [];
+                if(isset($data['desa']['pendidikan'])) {
+                    foreach($data['desa']['pendidikan'] as $p) { $dbDidik[$p['tingkat']] = $p['jumlah']; }
+                }
+                foreach($defaultDidik as $item): 
+                    $val = $dbDidik[$item] ?? 0;
+                ?>
+                <div class="grid grid-cols-2 gap-4 items-center item-kategori">
+                    <span class="text-sm text-gray-600 kategori-nama" data-nama="<?= $item ?>"><?= $item ?></span>
+                    <input type="number" class="input-jumlah border border-gray-200 rounded-lg p-2 text-sm focus:ring-[#2F855A] outline-none" value="<?= $val ?>">
                 </div>
                 <?php endforeach; ?>
             </div>
             <div class="flex justify-end gap-3 p-6 border-t border-gray-100 bg-gray-50">
                 <button onclick="toggleModal('modalPendidikan')" class="px-5 py-2.5 text-sm font-bold text-red-500 border border-red-200 bg-white rounded-xl hover:bg-red-50">Batal</button>
-                <button onclick="validasiSimpan('modalPendidikan', '.input-pendidikan')" class="px-5 py-2.5 text-sm font-bold text-white bg-[#2F855A] rounded-xl hover:bg-green-700 shadow-md">Simpan</button>
+                <button onclick="validasiSimpan('modalPendidikan')" class="px-5 py-2.5 text-sm font-bold text-white bg-[#2F855A] rounded-xl hover:bg-green-700 shadow-md">Simpan</button>
             </div>
         </div>
     </div>
@@ -320,16 +325,24 @@
                     <h4 class="font-bold text-sm text-gray-700">Status</h4>
                     <h4 class="font-bold text-sm text-gray-700">Jumlah</h4>
                 </div>
-                <?php foreach(['Belum kawin', 'Kawin', 'Cerai hidup', 'Cerai mati'] as $item): ?>
-                <div class="grid grid-cols-2 gap-4 items-center">
-                    <span class="text-sm text-gray-600"><?= $item; ?></span>
-                    <input type="number" class="input-perkawinan border border-gray-200 rounded-lg p-2 text-sm focus:ring-[#2F855A] outline-none" placeholder="0">
+                <?php 
+                $defaultKawin = ['Belum kawin', 'Kawin', 'Cerai hidup', 'Cerai mati'];
+                $dbKawin = [];
+                if(isset($data['desa']['perkawinan'])) {
+                    foreach($data['desa']['perkawinan'] as $p) { $dbKawin[$p['status']] = $p['jumlah']; }
+                }
+                foreach($defaultKawin as $item): 
+                    $val = $dbKawin[$item] ?? 0;
+                ?>
+                <div class="grid grid-cols-2 gap-4 items-center item-kategori">
+                    <span class="text-sm text-gray-600 kategori-nama" data-nama="<?= $item ?>"><?= $item ?></span>
+                    <input type="number" class="input-jumlah border border-gray-200 rounded-lg p-2 text-sm focus:ring-[#2F855A] outline-none" value="<?= $val ?>">
                 </div>
                 <?php endforeach; ?>
             </div>
             <div class="flex justify-end gap-3 p-6 border-t border-gray-100 bg-gray-50">
                 <button onclick="toggleModal('modalPerkawinan')" class="px-5 py-2.5 text-sm font-bold text-red-500 border border-red-200 bg-white rounded-xl hover:bg-red-50">Batal</button>
-                <button onclick="validasiSimpan('modalPerkawinan', '.input-perkawinan')" class="px-5 py-2.5 text-sm font-bold text-white bg-[#2F855A] rounded-xl hover:bg-green-700 shadow-md">Simpan</button>
+                <button onclick="validasiSimpan('modalPerkawinan')" class="px-5 py-2.5 text-sm font-bold text-white bg-[#2F855A] rounded-xl hover:bg-green-700 shadow-md">Simpan</button>
             </div>
         </div>
     </div>
@@ -346,16 +359,24 @@
                     <h4 class="font-bold text-sm text-gray-700">Agama</h4>
                     <h4 class="font-bold text-sm text-gray-700">Jumlah</h4>
                 </div>
-                <?php foreach(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'] as $item): ?>
-                <div class="grid grid-cols-2 gap-4 items-center">
-                    <span class="text-sm text-gray-600"><?= $item; ?></span>
-                    <input type="number" class="input-agama border border-gray-200 rounded-lg p-2 text-sm focus:ring-[#2F855A] outline-none" placeholder="0">
+                <?php 
+                $defaultAgama = ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'];
+                $dbAgama = [];
+                if(isset($data['desa']['agama'])) {
+                    foreach($data['desa']['agama'] as $p) { $dbAgama[$p['agama']] = $p['jumlah']; }
+                }
+                foreach($defaultAgama as $item): 
+                    $val = $dbAgama[$item] ?? 0;
+                ?>
+                <div class="grid grid-cols-2 gap-4 items-center item-kategori">
+                    <span class="text-sm text-gray-600 kategori-nama" data-nama="<?= $item ?>"><?= $item ?></span>
+                    <input type="number" class="input-jumlah border border-gray-200 rounded-lg p-2 text-sm focus:ring-[#2F855A] outline-none" value="<?= $val ?>">
                 </div>
                 <?php endforeach; ?>
             </div>
             <div class="flex justify-end gap-3 p-6 border-t border-gray-100 bg-gray-50">
                 <button onclick="toggleModal('modalAgama')" class="px-5 py-2.5 text-sm font-bold text-red-500 border border-red-200 bg-white rounded-xl hover:bg-red-50">Batal</button>
-                <button onclick="validasiSimpan('modalAgama', '.input-agama')" class="px-5 py-2.5 text-sm font-bold text-white bg-[#2F855A] rounded-xl hover:bg-green-700 shadow-md">Simpan</button>
+                <button onclick="validasiSimpan('modalAgama')" class="px-5 py-2.5 text-sm font-bold text-white bg-[#2F855A] rounded-xl hover:bg-green-700 shadow-md">Simpan</button>
             </div>
         </div>
     </div>
@@ -379,16 +400,15 @@
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-2">Tahun Dokumen<span class="text-red-500">*</span></label>
-                    <select id="inputTahunDoc" class="w-full border border-gray-200 rounded-xl p-3 text-sm focus:ring-[#2F855A] outline-none bg-white">
-                        <option value="" disabled selected>Pilih Tahun</option>
-                        <option value="2026">2026</option>
-                        <option value="2025">2025</option>
-                    </select>
+                    <div class="relative">
+                        <div>
+                            <input type="number" id="inputTahunDoc" class="w-full border border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#2F855A] focus:border-[#2F855A] outline-none" placeholder="Contoh: 2026" min="2000" max="2100">
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-2">File Dokumen (PDF)<span class="text-red-500">*</span></label>
-                    <input type="file" id="inputFileDoc" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-gray-50 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#2F855A] file:text-white hover:file:bg-green-700 cursor-pointer">
-                </div>
+                    <input type="file" id="inputFileDoc" accept=".pdf" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-gray-50 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#2F855A] file:text-white hover:file:bg-green-700 cursor-pointer">
             </div>
 
             <div class="flex justify-end gap-3 p-6 border-t border-gray-100 bg-gray-50">
@@ -396,6 +416,7 @@
                 <button onclick="validasiSimpanDokumen()" class="px-5 py-2.5 text-sm font-bold text-white bg-[#2F855A] rounded-xl hover:bg-green-700 shadow-md">Simpan</button>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- 8. Modal Edit Dokumen PPID -->
@@ -417,10 +438,12 @@
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-2">Tahun Dokumen<span class="text-red-500">*</span></label>
-                    <select id="editTahunDoc" class="w-full border border-gray-200 rounded-xl p-3 text-sm focus:ring-[#2F855A] outline-none bg-white">
-                        <option value="2026">2026</option>
-                        <option value="2025">2025</option>
-                    </select>
+                    <input type="number" id="editTahunDoc" class="w-full border border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#2F855A] focus:border-[#2F855A] outline-none" placeholder="Contoh: 2026" min="2000" max="2100">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">File Dokumen (PDF Baru)</label>
+                    <input type="file" id="editFileDoc" accept=".pdf" class="w-full border border-gray-200 rounded-xl p-2.5 text-sm bg-gray-50 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#2F855A] file:text-white hover:file:bg-green-700 cursor-pointer">
+                    <p class="text-[11px] text-gray-400 mt-1">Kosongkan jika tidak ingin mengubah file PDF yang lama.</p>
                 </div>
             </div>
 
@@ -474,20 +497,16 @@
         </div>
     </div>
 
-    <!-- 12. Modal Preview / View Dokumen PPID -->
+   <!-- 12. Modal Preview / View Dokumen PPID -->
     <div id="modalPreview" class="hidden fixed inset-0 z-[120] bg-black/50 items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white w-full max-w-2xl rounded-2xl shadow-xl overflow-hidden relative flex flex-col max-h-[90vh]">
-            <div class="flex justify-between items-center p-6 border-b border-gray-100">
+        <div class="bg-white w-full max-w-4xl rounded-2xl shadow-xl overflow-hidden relative flex flex-col h-[90vh]">
+            <div class="flex justify-between items-center p-4 border-b border-gray-100">
                 <h3 id="previewTitle" class="text-lg font-bold text-[#172033]">Pratinjau Dokumen</h3>
                 <button onclick="toggleModal('modalPreview')" class="text-gray-400 hover:text-red-500 font-bold text-xl">&times;</button>
             </div>
-            <div class="p-6 flex-1 overflow-y-auto bg-gray-50 flex flex-col items-center justify-center text-center">
-                <div class="w-16 h-20 bg-emerald-100 text-[#2F855A] rounded-xl flex items-center justify-center font-bold text-xs mb-3 shadow-sm">PDF</div>
-                <p id="previewInfo" class="text-sm font-bold text-gray-800">Laporan Pemeriksaan Pekerjaan.pdf</p>
-                <p class="text-xs text-gray-400 mt-1">Ukuran file: 2.4 MB</p>
-                <div class="mt-6 w-full h-64 bg-white border border-gray-200 rounded-xl flex items-center justify-center text-gray-400 text-sm">
-                    [ Simulasi Tampilan Dokumen PDF ]
-                </div>
+            <!-- Area Konten PDF -->
+            <div class="flex-1 bg-gray-100 p-4 flex items-center justify-center">
+                <iframe id="pdfViewer" src="" class="w-full h-full rounded-xl border border-gray-200 bg-white" frameborder="0"></iframe>
             </div>
             <div class="flex justify-end gap-3 p-4 border-t border-gray-100 bg-white">
                 <button onclick="toggleModal('modalPreview')" class="px-5 py-2 text-sm font-bold text-gray-600 border border-gray-200 bg-white rounded-xl hover:bg-gray-50">Tutup</button>

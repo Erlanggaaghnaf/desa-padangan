@@ -1,50 +1,47 @@
 document.addEventListener("DOMContentLoaded", function() {
     
-    // --- 1. GRAFIK KELOMPOK UMUR ---
+    // --- 1. GRAFIK KELOMPOK UMUR (Batang Tunggal Dinamis dari Database) ---
     const canvasUmur = document.getElementById('piramidaUmurChart');
     if (canvasUmur) {
         const ctxUmur = canvasUmur.getContext('2d');
-        const labelsUmur = ['0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65+'];
+
+        const labelsUmur = typeof dataUmurDatabase !== 'undefined' ? dataUmurDatabase.map(item => item.rentang + ' Tahun') : [];
+        const valuesUmur = typeof dataUmurDatabase !== 'undefined' ? dataUmurDatabase.map(item => parseInt(item.jumlah)) : [];
+
+        // Logika otomatis mencari nilai tertinggi dan terendah
+        if (typeof dataUmurDatabase !== 'undefined' && dataUmurDatabase.length > 0) {
+            let maxObj = dataUmurDatabase.reduce((prev, current) => (parseInt(prev.jumlah) > parseInt(current.jumlah)) ? prev : current);
+            let minObj = dataUmurDatabase.reduce((prev, current) => (parseInt(prev.jumlah) < parseInt(current.jumlah)) ? prev : current);
+
+            const summaryEl = document.getElementById('summaryUmurText');
+            if (summaryEl) {
+                summaryEl.innerHTML = `Berdasarkan data distribusi, kelompok umur dengan jumlah penduduk <strong>tertinggi</strong> berada pada rentang <strong>${maxObj.rentang} Tahun</strong> dengan total <strong>${parseInt(maxObj.jumlah).toLocaleString('id-ID')} jiwa</strong>. Sedangkan jumlah penduduk <strong>terendah</strong> berada pada kelompok umur <strong>${minObj.rentang} Tahun</strong> dengan total <strong>${parseInt(minObj.jumlah).toLocaleString('id-ID')} jiwa</strong>.`;
+            }
+        }
 
         new Chart(ctxUmur, {
             type: 'bar',
             data: {
                 labels: labelsUmur,
-                datasets: [
-                    {
-                        label: 'Laki-laki',
-                        data: [-180, -211, -280, -299, -299, -296, -285, -270, -260, -220, -190, -160, -120, -80],
-                        backgroundColor: '#2F855A',
-                        borderRadius: 2,
-                        barThickness: 16,
-                    },
-                    {
-                        label: 'Perempuan',
-                        data: [246, 277, 299, 299, 299, 299, 299, 299, 297, 266, 236, 206, 171, 141],
-                        backgroundColor: '#2563EB',
-                        borderRadius: 2,
-                        barThickness: 16,
-                    }
-                ]
+                datasets: [{
+                    label: 'Jumlah Penduduk',
+                    data: valuesUmur,
+                    backgroundColor: '#2F855A',
+                    borderRadius: 4,
+                    barThickness: 20,
+                }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                indexAxis: 'y',
+                indexAxis: 'y', // Membuat bar menjadi horizontal agar rapi
                 scales: {
                     x: {
-                        stacked: false,
-                        min: -300,
-                        max: 300,
-                        ticks: {
-                            callback: function(value) { return Math.abs(value); },
-                            stepSize: 50,
-                            font: { size: 11 }
-                        },
-                        grid: { color: '#f1f5f9' }
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9' },
+                        ticks: { font: { size: 11 } }
                     },
                     y: {
-                        stacked: true,
                         grid: { display: false },
                         ticks: { font: { size: 11, weight: '500' } }
                     }
@@ -55,8 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         callbacks: {
                             title: function(context) { return 'Kelompok Umur: ' + context[0].label; },
                             label: function(context) {
-                                let value = Math.abs(context.raw);
-                                return ' ' + context.dataset.label + ': ' + value + ' Orang';
+                                return ' Jumlah: ' + context.raw.toLocaleString('id-ID') + ' Jiwa';
                             }
                         }
                     }
@@ -65,18 +61,34 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // --- 2. GRAFIK BERDASARKAN PENDIDIKAN ---
+    // --- 2. GRAFIK BERDASARKAN PENDIDIKAN (Dinamis dari Database) ---
     const canvasPendidikan = document.getElementById('pendidikanChart');
     if (canvasPendidikan) {
         const ctxPendidikan = canvasPendidikan.getContext('2d');
 
+        const labelsPendidikan = typeof dataPendidikanDatabase !== 'undefined' ? dataPendidikanDatabase.map(item => item.tingkat) : [];
+        const valuesPendidikan = typeof dataPendidikanDatabase !== 'undefined' ? dataPendidikanDatabase.map(item => parseInt(item.jumlah)) : [];
+
+        // Logika otomatis mencari tingkat pendidikan dengan jumlah terbanyak untuk kartu ringkasan
+        if (typeof dataPendidikanDatabase !== 'undefined' && dataPendidikanDatabase.length > 0) {
+            let maxPendidikan = dataPendidikanDatabase.reduce((prev, current) => (parseInt(prev.jumlah) > parseInt(current.jumlah)) ? prev : current);
+
+            const descEl = document.getElementById('summaryPendidikanDesc');
+            const nilaiEl = document.getElementById('summaryPendidikanNilai');
+
+            if (descEl && nilaiEl) {
+                descEl.innerHTML = `Sebagian besar warga Desa Padangan berada pada tingkat pendidikan <strong>${maxPendidikan.tingkat}</strong> dengan jumlah`;
+                nilaiEl.innerText = parseInt(maxPendidikan.jumlah).toLocaleString('id-ID');
+            }
+        }
+
         new Chart(ctxPendidikan, {
             type: 'bar',
             data: {
-                labels: ['Belum/Tidak Sekolah', 'SD', 'SMP', 'SMA', 'Diploma', 'S1', 'S2', 'S3'],
+                labels: labelsPendidikan,
                 datasets: [{
                     label: 'Jumlah Penduduk',
-                    data: [684, 491, 405, 340, 96, 132, 12, 0],
+                    data: valuesPendidikan,
                     backgroundColor: '#2F855A',
                     borderRadius: 4,
                     barThickness: 18,
@@ -89,7 +101,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 scales: {
                     x: {
                         beginAtZero: true,
-                        max: 700,
                         ticks: { stepSize: 100, font: { size: 11 } },
                         grid: { color: '#f1f5f9' }
                     },
@@ -102,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     legend: { display: false },
                     tooltip: {
                         callbacks: {
-                            label: function(context) { return ' Jumlah: ' + context.raw + ' Jiwa'; }
+                            label: function(context) { return ' Jumlah: ' + context.raw.toLocaleString('id-ID') + ' Jiwa'; }
                         }
                     }
                 }
@@ -115,13 +126,17 @@ document.addEventListener("DOMContentLoaded", function() {
     if (canvasJK) {
         const ctxJK = canvasJK.getContext('2d');
 
+        // Ambil nilai langsung dari database, default ke 0 jika kosong
+        const jumlahLaki = typeof dataKependudukanDatabase !== 'undefined' ? parseInt(dataKependudukanDatabase.laki_laki || 0) : 0;
+        const jumlahPerempuan = typeof dataKependudukanDatabase !== 'undefined' ? parseInt(dataKependudukanDatabase.perempuan || 0) : 0;
+
         new Chart(ctxJK, {
             type: 'bar',
             data: {
                 labels: ['Laki-laki', 'Perempuan'],
                 datasets: [{
                     label: 'Jumlah Jiwa',
-                    data: [3291, 3484],
+                    data: [jumlahLaki, jumlahPerempuan],
                     backgroundColor: [
                         '#2563EB', // Biru untuk Laki-laki
                         '#2F855A'  // Hijau untuk Perempuan
@@ -133,13 +148,12 @@ document.addEventListener("DOMContentLoaded", function() {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                indexAxis: 'y', // Membuat bar horizontal
+                indexAxis: 'y',
                 scales: {
                     x: {
                         beginAtZero: true,
-                        max: 4000,
                         grid: { display: false },
-                        ticks: { display: false } // Sembunyikan angka sumbu X agar bersih
+                        ticks: { display: false }
                     },
                     y: {
                         grid: { display: false },
@@ -154,9 +168,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                let total = 6775;
+                                let total = jumlahLaki + jumlahPerempuan;
                                 let value = context.raw;
-                                let percentage = ((value / total) * 100).toFixed(1);
+                                let percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
                                 return ' ' + value.toLocaleString('id-ID') + ' Jiwa (' + percentage + '%)';
                             }
                         }

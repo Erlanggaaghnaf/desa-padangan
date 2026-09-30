@@ -38,7 +38,7 @@ $base_url = $protocol . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['
         $base_url =$protocol . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
         ?>
 
-        <form action="<?= $base_url; ?>/index.php?url=public/storePengaduan" method="POST" enctype="multipart/form-data" id="formPengaduan">
+        <form action="<?= $base_url; ?>/index.php?url=pengaduan/store" method="POST" enctype="multipart/form-data" id="formPengaduan">
             
             <!-- Nama Lengkap -->
             <div class="mb-4">

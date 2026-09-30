@@ -1,72 +1,73 @@
 <?php
 
-class App
-{
-    protected $controller = 'PublicController';
-    protected $method = 'home';
+class App {
+    protected $controller = 'public/HomeController'; // Default public
+    protected $method = 'index';
     protected $params = [];
 
-    public function __construct()
-    {
+    public function __construct() {
         $url = $this->parseURL();
+        $isAdmin = false;
 
-        // ---> TAMBAHKAN KODE INI DI BAGIAN PALING ATAS <---
-        // Jika user mengetik ?url=public saja, alihkan secara otomatis ke ?url=public/home
-        if (isset($url[0]) && strtolower($url[0]) === 'public' && count($url) === 1) {
-            $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
-            $base_url = $protocol . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+        // 1. Cek apakah mengakses modul Admin
+        if (isset($url[0]) && strtolower($url[0]) == 'admin') {
+            $isAdmin = true;
+            unset($url[0]); // Hapus segmen 'admin'
             
-            header('Location: ' . $base_url . '/index.php?url=public/home');
-            exit;
-        }
-        // --------------------------------------------------
+            // Konversi URL bergaris datar (master-data) menjadi CamelCase (MasterData)
+            $rawControllerName = isset($url[1]) ? str_replace(' ', '', ucwords(str_replace('-', ' ', $url[1]))) : 'Dashboard';
+            $controllerName = $rawControllerName . 'Controller';
+            $file = '../app/controllers/admin/' . $controllerName . '.php';
 
-        // 1. TENTUKAN CONTROLLER
-        if (isset($url[0])) {
-            $area = strtolower($url[0]);
-            
-            if ($area === 'admin') {
-                $this->controller = 'AdminController';
-                $this->method = 'login'; 
-            } elseif ($area === 'public') {
-                $this->controller = 'PublicController';
-                $this->method = 'home'; 
+            if (file_exists($file)) {
+                $this->controller = 'admin/' . $controllerName;
+                unset($url[1]);
+            } else {
+                $this->controller = 'admin/DashboardController'; // Fallback
             }
-            unset($url[0]);
+        } 
+        // 2. Modul Public / Pengunjung
+        else {
+            // Konversi URL bergaris datar (data-desa) menjadi CamelCase (DataDesa)
+            $rawControllerName = isset($url[0]) && !empty($url[0]) ? str_replace(' ', '', ucwords(str_replace('-', ' ', $url[0]))) : 'Home';
+            $controllerName = $rawControllerName . 'Controller';
+            $file = '../app/controllers/public/' . $controllerName . '.php';
+
+            if (file_exists($file)) {
+                $this->controller = 'public/' . $controllerName;
+                unset($url[0]);
+            } else {
+                $this->controller = 'public/HomeController'; // Fallback
+            }
         }
 
-        // Panggil Controller
+        // Load File Controller
         require_once '../app/controllers/' . $this->controller . '.php';
-        $this->controller = new $this->controller;
+        $className = basename($this->controller);
+        $this->controller = new $className;
 
-
-        // 2. TENTUKAN METHOD / FUNGSI
-        if (isset($url[1])) {
-            $methodName = lcfirst(str_replace(' ', '', ucwords(str_replace('-', ' ', $url[1]))));
-
+        // 3. Cek Method (Bug fixed!)
+        // Jika admin, method ada di index ke-2. Jika public, method ada di index ke-1
+        $methodIndex = $isAdmin ? 2 : 1;
+        
+        if (isset($url[$methodIndex])) {
+            $methodName = str_replace('-', '_', $url[$methodIndex]); // ubah dash jadi underscore untuk nama function
             if (method_exists($this->controller, $methodName)) {
                 $this->method = $methodName;
-                unset($url[1]); 
+                unset($url[$methodIndex]);
             }
         }
 
+        // 4. Ambil Parameter sisanya
+        $this->params = $url ? array_values($url) : [];
 
-        // 3. TENTUKAN PARAMETER
-        if (!empty($url)) {
-            $this->params = array_values($url);
-        }
-
-        // 4. JALANKAN
+        // Jalankan Controller & Method
         call_user_func_array([$this->controller, $this->method], $this->params);
     }
 
-    public function parseURL()
-    {
+    public function parseURL() {
         if (isset($_GET['url'])) {
-            $url = rtrim($_GET['url'], '/');
-            $url = filter_var($url, FILTER_SANITIZE_URL);
-            $url = explode('/', $url);
-            return $url;
+            return explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
         }
         return [];
     }

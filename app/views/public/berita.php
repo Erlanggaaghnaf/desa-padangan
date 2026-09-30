@@ -1,149 +1,71 @@
-<?php include '../app/views/layouts/header.php'; ?>
+<?php
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$base_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+$berita = $berita ?? [];
+$currentPage = (int) ($berita_current_page ?? 1);
+$totalPages = (int) ($berita_total_pages ?? 1);
 
-<!-- HEADER HALAMAN -->
+$formatDate = static function ($date) {
+    if (!$date) return '-';
+    $months = [1=>'Januari',2=>'Februari',3=>'Maret',4=>'April',5=>'Mei',6=>'Juni',7=>'Juli',8=>'Agustus',9=>'September',10=>'Oktober',11=>'November',12=>'Desember'];
+    try { $dt = new DateTime($date); return (int)$dt->format('j').' '.$months[(int)$dt->format('n')].' '.$dt->format('Y'); }
+    catch (Throwable $e) { return '-'; }
+};
+?>
+
 <section class="bg-[#F7F9FC] pt-32 pb-12 px-4 md:px-8 lg:px-[120px] text-center border-b border-gray-200 reveal-up">
     <h1 class="text-3xl md:text-5xl font-extrabold text-[#172033] mb-3 reveal-left">Berita Desa Padangan</h1>
     <p class="text-gray-500 text-sm md:text-base max-w-xl mx-auto reveal-right">Informasi dan kabar terbaru dari Desa Padangan</p>
 </section>
 
-<!-- KONTEN UTAMA BERITA -->
-<main class="px-4 md:px-8 lg:px-[120px] py-12 max-w-7xl mx-auto space-y-12 reveal-up">
-
-    <!-- GRID KARTU BERITA -->
-    <div id="berita-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal-up">
-        
-        <!-- Berita Item 1 -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
-            <div>
-                <img src="assets/images/berita1.jpg" alt="Musyawarah" class="w-full h-48 object-cover">
-                <div class="p-6 space-y-3">
-                    <div class="flex items-center gap-4 text-xs text-gray-400">
-                        <span>📅 30 Mei 2024</span><span>👁️ Dilihat 100 kali</span>
+<main id="berita-container" class="px-4 md:px-8 lg:px-[120px] py-12 max-w-7xl mx-auto">
+    <?php if ($berita): ?>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <?php foreach ($berita as $item): ?>
+                <?php $imageUrl = $base_url . '/uploads/berita/' . rawurlencode($item['foto']); ?>
+                <article class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+                    <img src="<?= $imageUrl; ?>" alt="<?= htmlspecialchars($item['judul'], ENT_QUOTES, 'UTF-8'); ?>" class="w-full h-48 object-cover" loading="lazy">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <div class="flex items-center gap-4 text-xs text-gray-400 mb-3 flex-wrap">
+                            <span class="inline-flex items-center gap-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#172033" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+                                <?= $formatDate($item['created_at']); ?>
+                            </span>
+                            <span class="inline-flex items-center gap-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#172033" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                                <?= number_format((int)$item['views']); ?>
+                            </span>
+                        </div>
+                        <h2 class="text-lg font-bold text-[#172033] leading-snug line-clamp-2 mb-2"><?= htmlspecialchars($item['judul'], ENT_QUOTES, 'UTF-8'); ?></h2>
+                        <p class="text-sm text-gray-500 line-clamp-3 leading-relaxed flex-grow"><?= htmlspecialchars($item['deskripsi'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <a href="<?= $base_url; ?>/index.php?url=berita/detailBerita/<?= (int)$item['id']; ?>" class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#2F855A] hover:underline">
+                            Baca selengkapnya
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F855A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                        </a>
                     </div>
-                    <h3 class="text-lg font-bold text-[#172033] leading-snug hover:text-[#2F855A] cursor-pointer">Musyawarah Desa Bahas RKPDes 2027</h3>
-                    <p class="text-sm text-gray-500 line-clamp-2">Pemerintah Desa Padangan melakukan musyawarah desa untuk membahas RKPDes...</p>
-                </div>
-            </div>
-            <div class="px-6 pb-6">
-                <a href="/index.php?url=DetailBerita" class="text-sm font-semibold text-[#2F855A] hover:underline flex items-center gap-1">Baca selengkapnya &rarr;</a>
-            </div>
-        </article>
-
-        <!-- Berita Item 2 -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
-            <div>
-                <img src="assets/images/berita2.jpg" alt="Jalan" class="w-full h-48 object-cover">
-                <div class="p-6 space-y-3">
-                    <div class="flex items-center gap-4 text-xs text-gray-400">
-                        <span>📅 30 Mei 2024</span><span>👁️ Dilihat 100 kali</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-[#172033] leading-snug hover:text-[#2F855A] cursor-pointer">Pembangunan Jalan Desa Tahap II Dimulai</h3>
-                    <p class="text-sm text-gray-500 line-clamp-2">Pemerintah Desa Padangan terus berkomitmen untuk menunjang aktivitas masyarakat...</p>
-                </div>
-            </div>
-            <div class="px-6 pb-6">
-                <a href="detailberita" class="text-sm font-semibold text-[#2F855A] hover:underline flex items-center gap-1">Baca selengkapnya &rarr;</a>
-            </div>
-        </article>
-
-        <!-- Berita Item 3 -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
-            <div>
-                <img src="assets/images/berita3.jpg" alt="UMKM" class="w-full h-48 object-cover">
-                <div class="p-6 space-y-3">
-                    <div class="flex items-center gap-4 text-xs text-gray-400">
-                        <span>📅 30 Mei 2024</span><span>👁️ Dilihat 100 kali</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-[#172033] leading-snug hover:text-[#2F855A] cursor-pointer">UMKM Desa Padangan Tampil di Festival Kecamatan</h3>
-                    <p class="text-sm text-gray-500 line-clamp-2">Produk olahan pangan Desa Padangan ikut serta dalam festival UMKM tingkat kecamatan...</p>
-                </div>
-            </div>
-            <div class="px-6 pb-6">
-                <a href="detailberita" class="text-sm font-semibold text-[#2F855A] hover:underline flex items-center gap-1">Baca selengkapnya &rarr;</a>
-            </div>
-        </article>
-
-        <!-- Berita Item 4 -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
-            <div>
-                <img src="assets/images/berita4.jpg" alt="Tahun Baru" class="w-full h-48 object-cover">
-                <div class="p-6 space-y-3">
-                    <div class="flex items-center gap-4 text-xs text-gray-400">
-                        <span>📅 30 Mei 2024</span><span>👁️ Dilihat 100 kali</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-[#172033] leading-snug hover:text-[#2F855A] cursor-pointer">Warga Merayakan Tahun Baru Bersama</h3>
-                    <p class="text-sm text-gray-500 line-clamp-2">Dalam rangka merayakan tahun baru 2026, warga desa berkumpul dan merayakan kegiatan...</p>
-                </div>
-            </div>
-            <div class="px-6 pb-6">
-                <a href="detailberita" class="text-sm font-semibold text-[#2F855A] hover:underline flex items-center gap-1">Baca selengkapnya &rarr;</a>
-            </div>
-        </article>
-
-        <!-- Berita Item 5 -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
-            <div>
-                <img src="assets/images/berita5.jpg" alt="RKPDes" class="w-full h-48 object-cover">
-                <div class="p-6 space-y-3">
-                    <div class="flex items-center gap-4 text-xs text-gray-400">
-                        <span>📅 30 Mei 2024</span><span>👁️ Dilihat 100 kali</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-[#172033] leading-snug hover:text-[#2F855A] cursor-pointer">Musyawarah Desa Bahas RKPDes 2026</h3>
-                    <p class="text-sm text-gray-500 line-clamp-2">Melalui serangkaian musyawarah desa untuk menyusun rencana pembangunan...</p>
-                </div>
-            </div>
-            <div class="px-6 pb-6">
-                <a href="detailberita" class="text-sm font-semibold text-[#2F855A] hover:underline flex items-center gap-1">Baca selengkapnya &rarr;</a>
-            </div>
-        </article>
-
-        <!-- Berita Item 6 -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
-            <div>
-                <img src="assets/images/berita6.jpg" alt="Prestasi" class="w-full h-48 object-cover">
-                <div class="p-6 space-y-3">
-                    <div class="flex items-center gap-4 text-xs text-gray-400">
-                        <span>📅 30 Mei 2024</span><span>👁️ Dilihat 100 kali</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-[#172033] leading-snug hover:text-[#2F855A] cursor-pointer">Warga Desa Padangan Meraih Prestasi</h3>
-                    <p class="text-sm text-gray-500 line-clamp-2">Putra-putri warga Desa Padangan menorehkan prestasi membanggakan dalam ajang...</p>
-                </div>
-            </div>
-            <div class="px-6 pb-6">
-                <a href="detailberita" class="text-sm font-semibold text-[#2F855A] hover:underline flex items-center gap-1">Baca selengkapnya &rarr;</a>
-            </div>
-        </article>
-        
-        <!-- Berita Item 7 -->
-        <article class="berita-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow reveal-up">
-            <div>
-                <img src="assets/images/berita7.jpg" alt="Panen Raya" class="w-full h-48 object-cover bg-gray-200">
-                <div class="p-6 space-y-3">
-                    <div class="flex items-center gap-4 text-xs text-gray-400">
-                        <span>📅 01 Juni 2024</span><span>👁️ Dilihat 85 kali</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-[#172033] leading-snug hover:text-[#2F855A] cursor-pointer">Panen Raya Petani Desa Padangan</h3>
-                    <p class="text-sm text-gray-500 line-clamp-2">Hasil panen tahun ini mengalami peningkatan signifikan berkat penyuluhan pertanian modern...</p>
-                </div>
-            </div>
-            <div class="px-6 pb-6">
-                <a href="detailberita" class="text-sm font-semibold text-[#2F855A] hover:underline flex items-center gap-1">Baca selengkapnya &rarr;</a>
-            </div>
-        </article>
-
-    </div>
-
-    <!-- KOMPONEN WIDGET & PAGINATION -->
-    <div class="flex flex-col md:flex-row items-center justify-center pt-8 border-t border-gray-200 gap-6">
-        <!-- Container untuk Tombol Navigasi Pagination (Di-generate oleh JS) -->
-        <div id="pagination-container" class="flex items-center gap-2">
-            <!-- Tombol angka akan muncul secara dinamis di sini -->
+                </article>
+            <?php endforeach; ?>
         </div>
-    </div>
+    <?php else: ?>
+        <div class="rounded-3xl border border-dashed border-gray-300 bg-white py-20 px-6 text-center">
+            <h2 class="text-lg font-extrabold text-[#172033]">Belum ada berita</h2>
+            <p class="text-sm text-gray-500 mt-2">Informasi terbaru Desa Padangan akan tampil di halaman ini.</p>
+        </div>
+    <?php endif; ?>
 
+    <?php if ($totalPages > 1): ?>
+        <nav class="mt-10 flex items-center justify-center gap-2" aria-label="Pagination">
+            <?php $prevDisabled = $currentPage <= 1; ?>
+            <a href="<?= $prevDisabled ? '#' : $base_url . '/index.php?url=public/berita&page=' . ($currentPage - 1); ?>" class="w-10 h-10 rounded-xl border flex items-center justify-center transition-colors <?= $prevDisabled ? 'border-gray-200 text-gray-300 pointer-events-none' : 'border-gray-200 text-[#2F855A] hover:bg-emerald-50'; ?>" aria-label="Halaman sebelumnya">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </a>
+            <?php for ($page=1; $page<=$totalPages; $page++): ?>
+                <a href="<?= $base_url; ?>/index.php?url=public/berita&page=<?= $page; ?>" class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold <?= $page===$currentPage ? 'bg-[#2F855A] text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'; ?>"><?= $page; ?></a>
+            <?php endfor; ?>
+            <?php $nextDisabled = $currentPage >= $totalPages; ?>
+            <a href="<?= $nextDisabled ? '#' : $base_url . '/index.php?url=public/berita&page=' . ($currentPage + 1); ?>" class="w-10 h-10 rounded-xl border flex items-center justify-center transition-colors <?= $nextDisabled ? 'border-gray-200 text-gray-300 pointer-events-none' : 'border-gray-200 text-[#2F855A] hover:bg-emerald-50'; ?>" aria-label="Halaman berikutnya">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </a>
+        </nav>
+    <?php endif; ?>
 </main>
-
-<!-- SCRIPT INTERAKTIF PAGINATION -->
-<script src="/assets/js/berita.js"></script>
-
-<?php include '../app/views/layouts/footer.php'; ?>

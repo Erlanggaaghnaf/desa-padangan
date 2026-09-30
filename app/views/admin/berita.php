@@ -1,365 +1,413 @@
+<?php
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$base_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+
+$berita = $berita ?? [];
+$currentPage = (int) ($berita_current_page ?? 1);
+$totalPages = (int) ($berita_total_pages ?? 1);
+$flash = $berita_flash ?? null;
+
+$formatDate = static function ($date) {
+    if (!$date) {
+        return '-';
+    }
+
+    $months = [
+        1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+        5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+        9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+    ];
+
+    try {
+        $dt = new DateTime($date);
+        return (int) $dt->format('j') . ' ' . $months[(int) $dt->format('n')] . ' ' . $dt->format('Y');
+    } catch (Throwable $e) {
+        return '-';
+    }
+};
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manajemen Berita - Administrator Desa Padangan</title>
-    <!-- Favicon Logo Desa -->
-    <link rel="icon" type="image/png" href="assets/images/logo.png">
-    <!-- Tailwind CSS -->
+    <link rel="icon" type="image/png" href="<?= $base_url; ?>/assets/images/logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style> body { font-family: 'Inter', sans-serif; } </style>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .modal-open { overflow: hidden; }
+    </style>
 </head>
 <body class="bg-[#F4F6F9] flex h-screen overflow-hidden" onclick="closeAllDropdowns(event)">
 
-    <!-- MEMANGGIL KOMPONEN SIDEBAR -->
-    <?php include '../app/views/components/admin/admin_sidebar.php'; ?>
+<?php include '../app/views/components/admin/admin_sidebar.php'; ?>
 
-    <!-- KONTEN UTAMA KANAN -->
-    <main class="flex-1 flex flex-col h-screen overflow-y-auto md:ml-64 transition-all relative">
-        
-        <!-- Header Atas -->
-        <header class="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex justify-between items-center sticky top-0 z-30 shadow-xs">
-            <div class="flex items-center gap-3">
-                <button onclick="toggleSidebar()" class="md:hidden text-gray-700 hover:text-[#2F855A] focus:outline-none p-1 rounded-lg border border-gray-200">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                </button>
-                <div>
-                    <h1 class="text-base md:text-xl font-extrabold text-[#172033]">Manajemen Berita</h1>
-                    <p class="text-[11px] md:text-xs text-gray-500">Kelola dan publikasikan berita Desa Padangan.</p>
+<main class="flex-1 flex flex-col h-screen overflow-y-auto md:ml-64 transition-all relative">
+    <header class="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex justify-between items-center sticky top-0 z-30 shadow-sm">
+        <div class="flex items-center gap-3">
+            <button onclick="toggleSidebar()" class="md:hidden text-gray-700 hover:text-[#2F855A] focus:outline-none p-1 rounded-lg border border-gray-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            <div>
+                <h1 class="text-base md:text-xl font-extrabold text-[#172033]">Manajemen Berita</h1>
+                <p class="text-[11px] md:text-xs text-gray-500">Kelola dan publikasikan berita Desa Padangan.</p>
+            </div>
+        </div>
+        <div class="text-right">
+            <p id="current-date" class="text-xs font-bold text-gray-700">Memuat tanggal...</p>
+            <p id="current-time" class="text-[10px] md:text-[11px] text-gray-400 mt-0.5">--:--:-- WIB</p>
+        </div>
+    </header>
+
+    <?php if (!empty($flash['message'])): ?>
+        <div id="berita-toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] min-w-[280px] max-w-[90vw] rounded-2xl border px-5 py-3 shadow-xl <?= ($flash['type'] ?? '') === 'success' ? 'border-emerald-200 bg-emerald-50 text-[#2F855A]' : 'border-red-200 bg-red-50 text-[#D92D20]' ?>">
+            <div class="flex items-start gap-3">
+                <div class="pt-0.5">
+                    <?php if (($flash['type'] ?? '') === 'success'): ?>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                    <?php else: ?>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+                    <?php endif; ?>
                 </div>
+                <p class="text-xs md:text-sm font-semibold leading-relaxed"><?= htmlspecialchars($flash['message'], ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
-            <div class="text-right">
-                <p id="current-date" class="text-xs font-bold text-gray-700">Memuat tanggal...</p>
-                <p id="current-time" class="text-[10px] md:text-[11px] text-gray-400 mt-0.5">--:--:-- WIB</p>
-            </div>
-        </header>
+        </div>
+    <?php endif; ?>
 
-        <!-- Area Konten Utama -->
-        <div class="p-4 md:p-8 space-y-6 max-w-7xl w-full mx-auto pb-20">
-            
-            <!-- Grid Berita -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6" id="newsGrid">
-                
-                <!-- 1. Card Tambah Berita Baru -->
-                <div onclick="openModal('addModal')" class="bg-white border-2 border-dashed border-emerald-300 rounded-2xl flex flex-col items-center justify-center p-6 h-[340px] cursor-pointer hover:bg-emerald-50/50 transition-colors group">
+    <div class="p-4 md:p-8 max-w-7xl w-full mx-auto pb-20">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+
+            <?php if ($currentPage === 1): ?>
+                <button type="button" onclick="openModal('addModal')" class="bg-white border-2 border-dashed border-emerald-300 rounded-2xl flex flex-col items-center justify-center p-6 h-[340px] cursor-pointer hover:bg-emerald-50/50 transition-colors group text-center">
                     <div class="w-12 h-12 rounded-full bg-emerald-50 text-[#2F855A] flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     </div>
                     <h4 class="text-xs font-bold text-gray-800">Tambahkan Berita Baru</h4>
-                    <p class="text-[10px] text-gray-400 mt-1 text-center">Tulis dan publikasikan<br>berita terbaru desa</p>
-                </div>
+                    <p class="text-[10px] text-gray-400 mt-1">Tulis dan publikasikan berita terbaru desa</p>
+                </button>
+            <?php endif; ?>
 
-                <!-- 2. Item Berita (Contoh Data 1) -->
-                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[340px] hover:shadow-md transition-shadow relative">
-                    <!-- Image Wrapper -->
+            <?php foreach ($berita as $item): ?>
+                <?php
+                    $imageUrl = $base_url . '/uploads/berita/' . rawurlencode($item['foto']);
+                    $escapedJson = htmlspecialchars(json_encode([
+                        'id' => (int) $item['id'],
+                        'judul' => $item['judul'],
+                        'deskripsi' => $item['deskripsi'],
+                        'isi' => $item['isi'] ?? '',
+                        'foto' => $item['foto'],
+                    ], JSON_UNESCAPED_UNICODE | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP), ENT_QUOTES, 'UTF-8');
+                ?>
+                <article class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[340px] hover:shadow-md transition-shadow relative">
                     <div class="relative h-40 w-full flex-shrink-0">
-                        <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Berita" class="w-full h-full object-cover">
-                        
-                        <!-- Tombol Opsi Dropdown -->
+                        <img src="<?= $imageUrl; ?>" alt="<?= htmlspecialchars($item['judul'], ENT_QUOTES, 'UTF-8'); ?>" class="w-full h-full object-cover" loading="lazy">
                         <div class="absolute top-3 right-3">
-                            <button onclick="toggleDropdown(event, 'dropdown-1')" class="w-8 h-8 rounded-full bg-white/90 text-gray-700 flex items-center justify-center hover:bg-white shadow-sm dropdown-btn">
+                            <button type="button" onclick="toggleDropdown(event, 'dropdown-<?= (int) $item['id']; ?>')" class="w-8 h-8 rounded-full bg-white/90 text-gray-700 flex items-center justify-center hover:bg-white shadow-sm dropdown-btn">
                                 <svg class="w-5 h-5 pointer-events-none" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path></svg>
                             </button>
-                            <!-- Menu Dropdown -->
-                            <div id="dropdown-1" class="dropdown-menu hidden absolute right-0 mt-2 w-32 bg-white rounded-xl shadow-lg border border-gray-100 z-10 overflow-hidden">
-                                <button onclick="openEditModal('Musyawarah Desa Bahas RKPDes 2027', 'Pemerintah Desa Padangan melaksanakan musyawarah desa untuk pembebasan RKPDes...', 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg> Edit
+                            <div id="dropdown-<?= (int) $item['id']; ?>" class="dropdown-menu hidden absolute right-0 mt-2 w-36 bg-white rounded-xl shadow-lg border border-gray-100 z-10 overflow-hidden">
+                                <button type="button" onclick='openEditModal(<?= $escapedJson; ?>)' class="w-full text-left px-4 py-2.5 text-xs font-semibold text-[#2F855A] hover:bg-gray-50 flex items-center gap-2">
+                                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                                    Edit
                                 </button>
-                                <button onclick="openModal('deleteModal')" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-white bg-red-500 hover:bg-red-600 flex items-center gap-2 transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg> Hapus
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Content -->
-                    <div class="p-4 flex flex-col flex-grow">
-                        <div class="flex items-center text-[10px] text-gray-400 mb-2 gap-1 font-medium">
-                            <span>📅 30 Mei 2026</span>
-                            <span class="mx-1">|</span>
-                            <span>👁️ Dilihat 100 kali</span>
-                        </div>
-                        <h4 class="font-bold text-[#172033] text-sm mb-2 line-clamp-2 leading-snug">Musyawarah Desa Bahas RKPDes 2027</h4>
-                        <p class="text-[11px] text-gray-500 line-clamp-3 mb-4 flex-grow leading-relaxed">Pemerintah Desa Padangan melaksanakan musyawarah desa untuk pembebasan RKPDes...</p>
-                        <a href="#" class="text-xs font-bold text-[#2F855A] hover:underline mt-auto inline-flex items-center gap-1">Baca selengkapnya <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></a>
-                    </div>
-                </div>
-
-                <!-- 3. Item Berita (Contoh Data 2) -->
-                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[340px] hover:shadow-md transition-shadow relative">
-                    <div class="relative h-40 w-full flex-shrink-0">
-                        <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Berita" class="w-full h-full object-cover">
-                        <div class="absolute top-3 right-3">
-                            <button onclick="toggleDropdown(event, 'dropdown-2')" class="w-8 h-8 rounded-full bg-white/90 text-gray-700 flex items-center justify-center hover:bg-white shadow-sm dropdown-btn">
-                                <svg class="w-5 h-5 pointer-events-none" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path></svg>
-                            </button>
-                            <div id="dropdown-2" class="dropdown-menu hidden absolute right-0 mt-2 w-32 bg-white rounded-xl shadow-lg border border-gray-100 z-10 overflow-hidden">
-                                <button onclick="openEditModal('Warga Merayakan Tahun Baru Bersama', 'Dalam rangka merayakan tahun baru 2026, warga desa menyelenggarakan kegiatan bakar-bakar...', 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg> Edit
-                                </button>
-                                <button onclick="openModal('deleteModal')" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-white bg-red-500 hover:bg-red-600 flex items-center gap-2 transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg> Hapus
+                                <button type="button" onclick="openDeleteModal(<?= (int) $item['id']; ?>)" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-white bg-[#D92D20] hover:bg-[#B42318] flex items-center gap-2 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                    Hapus
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div class="p-4 flex flex-col flex-grow">
-                        <div class="flex items-center text-[10px] text-gray-400 mb-2 gap-1 font-medium">
-                            <span>📅 30 Mei 2026</span>
-                            <span class="mx-1">|</span>
-                            <span>👁️ Dilihat 100 kali</span>
+                        <div class="flex items-center text-[10px] text-gray-500 mb-2 gap-3 font-medium">
+                            <span class="inline-flex items-center gap-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#172033" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+                                <?= $formatDate($item['created_at']); ?>
+                            </span>
+                            <span class="inline-flex items-center gap-1">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#172033" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                                <?= number_format((int) $item['views']); ?>
+                            </span>
                         </div>
-                        <h4 class="font-bold text-[#172033] text-sm mb-2 line-clamp-2 leading-snug">Warga Merayakan Tahun Baru Bersama</h4>
-                        <p class="text-[11px] text-gray-500 line-clamp-3 mb-4 flex-grow leading-relaxed">Dalam rangka merayakan tahun baru 2026, warga desa menyelenggarakan kegiatan bakar-bakar...</p>
-                        <a href="#" class="text-xs font-bold text-[#2F855A] hover:underline mt-auto inline-flex items-center gap-1">Baca selengkapnya <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></a>
+                        <h4 class="font-bold text-[#172033] text-sm mb-2 line-clamp-2 leading-snug"><?= htmlspecialchars($item['judul'], ENT_QUOTES, 'UTF-8'); ?></h4>
+                        <p class="text-[11px] text-gray-500 line-clamp-4 flex-grow leading-relaxed"><?= htmlspecialchars($item['deskripsi'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+
+            <?php if (!$berita && $currentPage === 1): ?>
+                <div class="bg-white rounded-2xl border border-gray-200 h-[340px] flex items-center justify-center text-center p-6">
+                    <div>
+                        <p class="text-sm font-bold text-[#172033]">Belum ada berita</p>
+                        <p class="text-xs text-gray-500 mt-1">Gunakan slot tambah berita untuk membuat publikasi pertama.</p>
                     </div>
                 </div>
-
-                <!-- Tambahkan lebih banyak dummy card di sini sesuai grid -->
-
-            </div>
-
-            <!-- Pagination -->
-            <div class="pt-8 flex items-center justify-center gap-2">
-                <button class="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-xl text-gray-400 hover:bg-gray-50 transition-colors cursor-not-allowed">&larr;</button>
-                <button class="w-9 h-9 flex items-center justify-center rounded-xl bg-[#2F855A] text-white font-semibold shadow-sm">1</button>
-                <button class="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-xl text-gray-700 hover:bg-gray-50 font-semibold transition-colors">2</button>
-                <button class="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-xl text-gray-700 hover:bg-gray-50 font-semibold transition-colors">3</button>
-                <button class="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-xl text-gray-700 hover:bg-gray-50 font-semibold transition-colors">4</button>
-                <button class="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer">&rarr;</button>
-            </div>
-
+            <?php endif; ?>
         </div>
-    </main>
 
-    <!-- ========================================================== -->
-    <!-- LAYER MODAL (Z-INDEX DIATUR AGAR BISA BERTUMPUK) -->
-    <!-- ========================================================== -->
-    
-    <!-- 1. Modal Tambah Berita (z-40) -->
-    <div id="addModal" class="fixed inset-0 bg-black/60 z-40 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 md:p-8 transform scale-95 transition-transform duration-300 relative">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-lg font-extrabold text-[#172033]">Tambah Berita</h3>
-                <button onclick="closeModal('addModal')" class="text-gray-400 hover:text-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            </div>
-            
-            <div class="space-y-4">
-                <!-- Area Upload (Dashed) -->
-                <div class="border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center py-6 bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors">
-                    <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-400 mb-2 shadow-xs">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    </div>
-                    <p class="text-xs font-semibold text-gray-700">Upload Foto</p>
-                    <p class="text-[10px] text-gray-400 mt-1">PNG, JPG atau JPEG - Maks. 5 MB</p>
-                </div>
+        <?php if ($totalPages > 1): ?>
+            <nav class="mt-8 flex items-center justify-center gap-2" aria-label="Pagination">
+                <?php $prevDisabled = $currentPage <= 1; ?>
+                <a href="<?= $prevDisabled ? '#' : $base_url . '/index.php?url=admin/berita&page=' . ($currentPage - 1); ?>" class="w-10 h-10 rounded-xl border flex items-center justify-center transition-colors <?= $prevDisabled ? 'border-gray-200 text-gray-300 pointer-events-none' : 'border-gray-200 text-[#2F855A] hover:bg-emerald-50'; ?>" aria-label="Halaman sebelumnya">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </a>
 
-                <div>
-                    <label class="block text-[11px] font-semibold text-gray-700 mb-1.5">Judul Berita</label>
-                    <input type="text" id="addInputJudul" placeholder="Contoh: Musyawarah Desa Bahas Pembangunan..." class="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-xs focus:outline-none focus:border-[#2F855A]">
-                </div>
+                <?php for ($page = 1; $page <= $totalPages; $page++): ?>
+                    <a href="<?= $base_url; ?>/index.php?url=admin/berita&page=<?= $page; ?>" class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold <?= $page === $currentPage ? 'bg-[#2F855A] text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'; ?>">
+                        <?= $page; ?>
+                    </a>
+                <?php endfor; ?>
 
-                <div>
-                    <label class="block text-[11px] font-semibold text-gray-700 mb-1.5">Deskripsi</label>
-                    <textarea id="addInputDeskripsi" rows="3" placeholder="Contoh: Pemerintah Desa Padangan mengadakan musyawarah..." class="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-xs focus:outline-none focus:border-[#2F855A] resize-none"></textarea>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-end gap-3 mt-8">
-                <button onclick="closeModal('addModal')" class="px-5 py-2.5 rounded-xl border border-red-200 text-red-500 font-semibold text-xs hover:bg-red-50 transition-colors">Batal</button>
-                <button onclick="validateForm('add')" class="px-5 py-2.5 rounded-xl bg-[#2F855A] text-white font-semibold text-xs hover:bg-[#246946] shadow-sm transition-colors">Simpan</button>
-            </div>
-        </div>
+                <?php $nextDisabled = $currentPage >= $totalPages; ?>
+                <a href="<?= $nextDisabled ? '#' : $base_url . '/index.php?url=admin/berita&page=' . ($currentPage + 1); ?>" class="w-10 h-10 rounded-xl border flex items-center justify-center transition-colors <?= $nextDisabled ? 'border-gray-200 text-gray-300 pointer-events-none' : 'border-gray-200 text-[#2F855A] hover:bg-emerald-50'; ?>" aria-label="Halaman berikutnya">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </a>
+            </nav>
+        <?php endif; ?>
     </div>
+</main>
 
-    <!-- 2. Modal Edit Berita (z-40) -->
-    <div id="editModal" class="fixed inset-0 bg-black/60 z-40 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 md:p-8 transform scale-95 transition-transform duration-300 relative">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-lg font-extrabold text-[#172033]">Edit Berita</h3>
-                <button onclick="closeModal('editModal')" class="text-gray-400 hover:text-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+<!-- Add Modal -->
+<div id="addModal" class="fixed inset-0 z-[80] hidden items-center justify-center bg-black/50 p-4">
+    <div class="flex w-full max-w-6xl max-h-[92vh] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl" onclick="event.stopPropagation()">
+        <form action="<?= $base_url; ?>/index.php?url=admin/berita" method="post" enctype="multipart/form-data" class="flex min-h-0 flex-1 flex-col">
+            <input type="hidden" name="action" value="store">
+            <!-- HEADER -->
+            <div class="flex flex-none items-start justify-between gap-6 border-b border-gray-100 px-6 py-5 md:px-8 md:py-6">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold leading-tight text-[#172033]"> Tambahkan Berita Baru</h2>
+                    <p class="mt-1 text-sm text-[#475467]">Isi data berita dan unggah foto utama.</p>
+                </div>
+
+                <button type="button" onclick="closeModal('addModal')" class="flex h-10 w-10 flex-none items-center justify-center rounded-xl text-2xl leading-none text-[#475467] transition-colors hover:bg-gray-100 hover:text-[#172033]"aria-label="Tutup">
+                    &times;
+                </button>
             </div>
-            
-            <div class="space-y-4">
-                <!-- Preview Image -->
-                <div class="relative w-full h-32 md:h-40 rounded-2xl overflow-hidden border border-gray-200 group cursor-pointer">
-                    <img id="editImagePreview" src="" alt="Preview" class="w-full h-full object-cover group-hover:brightness-75 transition-all">
-                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div class="bg-white/90 p-2 rounded-full text-gray-700 shadow-sm">
-                           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+
+            <!-- BODY -->
+            <div class="min-h-0 flex-1 overflow-y-auto px-6 py-6 md:px-8 md:py-8">
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+
+                    <!-- KOLOM KIRI : FOTO -->
+                    <div>
+                        <label class="mb-3 block text-sm font-semibold text-[#172033]">Foto Utama</label>
+                        <div id="add-preview-wrap" class="relative aspect-square overflow-hidden rounded-2xl border border-gray-200 bg-[#F7F9FC]">
+                            <!-- Preview -->
+                            <img id="add-preview" src="" alt="Preview foto berita" class="absolute inset-0 hidden h-full w-full object-cover">
+
+                            <!-- Placeholder -->
+                            <div id="add-preview-placeholder"class="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+                                <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-[#2F855A] shadow-sm ring-1 ring-gray-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect width="18" height="18" x="3" y="3" rx="2"/>
+                                        <circle cx="9" cy="9" r="2"/>
+                                        <path d="m21 15-4.5-4.5L6 21"/>
+                                    </svg>
+                                </div>
+                                <p class="text-sm font-semibold text-[#172033]">Pilih foto utama</p>
+                                <p class="mt-1 text-xs leading-relaxed text-[#475467]">Klik area ini untuk mengunggah foto.</p>
+                            </div>
+                            <!-- Input file asli -->
+                            <input id="add-foto" type="file" name="foto" required accept=".jpg,.jpeg,.png,image/jpeg,image/png" onchange="previewBeritaImage(this, 'add-preview')" class="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0" aria-label="Pilih foto utama">
+                        </div>
+                        <p class="mt-3 text-xs text-[#475467]">JPG/JPEG/PNG, maks. 5 MB.</p>
+                    </div>
+
+                    <!-- KOLOM KANAN : FORM -->
+                    <div class="space-y-5">
+
+                        <!-- JUDUL -->
+                        <div>
+                            <label for="add-judul" class="mb-2 block text-sm font-semibold text-[#172033]"> Judul Berita</label>
+
+                            <input id="add-judul" name="judul" type="text" required maxlength="255" class="h-12 w-full rounded-xl border border-gray-200 bg-white px-4 text-sm md:text-base text-[#172033] outline-none transition focus:border-[#2F855A] focus:ring-2 focus:ring-emerald-100">
+                        </div>
+                        <!-- DETAIL BERITA -->
+                        <div>
+                            <label for="add-isi" class="mb-2 block text-sm font-semibold text-[#172033]">Detail Berita</label>
+                            <textarea id="add-isi" name="isi" required rows="10" class="min-h-[270px] w-full resize-y rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm md:text-base leading-relaxed text-[#172033] outline-none transition focus:border-[#2F855A] focus:ring-2 focus:ring-emerald-100" placeholder="Tulis detail berita di sini..."></textarea>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <!-- FOOTER -->
+            <div class="flex flex-none items-center justify-end gap-3 border-t border-gray-100 px-6 py-5 md:px-8">
+                <button type="button" onclick="closeModal('addModal')" class="rounded-xl border border-[#D92D20] bg-white px-6 py-3 text-sm font-semibold text-[#D92D20] transition-colors hover:bg-red-50">Batal</button>
+                <button type="submit"class="rounded-xl bg-[#2F855A] px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#276f4c]">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div id="editModal" class="fixed inset-0 z-[80] hidden items-center justify-center bg-black/50 p-4">
+    <div class="flex w-full max-w-6xl max-h-[92vh] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl"
+        onclick="event.stopPropagation()"
+    >
+        <form action="<?= $base_url; ?>/index.php?url=admin/berita" method="post" enctype="multipart/form-data" class="flex min-h-0 flex-1 flex-col">
+            <input type="hidden" name="action" value="update">
+            <input id="edit-id" type="hidden" name="id">
+            <input type="hidden" name="page" value="<?= $currentPage; ?>">
+
+            <!-- HEADER -->
+            <div class="flex flex-none items-start justify-between gap-6 border-b border-gray-100 px-6 py-5 md:px-8 md:py-6">
                 <div>
-                    <label class="block text-[11px] font-semibold text-gray-700 mb-1.5">Judul Berita</label>
-                    <input type="text" id="editInputJudul" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-xs focus:outline-none focus:border-[#2F855A]">
+                    <h2 class="text-xl md:text-2xl font-bold leading-tight text-[#172033]">Edit Berita</h2>
+                    <p class="mt-1 text-sm text-[#475467]">Perbarui informasi berita dan foto utama.</p>
                 </div>
 
-                <div>
-                    <label class="block text-[11px] font-semibold text-gray-700 mb-1.5">Deskripsi</label>
-                    <textarea id="editInputDeskripsi" rows="3" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-xs focus:outline-none focus:border-[#2F855A] resize-none"></textarea>
+                <button type="button" onclick="closeModal('editModal')" class="flex h-10 w-10 flex-none items-center justify-center rounded-xl text-2xl leading-none text-[#475467] transition-colors hover:bg-gray-100 hover:text-[#172033]"aria-label="Tutup">
+                    &times;
+                </button>
+            </div>
+
+            <!-- BODY -->
+            <div class="min-h-0 flex-1 overflow-y-auto px-6 py-6 md:px-8 md:py-8">
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+
+                    <!-- KOLOM KIRI : FOTO -->
+                    <div>
+                        <label class="mb-3 block text-sm font-semibold text-[#172033]">Foto Utama</label>
+                        <div id="edit-preview-wrap" class="relative aspect-square overflow-hidden rounded-2xl border border-gray-200 bg-[#F7F9FC]">
+                            <!-- Foto lama / foto baru -->
+                            <img id="edit-preview"src="" alt="Preview foto berita" class="absolute inset-0 h-full w-full object-cover">
+
+                            <!-- Fallback jika foto tidak tersedia -->
+                            <div id="edit-preview-placeholder" class="absolute inset-0 hidden flex-col items-center justify-center px-6 text-center">
+                                <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-[#2F855A] shadow-sm ring-1 ring-gray-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect width="18" height="18" x="3" y="3" rx="2"/>
+                                        <circle cx="9" cy="9" r="2"/>
+                                        <path d="m21 15-4.5-4.5L6 21"/>
+                                    </svg>
+                                </div>
+
+                                <p class="text-sm font-semibold text-[#172033]">Pilih foto utama</p>
+                                <p class="mt-1 text-xs leading-relaxed text-[#475467]">Klik area ini untuk mengunggah foto baru.</p>
+                            </div>
+
+                            <!-- Input file asli -->
+                            <input id="edit-foto" type="file" name="foto" accept=".jpg,.jpeg,.png,image/jpeg,image/png" onchange="previewBeritaImage(this, 'edit-preview')"class="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0" aria-label="Pilih foto baru">
+                            <div class="pointer-events-none absolute inset-x-0 bottom-0 z-[11] bg-gradient-to-t from-black/55 to-transparent px-4 pb-4 pt-10">
+                                <span class="text-xs font-medium text-white">Klik foto untuk mengganti gambar.</span>
+                            </div>
+                        </div>
+                        <p class="mt-3 text-xs text-[#475467]">Foto baru opsional. JPG/JPEG/PNG, maks. 5 MB.</p>
+                    </div>
+
+                    <!-- KOLOM KANAN : FORM -->
+                    <div class="space-y-5">
+
+                        <!-- JUDUL -->
+                        <div>
+                            <label for="edit-judul" class="mb-2 block text-sm font-semibold text-[#172033]">Judul Berita</label>
+                            <input id="edit-judul" name="judul" type="text" required maxlength="255" class="h-12 w-full rounded-xl border border-gray-200 bg-white px-4 text-sm md:text-base text-[#172033] outline-none transition focus:border-[#2F855A] focus:ring-2 focus:ring-emerald-100">
+                        </div>
+
+                        <!-- DETAIL BERITA -->
+                        <div>
+                            <label for="edit-isi" class="mb-2 block text-sm font-semibold text-[#172033]">Detail Berita</label>
+                            <textarea id="edit-isi" name="isi" required rows="10" class="min-h-[270px] w-full resize-y rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm md:text-base leading-relaxed text-[#172033] outline-none transition focus:border-[#2F855A] focus:ring-2 focus:ring-emerald-100" placeholder="Tulis detail berita di sini..."></textarea>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
-            <div class="flex items-center justify-end gap-3 mt-8">
-                <button onclick="closeModal('editModal')" class="px-5 py-2.5 rounded-xl border border-red-200 text-red-500 font-semibold text-xs hover:bg-red-50 transition-colors">Batal</button>
-                <button onclick="validateForm('edit')" class="px-5 py-2.5 rounded-xl bg-[#2F855A] text-white font-semibold text-xs hover:bg-[#246946] shadow-sm transition-colors">Simpan</button>
+            <!-- FOOTER -->
+            <div class="flex flex-none items-center justify-end gap-3 border-t border-gray-100 px-6 py-5 md:px-8">
+                <button type="button" onclick="closeModal('editModal')" class="rounded-xl border border-[#D92D20] bg-white px-6 py-3 text-sm font-semibold text-[#D92D20] transition-colors hover:bg-red-50">
+                    Batal
+                </button>
+
+                <button type="submit" class="rounded-xl bg-[#2F855A] px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#276f4c]">
+                    Simpan Perubahan
+                </button>
             </div>
-        </div>
+        </form>
     </div>
+</div>
 
-    <!-- 3. Modal Hapus Konfirmasi (z-50) -->
-    <div id="deleteModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 text-center transform scale-95 transition-transform duration-300">
-            <div class="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4 text-red-500 border border-red-100">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-            </div>
-            <h3 class="text-lg font-extrabold text-[#172033] mb-2">Hapus Berita?</h3>
-            <p class="text-xs text-gray-500 mb-6">Apakah Anda yakin ingin menghapus Berita ini?<br>Berita yang dihapus tidak dapat dikembalikan.</p>
-            <div class="flex items-center justify-center gap-3">
-                <button onclick="closeModal('deleteModal')" class="flex-1 py-2.5 rounded-xl border border-red-200 text-red-600 font-semibold text-xs hover:bg-red-50">Batal</button>
-                <button onclick="closeModal('deleteModal')" class="flex-1 py-2.5 rounded-xl bg-red-600 text-white font-semibold text-xs hover:bg-red-700">Hapus</button>
-            </div>
-        </div>
+<!-- Delete Modal -->
+<div id="deleteModal" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/50 p-4">
+    <div class="w-full max-w-md rounded-3xl bg-white shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+        <form action="<?= $base_url; ?>/index.php?url=admin/berita" method="post">
+            <input type="hidden" name="action" value="delete">
+            <input id="delete-id" type="hidden" name="id">
+            <input type="hidden" name="page" value="<?= $currentPage; ?>">
+            <div class="p-7"><div class="w-12 h-12 rounded-2xl bg-red-50 text-[#D92D20] flex items-center justify-center mb-4"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div><h2 class="text-lg font-extrabold text-[#172033]">Hapus berita?</h2><p class="text-sm text-gray-500 mt-2">Data berita dan file fotonya akan dihapus. Tindakan ini tidak dapat dibatalkan.</p></div>
+            <div class="px-7 py-5 bg-gray-50 border-t border-gray-100 flex justify-end gap-3"><button type="button" onclick="closeModal('deleteModal')" class="px-5 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-700">Batal</button><button type="submit" class="px-5 py-2.5 rounded-xl bg-[#D92D20] text-white text-sm font-bold hover:bg-[#B42318]">Hapus Berita</button></div>
+        </form>
     </div>
+</div>
 
-    <!-- ========================================================== -->
-    <!-- LAYER MODAL KEDUA (z-60) -> OVERLAY DI ATAS MODAL PERTAMA -->
-    <!-- ========================================================== -->
-    
-    <!-- 4. Modal Data Belum Lengkap (Error - z-60) -->
-    <div id="errorModal" class="fixed inset-0 bg-black/40 z-[60] flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 text-center transform scale-95 transition-transform duration-300 relative">
-            <button onclick="closeModal('errorModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            <div class="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4 text-red-500 border border-red-100">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            </div>
-            <h3 class="text-lg font-extrabold text-[#172033] mb-2">Data Belum Lengkap</h3>
-            <p class="text-xs text-gray-500 mb-2">Silakan lengkapi seluruh data sebelum menyimpan berita.</p>
-        </div>
-    </div>
+<script>
+function openModal(id){const el=document.getElementById(id);if(!el)return;el.classList.remove('hidden');el.classList.add('flex');document.body.classList.add('modal-open');}
+function closeModal(id){const el=document.getElementById(id);if(!el)return;el.classList.add('hidden');el.classList.remove('flex');document.body.classList.remove('modal-open');}
+function closeAllDropdowns(event){document.querySelectorAll('.dropdown-menu').forEach(menu=>{if(!menu.contains(event.target))menu.classList.add('hidden');});}
+function toggleDropdown(event,id){event.stopPropagation();document.querySelectorAll('.dropdown-menu').forEach(menu=>{if(menu.id!==id)menu.classList.add('hidden');});const el=document.getElementById(id);if(el)el.classList.toggle('hidden');}
+function openDeleteModal(id){document.getElementById('delete-id').value=id;document.querySelectorAll('.dropdown-menu').forEach(menu=>menu.classList.add('hidden'));openModal('deleteModal');}
+function openEditModal(data){
+    document.getElementById('edit-id').value = data.id;
+    document.getElementById('edit-judul').value = data.judul || '';
+    document.getElementById('edit-isi').value = data.isi || data.deskripsi || '';
+    document.getElementById('edit-foto').value = '';
+    document.getElementById('edit-preview').src = '<?= $base_url; ?>/uploads/berita/' + encodeURIComponent(data.foto || '');
+    document.getElementById('edit-preview').classList.remove('hidden');
+    document.getElementById('edit-preview-placeholder').classList.add('hidden');
+    document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.add('hidden'));
+    openModal('editModal');
+}
+function previewBeritaImage(input, imgId) {
+    const file = input.files && input.files[0];
+    const img = document.getElementById(imgId);
+    const wrap = document.getElementById(imgId + '-wrap');
+    const placeholder = document.getElementById(imgId + '-placeholder');
 
-    <!-- 5. Modal Konfirmasi Simpan Tambah (z-60) -->
-    <div id="confirmSaveModal" class="fixed inset-0 bg-black/40 z-[60] flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 text-center transform scale-95 transition-transform duration-300">
-            <div class="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center mx-auto mb-4 text-[#2F855A] border border-emerald-100">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-            </div>
-            <h3 class="text-lg font-extrabold text-[#172033] mb-2">Simpan Berita?</h3>
-            <p class="text-xs text-gray-500 mb-6">Apakah Anda yakin ingin menyimpan Berita ini?<br>Berita yang disimpan akan ditampilkan pada halaman berita.</p>
-            <div class="flex items-center justify-center gap-3">
-                <button onclick="closeModal('confirmSaveModal')" class="flex-1 py-2.5 rounded-xl border border-red-200 text-red-600 font-semibold text-xs hover:bg-red-50">Batal</button>
-                <button onclick="executeSave('addModal')" class="flex-1 py-2.5 rounded-xl bg-[#2F855A] text-white font-semibold text-xs hover:bg-[#246946]">Simpan</button>
-            </div>
-        </div>
-    </div>
+    if (!file || !img || !wrap) {
+        return;
+    }
 
-    <!-- 6. Modal Konfirmasi Simpan Perubahan Edit (z-60) -->
-    <div id="confirmEditModal" class="fixed inset-0 bg-black/40 z-[60] flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 text-center transform scale-95 transition-transform duration-300">
-            <div class="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center mx-auto mb-4 text-[#2F855A] border border-emerald-100">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-            </div>
-            <h3 class="text-lg font-extrabold text-[#172033] mb-2">Simpan Perubahan?</h3>
-            <p class="text-xs text-gray-500 mb-6">Apakah Anda yakin ingin merubah Berita ini?<br>Berita yang disimpan akan ditampilkan pada halaman berita.</p>
-            <div class="flex items-center justify-center gap-3">
-                <button onclick="closeModal('confirmEditModal')" class="flex-1 py-2.5 rounded-xl border border-red-200 text-red-600 font-semibold text-xs hover:bg-red-50">Batal</button>
-                <button onclick="executeSave('editModal')" class="flex-1 py-2.5 rounded-xl bg-[#2F855A] text-white font-semibold text-xs hover:bg-[#246946]">Simpan</button>
-            </div>
-        </div>
-    </div>
+    if (file.size > 5 * 1024 * 1024) {
+        alert('Ukuran file maksimal 5 MB.');
+        input.value = '';
+        return;
+    }
 
+    const allowed = ['image/jpeg', 'image/png'];
 
-    <!-- SKRIP LOGIKA TAMPILAN -->
-    <script>
-        // --- 1. TOGGLE SIDEBAR ---
-        function toggleSidebar() {
-            const sidebar = document.getElementById('admin-sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
+    if (!allowed.includes(file.type)) {
+        alert('Format file hanya JPG, JPEG, atau PNG.');
+        input.value = '';
+        return;
+    }
+
+    if (window.URL && URL.revokeObjectURL) {
+        if (img.dataset.objectUrl) {
+            URL.revokeObjectURL(img.dataset.objectUrl);
         }
 
-        // --- 2. JAM REAL-TIME ---
-        function updateDateTime() {
-            const now = new Date();
-            const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-            const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-            document.getElementById('current-date').innerText = now.toLocaleDateString('id-ID', optionsDate);
-            document.getElementById('current-time').innerText = now.toLocaleTimeString('id-ID', optionsTime) + ' WIB';
-        }
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
+        img.dataset.objectUrl = URL.createObjectURL(file);
+        img.src = img.dataset.objectUrl;
+    }
 
-        // --- 3. MENU DROPDOWN PADA KARTU BERITA ---
-        function toggleDropdown(event, dropdownId) {
-            event.stopPropagation();
-            closeAllDropdowns();
-            const dropdown = document.getElementById(dropdownId);
-            if(dropdown) {
-                dropdown.classList.toggle('hidden');
-            }
-        }
-        function closeAllDropdowns() {
-            const dropdowns = document.querySelectorAll('.dropdown-menu');
-            dropdowns.forEach(menu => menu.classList.add('hidden'));
-        }
+    img.classList.remove('hidden');
 
-        // --- 4. ANIMASI BUKA/TUTUP MODAL UMUM ---
-        function openModal(modalId) {
-            closeAllDropdowns();
-            const modal = document.getElementById(modalId);
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modal.children[0].classList.remove('scale-95');
-            }, 10);
-        }
+    if (placeholder) {
+        placeholder.classList.add('hidden');
+        placeholder.classList.remove('flex');
+    }
 
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.add('opacity-0');
-            modal.children[0].classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
-        }
+    wrap.classList.remove('hidden');
+}
+function updateClock(){const now=new Date();const date=new Intl.DateTimeFormat('id-ID',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).format(now);const time=new Intl.DateTimeFormat('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZone:'Asia/Jakarta'}).format(now);document.getElementById('current-date').textContent=date;document.getElementById('current-time').textContent=time+' WIB';}
+updateClock();setInterval(updateClock,1000);
+setTimeout(()=>{const toast=document.getElementById('berita-toast');if(toast){toast.style.transition='opacity .35s ease, transform .35s ease';toast.style.opacity='0';toast.style.transform='translate(-50%, -10px)';setTimeout(()=>toast.remove(),400);}},3500);
+window.addEventListener('click',()=>{});
+</script>
 
-        // --- 5. LOGIKA KHUSUS EDIT MODAL ---
-        function openEditModal(judul, deskripsi, imgSrc) {
-            closeAllDropdowns();
-            document.getElementById('editInputJudul').value = judul;
-            document.getElementById('editInputDeskripsi').value = deskripsi;
-            document.getElementById('editImagePreview').src = imgSrc;
-            openModal('editModal');
-        }
-
-        // --- 6. LOGIKA VALIDASI (MUNCULKAN MODAL LAPISAN KEDUA) ---
-        function validateForm(type) {
-            // Cek apakah mode add atau edit, pastikan field text terisi
-            const judul = document.getElementById(type === 'add' ? 'addInputJudul' : 'editInputJudul').value;
-            const deskripsi = document.getElementById(type === 'add' ? 'addInputDeskripsi' : 'editInputDeskripsi').value;
-            
-            if(judul.trim() === '' || deskripsi.trim() === '') {
-                openModal('errorModal'); 
-            } else {
-                openModal(type === 'add' ? 'confirmSaveModal' : 'confirmEditModal');
-            }
-        }
-
-        function executeSave(sourceModalId) {
-            closeModal('confirmSaveModal');
-            closeModal('confirmEditModal');
-            closeModal(sourceModalId);
-
-            if(sourceModalId === 'addModal') {
-                document.getElementById('addInputJudul').value = '';
-                document.getElementById('addInputDeskripsi').value = '';
-            }
-        }
-    </script>
 </body>
 </html>

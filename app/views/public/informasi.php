@@ -134,7 +134,7 @@
     </section>
 
     <!-- 4. SOTK DESA PADANGAN -->
-    <section class="reveal-up">
+    <section id="Sotk" class="reveal-up">
         <div class="text-center mb-10">
             <h2 class="text-2xl md:text-3xl font-bold text-[#172033] mb-2 reveal-left">SOTK DESA PADANGAN</h2>
             <p class="text-gray-500 text-sm md:text-base reveal-right">Struktur Organisasi Tata Kerja Pemerintahan Desa Padangan</p>

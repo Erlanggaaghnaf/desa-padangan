@@ -11,3 +11,6 @@ ngrok.exe
 .env
 .env.*
 !.env.example
+
+# Setup administrator: secret hanya disimpan di server lokal
+app/config/setup.local.php

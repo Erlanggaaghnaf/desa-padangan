@@ -1,5 +1,3 @@
-<?php include '../app/views/layouts/header.php'; ?>
-
 <!-- HEADER HALAMAN -->
 <section class="bg-[#F7F9FC] pt-32 pb-12 px-4 md:px-8 lg:px-[120px] text-center border-b border-gray-200 reveal-up">
     <h1 class="text-3xl md:text-4xl font-extrabold text-[#172033] mb-3 reveal-left">Transparansi Publik & Desa Padangan</h1>
@@ -98,5 +96,3 @@
 </div>
 
 <script src="assets/js/ppid.js"></script>
-
-<?php include '../app/views/layouts/footer.php'; ?>

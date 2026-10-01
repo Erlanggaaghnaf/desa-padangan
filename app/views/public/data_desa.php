@@ -1,6 +1,3 @@
-
-<?php include '../app/views/layouts/header.php'; ?>
-
     <script>
         const dataUmurDatabase = <?= json_encode($data['desa']['umur'] ?? []) ?>;
         const dataPendidikanDatabase = <?= json_encode($data['desa']['pendidikan'] ?? []) ?>;
@@ -406,5 +403,3 @@
     <script src="assets/js/data_desa.js"></script>
 
 </main>
-
-<?php include '../app/views/layouts/footer.php'; ?>

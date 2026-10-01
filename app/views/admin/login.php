@@ -73,11 +73,16 @@
                     <svg id="eye-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                 </button>
             </div>
+            <!-- PESAN HASIL LOGIN / SETUP -->
+            <?php if (!empty($data['flash']['message'])): ?>
+                <div class="mb-4 rounded-xl border px-4 py-3 text-xs font-semibold <?= ($data['flash']['type'] ?? '') === 'success' ? 'border-emerald-200 bg-emerald-50 text-[#2F855A]' : 'border-red-200 bg-red-50 text-[#D92D20]'; ?>">
+                    <?= htmlspecialchars((string) $data['flash']['message'], ENT_QUOTES, 'UTF-8'); ?>
+                </div>
+            <?php endif; ?>
 
-            <!-- PESAN ERROR DI BAWAH PASSWORD -->
             <?php if (!empty($data['error'])): ?>
                 <p class="text-xs text-red-500 text-left px-1 mt-1 font-medium">
-                    <?= $data['error']; ?>
+                    <?= htmlspecialchars((string) $data['error'], ENT_QUOTES, 'UTF-8'); ?>
                 </p>
             <?php endif; ?>
 

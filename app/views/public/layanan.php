@@ -70,7 +70,6 @@ $groupedLayanan = array_filter($groupedLayanan, static function ($items) {
     return !empty($items);
 });
 ?>
-<?php include '../app/views/layouts/header.php'; ?>
 
 <section class="bg-[#F7F9FC] pt-32 pb-12 px-4 md:px-8 lg:px-[120px] text-center border-b border-gray-200">
     <h1 class="text-3xl md:text-5xl font-extrabold text-[#172033] mb-3 reveal-left">Informasi & Panduan Layanan Administrasi</h1>
@@ -167,5 +166,3 @@ $groupedLayanan = array_filter($groupedLayanan, static function ($items) {
 </main>
 
 <script src="assets/js/layanan.js"></script>
-
-<?php include '../app/views/layouts/footer.php'; ?>

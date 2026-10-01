@@ -14,7 +14,7 @@ $current_url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : 'admin/dashboard
                 <div>
                     <h2 class="text-xs font-bold tracking-wide">Pemerintah Desa</h2>
                     <h2 class="text-xs font-bold tracking-wide">Padangan</h2>
-                    <p class="text-[10px] text-emerald-200/80 mt-0.5">Kec. Ngantru</p>
+                    <p class="text-[10px] text-emerald-200/80 mt-0.5">Kec. Ngantru, Kab. Tulungagung</p>
                 </div>
             </div>
             <button onclick="toggleSidebar()" class="md:hidden text-emerald-200 hover:text-white focus:outline-none">
@@ -53,19 +53,47 @@ $current_url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : 'admin/dashboard
                 Master Data
             </a>
 
+            <?php
+            $sidebarRole = (string) ($_SESSION['admin_auth']['role'] ?? 'admin');
+            $canManageAccounts = $sidebarRole === 'superadmin';
+            $isAccountManagementRoute = in_array(
+                $current_url,
+                ['admin/akun', 'admin/tambah-admin'],
+                true
+            );
+            ?>
+
+            <?php if ($canManageAccounts): ?>
+                <!-- Menu Manajemen Akun: Superadmin Only -->
+                <a href="<?= $base_url; ?>/index.php?url=admin/akun" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all <?= $isAccountManagementRoute ? 'bg-white/20 text-white shadow-sm font-semibold' : 'text-emerald-100 hover:bg-white/10'; ?>">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6"/><path d="M22 11h-6"/></svg>
+                    Manajemen Akun
+                </a>
+            <?php endif; ?>
+
         </nav>
     </div>
 
-    <!-- PENGGUNAAN AUTH CONTROLLER UNTUK KELUAR -->
+    <!-- Profil Admin & Tombol Keluar di Bawah Sidebar -->
     <div class="p-4 border-t border-emerald-800/60 space-y-3 bg-[#175333]">
-        <div class="flex items-center gap-3 px-3 py-2 bg-emerald-900/40 rounded-xl">
-            <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center font-bold text-white text-sm">A</div>
-            <div>
-                <p class="text-xs font-bold text-white">Admin</p>
-                <p class="text-[10px] text-emerald-200">Administrator</p>
+        <?php
+        $sidebarUsername = (string) ($_SESSION['admin_auth']['username'] ?? '');
+        $sidebarDisplayName = $sidebarUsername !== '' ? $sidebarUsername : 'Admin';
+        $sidebarRoleLabel = $sidebarRole === 'superadmin' ? 'Superadmin' : 'Administrator';
+        $sidebarInitial = strtoupper(substr($sidebarDisplayName, 0, 1));
+        ?>
+        <a href="<?= $base_url; ?>/index.php?url=admin/pengaturan-akun"
+           class="flex items-center gap-3 px-3 py-2 bg-emerald-900/40 rounded-xl hover:bg-emerald-900/60 transition-colors cursor-pointer"
+           aria-label="Buka Pengaturan Akun Saya">
+            <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center font-bold text-white text-sm shrink-0">
+                <?= htmlspecialchars($sidebarInitial, ENT_QUOTES, 'UTF-8'); ?>
             </div>
-        </div>
-        <a href="<?= $base_url; ?>/index.php?url=admin/auth/login" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium text-red-200 hover:bg-red-500/20 hover:text-white transition-all">
+            <div class="min-w-0">
+                <p class="text-xs font-bold text-white truncate"><?= htmlspecialchars($sidebarDisplayName, ENT_QUOTES, 'UTF-8'); ?></p>
+                <p class="text-[10px] text-emerald-200"><?= htmlspecialchars($sidebarRoleLabel, ENT_QUOTES, 'UTF-8'); ?></p>
+            </div>
+        </a>
+        <a href="<?= $base_url; ?>/index.php?url=admin/logout" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium text-red-200 hover:bg-red-500/20 hover:text-white transition-all">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
             Keluar
         </a>

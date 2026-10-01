@@ -22,34 +22,50 @@ document.addEventListener("DOMContentLoaded", function() {
     revealElements.forEach(el => revealObserver.observe(el));
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-        // --- LOGIKA SLIDESHOW HERO SECTION ---
-        const heroBg = document.getElementById('hero-bg');
-        
-        // Siapkan array gambar (Pastikan gambar-gambar ini ada di folder Anda)
-        // Anda bisa mengganti namanya sesuai foto yang Anda miliki
-        const images = [
-            'assets/images/Hero.png', 
-            'assets/images/galeri1.jpg', 
-            'assets/images/potensi1.jpg'
-        ];
-        
-        let currentIndex = 0;
+document.addEventListener("DOMContentLoaded", function () {
+    const heroBg1 = document.getElementById("hero-bg-1");
+    const heroBg2 = document.getElementById("hero-bg-2");
 
-        setInterval(() => {
-            // Turunkan opacity (memudar menjadi hitam/gelap)
-            heroBg.style.opacity = 0.3;
-            
-            setTimeout(() => {
-                // Pindah ke gambar selanjutnya
-                currentIndex = (currentIndex + 1) % images.length;
-                heroBg.style.backgroundImage = `url('${images[currentIndex]}')`;
-                
-                // Naikkan opacity kembali (muncul gambar baru)
-                heroBg.style.opacity = 1;
-            }, 500); // Tunggu 0.5 detik saat memudar sebelum mengganti gambar
-            
-        }, 5000); // Ganti gambar setiap 5 detik
-    });
+    if (!heroBg1 || !heroBg2) return;
 
-    
+    const images = [
+        "assets/images/Hero.png",
+        "assets/images/galeri1.jpg",
+        "assets/images/galeri2.jpg"
+    ];
+
+    let currentIndex = 0;
+    let activeLayer = 1;
+
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % images.length;
+
+        if (activeLayer === 1) {
+            // Siapkan gambar berikutnya di layer kedua
+            heroBg2.style.backgroundImage =
+                `url('${images[currentIndex]}')`;
+
+            // Fade dari layer 1 ke layer 2
+            heroBg2.classList.remove("opacity-0");
+            heroBg2.classList.add("opacity-100");
+
+            heroBg1.classList.remove("opacity-100");
+            heroBg1.classList.add("opacity-0");
+
+            activeLayer = 2;
+        } else {
+            // Siapkan gambar berikutnya di layer pertama
+            heroBg1.style.backgroundImage =
+                `url('${images[currentIndex]}')`;
+
+            // Fade dari layer 2 ke layer 1
+            heroBg1.classList.remove("opacity-0");
+            heroBg1.classList.add("opacity-100");
+
+            heroBg2.classList.remove("opacity-100");
+            heroBg2.classList.add("opacity-0");
+
+            activeLayer = 1;
+        }
+    }, 5000);
+});

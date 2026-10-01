@@ -1,5 +1,3 @@
-<?php include '../app/views/layouts/header.php'; ?>
-
 <?php
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
 $base_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
@@ -46,13 +44,10 @@ function galeriPublicJson($value)
                         class="w-full h-64 object-cover transform transition-transform duration-700 group-hover:scale-110"
                     >
 
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-90 transition-opacity duration-300"></div>
-
-                    <div class="absolute bottom-0 left-0 p-5 transform transition-transform duration-300 group-hover:-translate-y-1">
-                        <h3 class="text-white font-medium text-sm md:text-base">
-                            <?= htmlspecialchars($judul, ENT_QUOTES, 'UTF-8'); ?>
-                        </h3>
-                    </div>
+                    <!-- Overlay gradasi dan teks judul yang diperbesar ukurannya -->
+                        <div class="absolute inset-0 bg-black/50 hover:bg-black/60 transition-colors flex items-end justify-center p-6">
+                            <p class="text-white text-xl md:text-xl font-bold leading-snug text-center line-clamp-3 drop-shadow-md" style="font-size: 1.25rem !important; line-height: 1.4 !important;"><?= htmlspecialchars($judul, ENT_QUOTES, 'UTF-8'); ?></p>
+                        </div>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -146,4 +141,3 @@ function galeriPublicJson($value)
 
 <script src="<?= htmlspecialchars($base_url . '/assets/js/galeri.js', ENT_QUOTES, 'UTF-8'); ?>"></script>
 
-<?php include '../app/views/layouts/footer.php'; ?>

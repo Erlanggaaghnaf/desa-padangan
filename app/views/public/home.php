@@ -4,9 +4,10 @@ $base_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['
 ?>
 
 <!-- HERO SECTION (Rasio proporsional desktop mendekati 1440x800px) -->
-<section id="hero-section" class="relative w-full h-[65vh] md:h-[75vh] lg:h-[800px] bg-cover bg-center flex items-center justify-center text-center px-4 overflow-hidden" 
-         style="background-image: url('<?= $base_url; ?>/assets/images/Hero.png');">
-
+<section id="hero-section" class="relative w-full h-[65vh] md:h-[75vh] lg:h-[800px] bg-cover bg-center flex items-center justify-center text-center px-4 overflow-hidden">
+    <!-- HERO BACKGROUND LAYER 1 -->
+    <div id="hero-bg-1" class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-100 transition-opacity duration-[1500ms] ease-in-out" style="background-image: url('<?= $base_url; ?>/assets/images/Hero.png');"></div>
+    <div id="hero-bg-2" class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-0 transition-opacity duration-[1500ms] ease-in-out"></div>
     <div class="absolute inset-0 bg-black/50 z-10"></div>
     <div class="relative z-20 text-white max-w-3xl">
         <p class="text-sm font-semibold drop-shadow-lg md:text-base uppercase tracking-wider mb-2 reveal-up">Selamat Datang di</p>

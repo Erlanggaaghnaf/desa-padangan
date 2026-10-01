@@ -1,5 +1,3 @@
-<?php include '../app/views/layouts/header.php'; ?>
-
 <!-- HEADER HALAMAN (Diberi padding atas ekstra pt-32 agar tidak tertutup navbar fixed) -->
 <section class="bg-[#F7F9FC] pt-32 pb-12 px-4 md:px-8 lg:px-[120px]">
     <h1 class="text-3xl md:text-5xl font-extrabold text-[#172033] mb-4 reveal-left">Informasi Desa</h1>
@@ -180,5 +178,3 @@
     </section>
 
 </main>
-
-<?php include '../app/views/layouts/footer.php'; ?>

@@ -129,8 +129,12 @@ $data = $data ?? ['statistik' => ['total' => 0, 'selesai' => 0]];
                             </svg>
                         </span>
                         <select onchange="changeSemester(this)" class="bg-transparent focus:outline-none cursor-pointer">
-                            <option value="2" <?= (isset($data['selected_semester']) && $data['selected_semester'] == 2) ? 'selected' : ''; ?>>Juli 2026 - Des 2026</option>
-                            <option value="1" <?= (isset($data['selected_semester']) && $data['selected_semester'] == 1) ? 'selected' : ''; ?>>Januari 2026 - Juni 2026</option>
+                            <option value="2" <?= (isset($data['selected_semester']) && $data['selected_semester'] == 2) ? 'selected' : ''; ?>>
+                                Juli <?= $data['current_year']; ?> - Desember <?= $data['current_year']; ?>
+                            </option>
+                            <option value="1" <?= (isset($data['selected_semester']) && $data['selected_semester'] == 1) ? 'selected' : ''; ?>>
+                                Januari <?= $data['current_year']; ?> - Juni <?= $data['current_year']; ?>
+                            </option>
                         </select>
                     </div>
                 </div>

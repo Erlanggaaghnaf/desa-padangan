@@ -87,11 +87,9 @@ $csrf = $csrf_token ?? '';
                                         <?php if ($isCurrent): ?>
                                             <a href="<?= $base_url; ?>/index.php?url=admin/pengaturan-akun" class="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-[#2F855A] hover:bg-emerald-50 transition-colors">Pengaturan Akun</a>
                                         <?php else: ?>
-                                            <form action="<?= $base_url; ?>/index.php?url=admin/hapus-admin" method="POST" onsubmit="return confirm('Hapus akun <?= htmlspecialchars($account['username'], ENT_QUOTES, 'UTF-8'); ?> secara permanen?');">
-                                                <input type="hidden" name="_csrf" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8'); ?>">
-                                                <input type="hidden" name="id" value="<?= (int) $account['id']; ?>">
-                                                <button type="submit" class="inline-flex items-center gap-2 rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-[#D92D20] hover:bg-red-50 transition-colors">Hapus</button>
-                                            </form>
+                                            <button type="button" onclick='openDeleteAccountModal(<?= (int) $account['id']; ?>,<?= json_encode((string) $account['username'],JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?> )' class="inline-flex items-center gap-2 rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-[#D92D20] hover:bg-red-50 transition-colors">
+                                                Hapus
+                                            </button>
                                         <?php endif; ?>
                                     </div>
                                 </td>
@@ -107,8 +105,108 @@ $csrf = $csrf_token ?? '';
     </div>
 </main>
 
+<!-- Modal Hapus Akun -->
+<div id="deleteAccountModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 text-center transform scale-95 transition-transform duration-300">
+        <form action="<?= $base_url; ?>/index.php?url=admin/hapus-admin" method="POST">
+            <input
+                type="hidden"
+                name="_csrf"
+                value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8'); ?>"
+            >
+
+            <input
+                type="hidden"
+                name="id"
+                id="deleteAccountId"
+                value=""
+            >
+
+            <div class="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4 text-red-500 border border-red-100">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 01-1 1v3M4 7h16"
+                    ></path>
+                </svg>
+            </div>
+
+            <h3 class="text-lg font-extrabold text-[#172033] mb-2">
+                Hapus akun?
+            </h3>
+
+            <p class="text-xs text-gray-500 mb-6">
+                Apakah Anda yakin ingin menghapus akun
+                <strong id="deleteAccountUsername" class="text-[#172033]"></strong>?
+                <br>
+                Tindakan ini tidak dapat dibatalkan.
+            </p>
+
+            <div class="flex items-center justify-center gap-3">
+                <button
+                    type="button"
+                    onclick="closeDeleteAccountModal()"
+                    class="flex-1 py-2.5 rounded-xl border border-red-200 text-red-600 font-semibold text-xs hover:bg-red-50"
+                >
+                    Batal
+                </button>
+
+                <button
+                    type="submit"
+                    class="flex-1 py-2.5 rounded-xl bg-red-600 text-white font-semibold text-xs hover:bg-red-700"
+                >
+                    Hapus
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- Skrip JavaScript untuk Waktu Real-time & Auto-hide Alert -->
 <script>
+    function openDeleteAccountModal(id, username) {
+        const modal = document.getElementById('deleteAccountModal');
+        const idInput = document.getElementById('deleteAccountId');
+        const usernameEl = document.getElementById('deleteAccountUsername');
+
+        if (!modal || !idInput || !usernameEl) {
+            return;
+        }
+
+        idInput.value = id;
+        usernameEl.textContent = username;
+
+        modal.classList.remove('hidden');
+
+        setTimeout(() => {
+            modal.classList.remove('opacity-0');
+
+            if (modal.children[0]) {
+                modal.children[0].classList.remove('scale-95');
+            }
+        }, 10);
+    }
+
+    function closeDeleteAccountModal() {
+        const modal = document.getElementById('deleteAccountModal');
+
+        if (!modal) {
+            return;
+        }
+
+        modal.classList.add('opacity-0');
+
+        if (modal.children[0]) {
+            modal.children[0].classList.add('scale-95');
+        }
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
+    }
+
     // Skrip untuk waktu real-time
     function updateRealtimeClock() {
         const now = new Date();

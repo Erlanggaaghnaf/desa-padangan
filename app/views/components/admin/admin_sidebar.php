@@ -6,7 +6,7 @@ $current_url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : 'admin/dashboard
 ?>
 
 <!-- SIDEBAR UTAMA -->
-<aside id="admin-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#1B5E3A] text-white flex flex-col justify-between shadow-lg transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+<aside id="admin-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#2F855A] text-white flex flex-col justify-between shadow-lg transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
     <div>
         <div class="p-5 flex items-center justify-between border-b border-emerald-800/60">
             <div class="flex items-center gap-3">
@@ -75,7 +75,7 @@ $current_url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : 'admin/dashboard
     </div>
 
     <!-- Profil Admin & Tombol Keluar di Bawah Sidebar -->
-    <div class="p-4 border-t border-emerald-800/60 space-y-3 bg-[#175333]">
+    <div class="p-4 space-y-3 bg-[#267A52]">
         <?php
         $sidebarUsername = (string) ($_SESSION['admin_auth']['username'] ?? '');
         $sidebarDisplayName = $sidebarUsername !== '' ? $sidebarUsername : 'Admin';
@@ -83,7 +83,7 @@ $current_url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : 'admin/dashboard
         $sidebarInitial = strtoupper(substr($sidebarDisplayName, 0, 1));
         ?>
         <a href="<?= $base_url; ?>/index.php?url=admin/pengaturan-akun"
-           class="flex items-center gap-3 px-3 py-2 bg-emerald-900/40 rounded-xl hover:bg-emerald-900/60 transition-colors cursor-pointer"
+           class="flex items-center gap-3 px-3 py-2 bg-emerald-900/30 rounded-xl hover:bg-emerald-900/60 transition-colors cursor-pointer"
            aria-label="Buka Pengaturan Akun Saya">
             <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center font-bold text-white text-sm shrink-0">
                 <?= htmlspecialchars($sidebarInitial, ENT_QUOTES, 'UTF-8'); ?>

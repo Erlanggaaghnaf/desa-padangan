@@ -69,8 +69,11 @@ class VisitorModel {
     /**
      * Ambil data statistik bulanan untuk grafik berdasarkan semester
      */
-    public function getMonthlyStats($year = 2026, $semester = 2) {
+    public function getMonthlyStats($year = null, $semester = 2) {
         $conn = $this->db->getConnection();
+
+        // Jika tahun tidak diberikan, gunakan tahun berjalan.
+        $year = $year !== null ? (int) $year : (int) date('Y');
         
         // Tentukan rentang bulan (Semester 1 atau Semester 2)
         $months = ($semester == 1) ? [1, 2, 3, 4, 5, 6] : [7, 8, 9, 10, 11, 12];

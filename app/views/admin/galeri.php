@@ -110,25 +110,32 @@ function galeriAdminJson($value)
 
                         <div class="absolute top-3 right-3">
                             <button
+                                id="btn-dots-<?= $id; ?>"
                                 type="button"
-                                onclick="toggleDropdown(event, 'dropdown-<?= $id; ?>')"
-                                class="w-8 h-8 rounded-full bg-white/90 text-gray-700 flex items-center justify-center hover:bg-white shadow-sm dropdown-btn"
+                                onclick="toggleDropdown(event, 'dropdown-<?= $id; ?>', 'btn-dots-<?= $id; ?>')"
+                                class="btn-dots w-9 h-9 flex items-center justify-center text-gray-400 hover:text-gray-800 border border-gray-200 rounded-lg transition-colors focus:outline-none bg-white"
                                 aria-label="Opsi foto"
                             >
-                                <svg class="w-5 h-5 pointer-events-none" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
-                                </svg>
+                                ⋮
                             </button>
 
-                            <div id="dropdown-<?= $id; ?>" class="dropdown-menu hidden absolute right-0 mt-2 w-32 bg-white rounded-xl shadow-lg border border-gray-100 z-10 overflow-hidden">
+                            <div
+                                id="dropdown-<?= $id; ?>"
+                                class="action-menu hidden absolute top-0 right-0 z-50 bg-white rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.12)] p-1.5 w-[110px] flex flex-col gap-1.5 border border-gray-100"
+                            >
                                 <button
                                     type="button"
                                     onclick='openEditModal(<?= $id; ?>, <?= galeriAdminJson($judul); ?>, <?= galeriAdminJson($fotoUrl); ?>)'
-                                    class="w-full text-left px-4 py-2.5 text-xs font-semibold text-[#2F855A] hover:bg-gray-50 flex items-center gap-2"
+                                    class="w-full px-2 py-1.5 text-[11px] font-bold text-[#2F855A] bg-white border border-[#2F855A] rounded-lg hover:bg-green-50 flex items-center justify-center gap-1.5 transition-colors shadow-sm"
                                 >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen w-4 h-4 shrink-0">
-                                        <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                                        <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/>
+                                    <svg
+                                        class="w-3.5 h-3.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15H9v-3l9.5-9.5z"></path>
                                     </svg>
                                     Edit
                                 </button>
@@ -136,19 +143,22 @@ function galeriAdminJson($value)
                                 <button
                                     type="button"
                                     onclick='openDeleteModal(<?= $id; ?>, <?= galeriAdminJson($judul); ?>)'
-                                    class="w-full text-left px-4 py-2.5 text-xs font-semibold text-white bg-[#D92D20] hover:bg-[#B42318] flex items-center gap-2 transition-colors"
+                                    class="w-full px-2 py-1.5 text-[11px] font-bold text-white bg-[#DC2626] hover:bg-red-700 rounded-lg flex items-center justify-center gap-1.5 transition-colors shadow-sm"
                                 >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash w-4 h-4 shrink-0">
-                                        <path d="M10 11v6"/>
-                                        <path d="M14 11v6"/>
-                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
-                                        <path d="M3 6h18"/>
-                                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                    <svg
+                                        class="w-3.5 h-3.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7"></path>
+                                        <path d="M10 11v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 01-1 1v3M4 7h16"></path>
                                     </svg>
                                     Hapus
                                 </button>
                             </div>
                         </div>
+
                     </div>
                 <?php endforeach; ?>
 
@@ -422,17 +432,28 @@ function galeriAdminJson($value)
             document.getElementById('current-time').innerText = now.toLocaleTimeString('id-ID', optionsTime) + ' WIB';
         }
 
-        function toggleDropdown(event, dropdownId) {
+        function toggleDropdown(event, dropdownId, buttonId) {
             event.stopPropagation();
+
             closeAllDropdowns();
+
             const dropdown = document.getElementById(dropdownId);
-            if (dropdown) {
-                dropdown.classList.toggle('hidden');
+            const button = document.getElementById(buttonId);
+
+            if (dropdown && button) {
+                dropdown.classList.remove('hidden');
+                button.classList.add('opacity-0');
             }
         }
 
         function closeAllDropdowns() {
-            document.querySelectorAll('.dropdown-menu').forEach((menu) => menu.classList.add('hidden'));
+            document.querySelectorAll('.action-menu').forEach((menu) => {
+                menu.classList.add('hidden');
+            });
+
+            document.querySelectorAll('.btn-dots').forEach((button) => {
+                button.classList.remove('opacity-0');
+            });
         }
 
         function openModal(modalId) {

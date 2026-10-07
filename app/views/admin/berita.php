@@ -104,16 +104,51 @@ $formatDate = static function ($date) {
                     <div class="relative h-40 w-full flex-shrink-0">
                         <img src="<?= $imageUrl; ?>" alt="<?= htmlspecialchars($item['judul'], ENT_QUOTES, 'UTF-8'); ?>" class="w-full h-full object-cover" loading="lazy">
                         <div class="absolute top-3 right-3">
-                            <button type="button" onclick="toggleDropdown(event, 'dropdown-<?= (int) $item['id']; ?>')" class="w-8 h-8 rounded-full bg-white/90 text-gray-700 flex items-center justify-center hover:bg-white shadow-sm dropdown-btn">
-                                <svg class="w-5 h-5 pointer-events-none" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path></svg>
+                            <button
+                                id="btn-dots-<?= (int) $item['id']; ?>"
+                                type="button"
+                                onclick="toggleDropdown(event, 'dropdown-<?= (int) $item['id']; ?>', 'btn-dots-<?= (int) $item['id']; ?>')"
+                                class="btn-dots w-9 h-9 flex items-center justify-center text-gray-400 hover:text-gray-800 border border-gray-200 rounded-lg transition-colors focus:outline-none bg-white"
+                                aria-label="Opsi berita"
+                            >
+                                ⋮
                             </button>
-                            <div id="dropdown-<?= (int) $item['id']; ?>" class="dropdown-menu hidden absolute right-0 mt-2 w-36 bg-white rounded-xl shadow-lg border border-gray-100 z-10 overflow-hidden">
-                                <button type="button" onclick='openEditModal(<?= $escapedJson; ?>)' class="w-full text-left px-4 py-2.5 text-xs font-semibold text-[#2F855A] hover:bg-gray-50 flex items-center gap-2">
-                                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+
+                            <div
+                                id="dropdown-<?= (int) $item['id']; ?>"
+                                class="action-menu hidden absolute top-0 right-0 z-50 bg-white rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.12)] p-1.5 w-[110px] flex flex-col gap-1.5 border border-gray-100"
+                            >
+                                <button
+                                    type="button"
+                                    onclick='openEditModal(<?= $escapedJson; ?>)'
+                                    class="w-full px-2 py-1.5 text-[11px] font-bold text-[#2F855A] bg-white border border-[#2F855A] rounded-lg hover:bg-green-50 flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                                >
+                                    <svg
+                                        class="w-3.5 h-3.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15H9v-3l9.5-9.5z"></path>
+                                    </svg>
                                     Edit
                                 </button>
-                                <button type="button" onclick="openDeleteModal(<?= (int) $item['id']; ?>)" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-white bg-[#D92D20] hover:bg-[#B42318] flex items-center gap-2 transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+
+                                <button
+                                    type="button"
+                                    onclick="openDeleteModal(<?= (int) $item['id']; ?>)"
+                                    class="w-full px-2 py-1.5 text-[11px] font-bold text-white bg-[#DC2626] hover:bg-red-700 rounded-lg flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                                >
+                                    <svg
+                                        class="w-3.5 h-3.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7"></path>
+                                        <path d="M10 11v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
                                     Hapus
                                 </button>
                             </div>
@@ -332,24 +367,124 @@ $formatDate = static function ($date) {
 </div>
 
 <!-- Delete Modal -->
-<div id="deleteModal" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/50 p-4">
-    <div class="w-full max-w-md rounded-3xl bg-white shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+<div id="deleteModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 text-center transform scale-95 transition-transform duration-300">
         <form action="<?= $base_url; ?>/index.php?url=admin/berita" method="post">
             <input type="hidden" name="action" value="delete">
             <input id="delete-id" type="hidden" name="id">
             <input type="hidden" name="page" value="<?= $currentPage; ?>">
-            <div class="p-7"><div class="w-12 h-12 rounded-2xl bg-red-50 text-[#D92D20] flex items-center justify-center mb-4"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div><h2 class="text-lg font-extrabold text-[#172033]">Hapus berita?</h2><p class="text-sm text-gray-500 mt-2">Data berita dan file fotonya akan dihapus. Tindakan ini tidak dapat dibatalkan.</p></div>
-            <div class="px-7 py-5 bg-gray-50 border-t border-gray-100 flex justify-end gap-3"><button type="button" onclick="closeModal('deleteModal')" class="px-5 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-700">Batal</button><button type="submit" class="px-5 py-2.5 rounded-xl bg-[#D92D20] text-white text-sm font-bold hover:bg-[#B42318]">Hapus Berita</button></div>
+
+            <div class="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4 text-red-500 border border-red-100">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 01-1 1v3M4 7h16"
+                    ></path>
+                </svg>
+            </div>
+
+            <h3 class="text-lg font-extrabold text-[#172033] mb-2">
+                Hapus berita?
+            </h3>
+
+            <p class="text-xs text-gray-500 mb-6">
+                Data berita dan file fotonya akan dihapus.<br>
+                Tindakan ini tidak dapat dibatalkan.
+            </p>
+
+            <div class="flex items-center justify-center gap-3">
+                <button
+                    type="button"
+                    onclick="closeDeleteModal()"
+                    class="flex-1 py-2.5 rounded-xl border border-red-200 text-red-600 font-semibold text-xs hover:bg-red-50"
+                >
+                    Batal
+                </button>
+
+                <button
+                    type="submit"
+                    class="flex-1 py-2.5 rounded-xl bg-red-600 text-white font-semibold text-xs hover:bg-red-700"
+                >
+                    Hapus
+                </button>
+            </div>
         </form>
     </div>
 </div>
 
 <script>
 function openModal(id){const el=document.getElementById(id);if(!el)return;el.classList.remove('hidden');el.classList.add('flex');document.body.classList.add('modal-open');}
+
 function closeModal(id){const el=document.getElementById(id);if(!el)return;el.classList.add('hidden');el.classList.remove('flex');document.body.classList.remove('modal-open');}
-function closeAllDropdowns(event){document.querySelectorAll('.dropdown-menu').forEach(menu=>{if(!menu.contains(event.target))menu.classList.add('hidden');});}
-function toggleDropdown(event,id){event.stopPropagation();document.querySelectorAll('.dropdown-menu').forEach(menu=>{if(menu.id!==id)menu.classList.add('hidden');});const el=document.getElementById(id);if(el)el.classList.toggle('hidden');}
-function openDeleteModal(id){document.getElementById('delete-id').value=id;document.querySelectorAll('.dropdown-menu').forEach(menu=>menu.classList.add('hidden'));openModal('deleteModal');}
+
+function toggleDropdown(event, id, btnId) {
+    event.stopPropagation();
+
+    closeAllDropdowns();
+
+    const menu = document.getElementById(id);
+    const btn = document.getElementById(btnId);
+
+    if (menu && btn) {
+        menu.classList.remove('hidden');
+        btn.classList.add('opacity-0');
+    }
+}
+
+function closeAllDropdowns() {
+    document.querySelectorAll('.action-menu').forEach(menu => {
+        menu.classList.add('hidden');
+    });
+
+    document.querySelectorAll('.btn-dots').forEach(btn => {
+        btn.classList.remove('opacity-0');
+    });
+}
+
+function openDeleteModal(id) {
+    document.getElementById('delete-id').value = id;
+    closeAllDropdowns();
+
+    const modal = document.getElementById('deleteModal');
+
+    if (!modal) {
+        return;
+    }
+
+    document.body.classList.add('modal-open');
+    modal.classList.remove('hidden');
+
+    setTimeout(() => {
+        modal.classList.remove('opacity-0');
+
+        if (modal.children[0]) {
+            modal.children[0].classList.remove('scale-95');
+        }
+    }, 10);
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteModal');
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.add('opacity-0');
+
+    if (modal.children[0]) {
+        modal.children[0].classList.add('scale-95');
+    }
+
+    document.body.classList.remove('modal-open');
+
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 300);
+}
+
 function openEditModal(data){
     document.getElementById('edit-id').value = data.id;
     document.getElementById('edit-judul').value = data.judul || '';
@@ -361,6 +496,7 @@ function openEditModal(data){
     document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.add('hidden'));
     openModal('editModal');
 }
+
 function previewBeritaImage(input, imgId) {
     const file = input.files && input.files[0];
     const img = document.getElementById(imgId);
@@ -403,6 +539,7 @@ function previewBeritaImage(input, imgId) {
 
     wrap.classList.remove('hidden');
 }
+
 function updateClock(){const now=new Date();const date=new Intl.DateTimeFormat('id-ID',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).format(now);const time=new Intl.DateTimeFormat('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZone:'Asia/Jakarta'}).format(now);document.getElementById('current-date').textContent=date;document.getElementById('current-time').textContent=time+' WIB';}
 updateClock();setInterval(updateClock,1000);
 setTimeout(()=>{const toast=document.getElementById('berita-toast');if(toast){toast.style.transition='opacity .35s ease, transform .35s ease';toast.style.opacity='0';toast.style.transform='translate(-50%, -10px)';setTimeout(()=>toast.remove(),400);}},3500);

@@ -335,66 +335,214 @@
         <?php 
             // Memetakan data dari database ke array asosiatif berdasarkan nama agama
             $agamaDb = [];
+
             if (!empty($data['desa']['agama'])) {
                 foreach ($data['desa']['agama'] as $item) {
                     $agamaDb[strtolower(trim($item['agama']))] = $item['jumlah'];
                 }
             }
 
-            // Fungsi pembantu untuk mengambil jumlah berdasarkan agama
+            // Fungsi pembantu untuk mengambil jumlah berdasarkan agama.
+            // Tetap menggunakan sumber data dari database dan default ke 0
+            // jika kategori belum memiliki data.
             function getJumlahAgama($namaAgama, $dataMap) {
                 $key = strtolower(trim($namaAgama));
-                return isset($dataMap[$key]) ? number_format($dataMap[$key], 0, ',', '.') : '0';
+
+                // Kompatibilitas dengan data lama yang mungkin masih menggunakan "Budha"
+                if ($key === 'buddha' && !isset($dataMap[$key]) && isset($dataMap['budha'])) {
+                    $key = 'budha';
+                }
+
+                return isset($dataMap[$key])
+                    ? number_format($dataMap[$key], 0, ',', '.')
+                    : '0';
             }
         ?>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 reveal-up">
-            
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 reveal-up">
+
             <!-- Islam -->
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center flex flex-col items-center justify-center">
                 <div class="w-10 h-10 bg-green-50 rounded-lg text-[#2F855A] flex items-center justify-center mb-4">
-                    <svg width="27" height="30" viewBox="0 0 27 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M13.6908 1.33398C13.3372 1.94663 13.2414 2.67467 13.4246 3.35793C13.6078 4.04118 14.0548 4.6237 14.6675 4.97732C15.2801 5.33094 16.0082 5.4267 16.6914 5.24354C17.3747 5.06038 17.9572 4.6133 18.3108 4.00065M16.0002 5.33398V9.33398M6.66683 28.0007H22.6668C23.3741 28.0007 24.0524 27.7197 24.5524 27.2196C25.0525 26.7195 25.3335 26.0412 25.3335 25.334V16.0007C24.4508 14.0047 23.1122 12.33 21.4668 11.1607C19.7668 9.96065 17.8962 9.33398 16.0002 9.33398M16.0002 9.33398C14.1042 9.33398 12.2322 9.96065 10.5335 11.1607C8.89083 12.3313 7.55083 14.006 6.66683 16.0007H25.3335M18.6668 28.0007V24.0007C18.6668 23.2934 18.3859 22.6151 17.8858 22.115C17.3857 21.6149 16.7074 21.334 16.0002 21.334C15.2929 21.334 14.6146 21.6149 14.1145 22.115C13.6144 22.6151 13.3335 23.2934 13.3335 24.0007V28.0007M1.3335 10.6673H6.66683M6.66683 28.0007V6.66732C6.66683 5.63235 6.42586 4.6116 5.96301 3.68589C5.50016 2.76019 4.82814 1.95496 4.00016 1.33398C3.17219 1.95496 2.50017 2.76019 2.03731 3.68589C1.57446 4.6116 1.3335 5.63235 1.3335 6.66732V25.334C1.3335 26.0412 1.61445 26.7195 2.11454 27.2196C2.61464 27.7197 3.29292 28.0007 4.00016 28.0007H6.66683Z" stroke="#2F855A" stroke-width="2.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                    <svg
+                        class="w-6 h-6"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M4 21H20M6 18V9M18 18V9M3 9H21M4 9L12 4L20 9M9 18V15C9 13.3431 10.3431 12 12 12C13.6569 12 15 13.3431 15 15V18"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                        <path
+                            d="M12 4V2"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                        />
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-[#172033]"><?= getJumlahAgama('Islam', $agamaDb) ?></h3>
+
+                <h3 class="text-2xl font-bold text-[#172033]">
+                    <?= getJumlahAgama('Islam', $agamaDb) ?>
+                </h3>
                 <p class="text-sm text-gray-500 mt-1">Islam</p>
             </div>
 
             <!-- Kristen -->
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center flex flex-col items-center justify-center">
                 <div class="w-10 h-10 bg-green-50 rounded-lg text-[#2F855A] flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    <svg
+                        class="w-6 h-6"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M12 4V20M6 10H18"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                        />
+                    </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-[#172033]"><?= getJumlahAgama('Kristen', $agamaDb) ?></h3>
+
+                <h3 class="text-2xl font-bold text-[#172033]">
+                    <?= getJumlahAgama('Kristen', $agamaDb) ?>
+                </h3>
                 <p class="text-sm text-gray-500 mt-1">Kristen</p>
             </div>
 
             <!-- Katolik -->
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center flex flex-col items-center justify-center">
                 <div class="w-10 h-10 bg-green-50 rounded-lg text-[#2F855A] flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"></path></svg>
+                    <svg
+                        class="w-6 h-6"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                    >
+                        <!-- Simplified crucifix -->
+                        <circle
+                            cx="12"
+                            cy="7"
+                            r="1.4"
+                            fill="currentColor"
+                        />
+                        <path
+                            d="M12 8.5V19M7 11.5H17M9.5 19H14.5"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                        <path
+                            d="M10 11C10.5 12.2 13.5 12.2 14 11"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                        />
+                    </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-[#172033]"><?= getJumlahAgama('Katolik', $agamaDb) ?></h3>
+
+                <h3 class="text-2xl font-bold text-[#172033]">
+                    <?= getJumlahAgama('Katolik', $agamaDb) ?>
+                </h3>
                 <p class="text-sm text-gray-500 mt-1">Katolik</p>
             </div>
 
             <!-- Hindu -->
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center flex flex-col items-center justify-center">
                 <div class="w-10 h-10 bg-green-50 rounded-lg text-[#2F855A] flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <svg
+                        class="w-6 h-6"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                    >
+                        <path d="M15 2L13.5 3.5L15 5L16.5 3.5L15 2ZM11 3C10 9 17 10 20 6L18 4.5C17 6 13 8 11 3ZM9 7C7 7 4.5 8.5 4.5 8.5L6 11C7 10 9 9.5 10 10C12 11 9 13 7 12V15.5C10 14 12 16 11 17.5C8 22 3 16 3 13C1 19 6 22 9 22C12 22 14 20 12.5 15H14C12.5 19.5 18 24 21 18C22 16 22 9.5 17 9.5C13 9.5 14 15 10.5 13.5C14 10 12 7 9 7ZM19 12C22 15 15 21 15 15C15 13 17 10.5 19 12Z"/>
+                    </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-[#172033]"><?= getJumlahAgama('Hindu', $agamaDb) ?></h3>
+
+                <h3 class="text-2xl font-bold text-[#172033]">
+                    <?= getJumlahAgama('Hindu', $agamaDb) ?>
+                </h3>
                 <p class="text-sm text-gray-500 mt-1">Hindu</p>
             </div>
 
-            <!-- Budha -->
+            <!-- Buddha -->
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center flex flex-col items-center justify-center">
                 <div class="w-10 h-10 bg-green-50 rounded-lg text-[#2F855A] flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg
+                        class="w-6 h-6"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                    >
+                        <!-- Dharma Wheel -->
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="3"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="8"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+                        <path
+                            d="M12 4V20M4 12H20M6.34 6.34L17.66 17.66M17.66 6.34L6.34 17.66"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                        />
+                    </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-[#172033]"><?= getJumlahAgama('Budha', $agamaDb) ?></h3>
-                <p class="text-sm text-gray-500 mt-1">Budha</p>
+
+                <h3 class="text-2xl font-bold text-[#172033]">
+                    <?= getJumlahAgama('Buddha', $agamaDb) ?>
+                </h3>
+                <p class="text-sm text-gray-500 mt-1">Buddha</p>
+            </div>
+
+            <!-- Konghucu -->
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center flex flex-col items-center justify-center">
+                <div class="w-10 h-10 bg-green-50 rounded-lg text-[#2F855A] flex items-center justify-center mb-4">
+                    <svg
+                        class="w-6 h-6"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                    >
+                        <!-- 儒 = Ru / Confucian tradition -->
+                        <text
+                            x="12"
+                            y="17"
+                            text-anchor="middle"
+                            font-size="16"
+                            font-weight="700"
+                            font-family="serif"
+                        >儒</text>
+                    </svg>
+                </div>
+
+                <h3 class="text-2xl font-bold text-[#172033]">
+                    <?= getJumlahAgama('Konghucu', $agamaDb) ?>
+                </h3>
+                <p class="text-sm text-gray-500 mt-1">Konghucu</p>
             </div>
 
         </div>

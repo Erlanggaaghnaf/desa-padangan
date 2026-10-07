@@ -140,41 +140,41 @@
 
         <!-- Bagan Struktur (Gambar) -->
         <div class="bg-white p-4 md:p-8 rounded-3xl shadow-sm border border-gray-100 mb-12 flex justify-center reveal-up">
-            <img src="assets/images/bagan-sotk.png" alt="Bagan Struktur Organisasi" class="max-w-full h-auto object-contain">
+            <img src="assets/images/SOTK.jpeg" alt="Bagan Struktur Organisasi" class="max-w-full h-auto object-contain">
         </div>
 
         <!-- Grid Perangkat Desa (Sesuai Desain: 4 Kolom) -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 reveal-up">
+        <!-- <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 reveal-up"> -->
             <!-- Card 1 (Kepala Desa) -->
-            <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
+            <!-- <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
                 <img src="assets/images/perangkat1.jpg" alt="Perangkat" class="w-full h-48 md:h-64 object-cover object-top mb-4">
                 <h4 class="font-bold text-[#172033] text-sm md:text-base px-2 truncate">Slamet Riyadi, S.Pd</h4>
                 <p class="text-[11px] md:text-sm font-semibold text-[#2F855A] mt-1">Kepala Desa</p>
-            </div>
+            </div> -->
             
             <!-- Card 2 -->
-            <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
+            <!-- <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
                 <img src="assets/images/perangkat2.jpg" alt="Perangkat" class="w-full h-48 md:h-64 object-cover object-top mb-4">
                 <h4 class="font-bold text-[#172033] text-sm md:text-base px-2 truncate">Arief Rahman</h4>
                 <p class="text-[11px] md:text-sm font-semibold text-[#2F855A] mt-1">Sekretaris Desa</p>
-            </div>
+            </div> -->
 
             <!-- Card 3 -->
-            <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
+            <!-- <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
                 <img src="assets/images/perangkat3.jpg" alt="Perangkat" class="w-full h-48 md:h-64 object-cover object-top mb-4">
                 <h4 class="font-bold text-[#172033] text-sm md:text-base px-2 truncate">Dwi Santoso</h4>
                 <p class="text-[11px] md:text-sm font-semibold text-[#2F855A] mt-1">Kasi Pemerintahan</p>
-            </div>
+            </div> -->
 
             <!-- Card 4 -->
-            <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
+            <!-- <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
                 <img src="assets/images/perangkat4.jpg" alt="Perangkat" class="w-full h-48 md:h-64 object-cover object-top mb-4">
                 <h4 class="font-bold text-[#172033] text-sm md:text-base px-2 truncate">Budi Santoso</h4>
                 <p class="text-[11px] md:text-sm font-semibold text-[#2F855A] mt-1">Kaur Keuangan</p>
-            </div>
+            </div> -->
 
             <!-- Silakan copy-paste struktur Card di atas untuk menambahkan 4 perangkat desa lainnya di baris bawah -->
-        </div>
+        <!-- </div> -->
     </section>
 
 </main>

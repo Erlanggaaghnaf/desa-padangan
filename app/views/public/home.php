@@ -38,7 +38,7 @@ $base_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['
     </section>
 
     <!-- 5. SOTK (Struktur Organisasi) -->
-    <section>
+    <!-- <section>
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-2 reveal-up">
             <div class="reveal-left">
                 <h3 class="text-2xl font-bold text-[#172033]">SOTK</h3>
@@ -69,7 +69,7 @@ $base_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['
                 <p class="text-xs md:text-sm font-semibold text-[#2F855A] mt-1">Kepala Desa</p>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- 6. PETA WILAYAH -->
     <section class="flex flex-col lg:flex-row justify-between items-center gap-8 reveal-up">

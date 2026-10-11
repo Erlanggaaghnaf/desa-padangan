@@ -185,12 +185,56 @@ $json_data = json_encode($data_array);
                 </div>
 
                 <!-- Pagination Dinamis -->
-                <div class="pt-4 flex items-center justify-center gap-2" id="paginationContainer">
-                    <button onclick="prevPage()" class="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer">&larr;</button>
-                    <div id="pageNumbers" class="flex gap-1.5 items-center">
-                        <!-- Nomor halaman digenerate otomatis -->
-                    </div>
-                    <button onclick="nextPage()" class="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer">&rarr;</button>
+                <div class="pt-2 flex items-center justify-center gap-2"
+                    id="paginationContainer">
+
+                    <!-- Chevron kiri -->
+                    <button
+                        type="button"
+                        id="prevPageButton"
+                        onclick="prevPage()"
+                        disabled
+                        aria-label="Halaman sebelumnya"
+                        class="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-xl text-gray-300 cursor-not-allowed"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="w-5 h-5">
+                            <path d="m15 18-6-6 6-6"/>
+                        </svg>
+                    </button>
+
+                    <!-- Nomor halaman -->
+                    <div id="pageNumbers" class="flex gap-1.5 items-center"></div>
+
+                    <!-- Chevron kanan -->
+                    <button
+                        type="button"
+                        id="nextPageButton"
+                        onclick="nextPage()"
+                        disabled
+                        aria-label="Halaman berikutnya"
+                        class="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-xl text-gray-300 cursor-not-allowed"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="w-5 h-5">
+                            <path d="m9 18 6-6-6-6"/>
+                        </svg>
+                    </button>
+
                 </div>
 
             </div>
@@ -198,9 +242,7 @@ $json_data = json_encode($data_array);
         </div>
     </main>
 
-    <!-- ========================================== -->
     <!-- MODAL POPUP: DETAIL & UBAH STATUS PENGADUAN -->
-    <!-- ========================================== -->
     <div id="detailModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 transform transition-all relative">
             
@@ -348,8 +390,15 @@ $json_data = json_encode($data_array);
             document.getElementById('statSelesai').innerText = complaintsData.filter(i => i.status === 'Selesai').length;
 
             // Hitung Pagination
-            let totalPages = Math.ceil(filtered.length / rowsPerPage) || 1;
-            if (currentPage > totalPages) currentPage = totalPages;
+            const totalPages = Math.max(
+                1,
+                Math.ceil(filtered.length / rowsPerPage)
+            );
+
+            currentPage = Math.min(
+                Math.max(1, currentPage),
+                totalPages
+            );
 
             let start = (currentPage - 1) * rowsPerPage;
             let paginatedData = filtered.slice(start, start + rowsPerPage);

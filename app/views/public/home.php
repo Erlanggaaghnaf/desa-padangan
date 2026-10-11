@@ -37,40 +37,6 @@ $base_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['
         </div>
     </section>
 
-    <!-- 5. SOTK (Struktur Organisasi) -->
-    <!-- <section>
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-2 reveal-up">
-            <div class="reveal-left">
-                <h3 class="text-2xl font-bold text-[#172033]">SOTK</h3>
-                <p class="text-sm text-gray-500">Profil Struktur Organisasi Tata Kerja Desa Padangan</p>
-            </div>
-            <a href="<?= $base_url; ?>/index.php?url=informasi#Sotk" class="text-sm text-[#2563B8] font-semibold hover:underline reveal-right">Lihat Semua Perangkat &rarr;</a>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 reveal-up">
-            <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
-                <img src="<?= $base_url; ?>/assets/images/perangkat1.jpg" alt="Perangkat" class="w-full h-56 object-cover object-top mb-3">
-                <h4 class="font-bold text-[#172033] text-sm md:text-base px-2">Slamet Riyadi, S.Pd</h4>
-                <p class="text-xs md:text-sm font-semibold text-[#2F855A] mt-1">Kepala Desa</p>
-            </div>
-            <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
-                <img src="<?= $base_url; ?>/assets/images/perangkat1.jpg" alt="Perangkat" class="w-full h-56 object-cover object-top mb-3">
-                <h4 class="font-bold text-[#172033] text-sm md:text-base px-2">Slamet Riyadi, S.Pd</h4>
-                <p class="text-xs md:text-sm font-semibold text-[#2F855A] mt-1">Kepala Desa</p>
-            </div>
-            <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
-                <img src="<?= $base_url; ?>/assets/images/perangkat1.jpg" alt="Perangkat" class="w-full h-56 object-cover object-top mb-3">
-                <h4 class="font-bold text-[#172033] text-sm md:text-base px-2">Slamet Riyadi, S.Pd</h4>
-                <p class="text-xs md:text-sm font-semibold text-[#2F855A] mt-1">Kepala Desa</p>
-            </div>
-            <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
-                <img src="<?= $base_url; ?>/assets/images/perangkat1.jpg" alt="Perangkat" class="w-full h-56 object-cover object-top mb-3">
-                <h4 class="font-bold text-[#172033] text-sm md:text-base px-2">Slamet Riyadi, S.Pd</h4>
-                <p class="text-xs md:text-sm font-semibold text-[#2F855A] mt-1">Kepala Desa</p>
-            </div>
-        </div>
-    </section> -->
-
     <!-- 6. PETA WILAYAH -->
     <section class="flex flex-col lg:flex-row justify-between items-center gap-8 reveal-up">
         <div class="lg:w-1/2 reveal-left">

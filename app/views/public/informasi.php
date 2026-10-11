@@ -39,7 +39,7 @@
             <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-start items-center h-full reveal-left">
                 <h3 class="text-2xl font-bold text-[#172033] mb-6 text-center">Visi</h3>
                 <p class="text-gray-700 text-center font-semibold italic text-lg leading-relaxed">
-                    "Terwujudnya Desa Padangan yang Mandiri, Sejahtera, Berbudaya, dan Agamis Berlandaskan Gotong Royong"
+                    "Terwujudnya Kesejahteraan Masyarakat  Melalui Peningkatan Sumberdaya Manusia Yang Profesional Berdasarkan Iman dan Taqwa."
                 </p>
             </div>
             
@@ -49,19 +49,27 @@
                 <ul class="text-gray-600 space-y-3 text-sm md:text-base">
                     <li class="flex items-start gap-3">
                         <span class="text-[#2F855A] font-bold">1.</span>
-                        Meningkatkan tata kelola pemerintahan desa yang transparan dan akuntabel.
+                        Peningkatan pelayanan pendidikan yang murah dan berkualitas serta pelestarian/pengembangan kebudayaan.
                     </li>
                     <li class="flex items-start gap-3">
                         <span class="text-[#2F855A] font-bold">2.</span>
-                        Mendorong pemberdayaan ekonomi masyarakat berbasis potensi lokal (pertanian dan peternakan).
+                        Peningkatan pelayanan di bidang kesehatan yang murah dan berkualitas.
                     </li>
                     <li class="flex items-start gap-3">
                         <span class="text-[#2F855A] font-bold">3.</span>
-                        Meningkatkan kualitas infrastruktur desa yang memadai dan berkelanjutan.
+                        Mewujudkan pemerintahan yang bersih dan baik, transparan, akuntable, responsif dan demokratis.
                     </li>
                     <li class="flex items-start gap-3">
                         <span class="text-[#2F855A] font-bold">4.</span>
-                        Membina kerukunan, ketentraman, dan kegiatan keagamaan masyarakat.
+                        Peningkatan pembangunan infrastruktur yang berbasis pemerataan pembangunan dan pengembangan wilayah untuk mendorong percepatan pembangunan sektor - sektor yang lain.
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-[#2F855A] font-bold">5.</span>
+                        Pembangunan ekonomi kerakyatan berbasis (UKM, pertanian, peternakan, perikanan, dan pariwisata serta perkebunan) melalui kegiatan kewirausahaan.
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-[#2F855A] font-bold">6.</span>
+                        Pengentasan dan penanggulangan kemiskinan dengan pola terpadu.
                     </li>
                 </ul>
             </div>
@@ -143,38 +151,6 @@
             <img src="assets/images/SOTK.jpeg" alt="Bagan Struktur Organisasi" class="max-w-full h-auto object-contain">
         </div>
 
-        <!-- Grid Perangkat Desa (Sesuai Desain: 4 Kolom) -->
-        <!-- <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 reveal-up"> -->
-            <!-- Card 1 (Kepala Desa) -->
-            <!-- <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
-                <img src="assets/images/perangkat1.jpg" alt="Perangkat" class="w-full h-48 md:h-64 object-cover object-top mb-4">
-                <h4 class="font-bold text-[#172033] text-sm md:text-base px-2 truncate">Slamet Riyadi, S.Pd</h4>
-                <p class="text-[11px] md:text-sm font-semibold text-[#2F855A] mt-1">Kepala Desa</p>
-            </div> -->
-            
-            <!-- Card 2 -->
-            <!-- <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
-                <img src="assets/images/perangkat2.jpg" alt="Perangkat" class="w-full h-48 md:h-64 object-cover object-top mb-4">
-                <h4 class="font-bold text-[#172033] text-sm md:text-base px-2 truncate">Arief Rahman</h4>
-                <p class="text-[11px] md:text-sm font-semibold text-[#2F855A] mt-1">Sekretaris Desa</p>
-            </div> -->
-
-            <!-- Card 3 -->
-            <!-- <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
-                <img src="assets/images/perangkat3.jpg" alt="Perangkat" class="w-full h-48 md:h-64 object-cover object-top mb-4">
-                <h4 class="font-bold text-[#172033] text-sm md:text-base px-2 truncate">Dwi Santoso</h4>
-                <p class="text-[11px] md:text-sm font-semibold text-[#2F855A] mt-1">Kasi Pemerintahan</p>
-            </div> -->
-
-            <!-- Card 4 -->
-            <!-- <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm text-center pb-4 hover:shadow-md transition-shadow">
-                <img src="assets/images/perangkat4.jpg" alt="Perangkat" class="w-full h-48 md:h-64 object-cover object-top mb-4">
-                <h4 class="font-bold text-[#172033] text-sm md:text-base px-2 truncate">Budi Santoso</h4>
-                <p class="text-[11px] md:text-sm font-semibold text-[#2F855A] mt-1">Kaur Keuangan</p>
-            </div> -->
-
-            <!-- Silakan copy-paste struktur Card di atas untuk menambahkan 4 perangkat desa lainnya di baris bawah -->
-        <!-- </div> -->
     </section>
 
 </main>

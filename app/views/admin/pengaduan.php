@@ -49,7 +49,7 @@ $json_data = json_encode($data_array);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manajemen Pengaduan - Administrator Desa Padangan</title>
     <!-- Favicon Logo Desa (Path disesuaikan ke public/assets/images/logo.png) -->
-    <link rel="icon" type="image/png" href="/desa-padangan/public/assets/images/logo.png">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -450,14 +450,77 @@ $json_data = json_encode($data_array);
 
         function renderPaginationNumbers(totalPages) {
             const container = document.getElementById('pageNumbers');
+            const prevButton = document.getElementById('prevPageButton');
+            const nextButton = document.getElementById('nextPageButton');
+
             container.innerHTML = '';
-            for (let i = 1; i <= totalPages; i++) {
-                let activeClass = i === currentPage 
-                    ? "bg-[#2F855A] text-white font-semibold shadow-sm" 
-                    : "border border-gray-200 text-gray-700 hover:bg-gray-50 font-semibold";
-                
-                container.innerHTML += `<button onclick="goToPage(${i})" class="w-9 h-9 flex items-center justify-center rounded-xl transition-colors cursor-pointer ${activeClass}">${i}</button>`;
+
+            // Perbarui keadaan tombol chevron berdasarkan halaman aktif.
+            prevButton.disabled = currentPage <= 1;
+            nextButton.disabled = currentPage >= totalPages;
+
+            prevButton.className = currentPage <= 1
+                ? 'w-9 h-9 flex items-center justify-center border border-gray-200 rounded-xl text-gray-300 cursor-not-allowed'
+                : 'w-9 h-9 flex items-center justify-center border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 cursor-pointer';
+
+            nextButton.className = currentPage >= totalPages
+                ? 'w-9 h-9 flex items-center justify-center border border-gray-200 rounded-xl text-gray-300 cursor-not-allowed'
+                : 'w-9 h-9 flex items-center justify-center border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 cursor-pointer';
+
+            const addPageButton = (page) => {
+                const button = document.createElement('button');
+                const isActive = page === currentPage;
+                button.type = 'button';
+                button.textContent = page;
+                button.setAttribute('aria-label', `Halaman ${page}`);
+                if (isActive) button.setAttribute('aria-current', 'page');
+                button.className = isActive
+                    ? 'w-9 h-9 flex items-center justify-center rounded-xl transition-colors cursor-pointer bg-[#2F855A] text-white font-semibold shadow-sm'
+                    : 'w-9 h-9 flex items-center justify-center rounded-xl transition-colors cursor-pointer border border-gray-200 text-gray-700 hover:bg-gray-50 font-semibold';
+                button.addEventListener('click', () => goToPage(page));
+                container.appendChild(button);
+            };
+
+            const addEllipsis = () => {
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = '…';
+                ellipsis.setAttribute('aria-hidden', 'true');
+                ellipsis.className = 'w-5 text-center text-gray-400 select-none';
+                container.appendChild(ellipsis);
+            };
+
+            // Sedikit halaman? Tampilkan semuanya. Jika banyak, tampilkan jendela
+            // lima nomor yang bergeser mengikuti currentPage, plus awal/akhir.
+            if (totalPages <= 7) {
+                for (let page = 1; page <= totalPages; page++) {
+                    addPageButton(page);
+                }
+                return;
             }
+
+            if (currentPage <= 3) {
+                for (let page = 1; page <= 5; page++) addPageButton(page);
+                addEllipsis();
+                addPageButton(totalPages);
+                return;
+            }
+
+            if (currentPage >= totalPages - 2) {
+                addPageButton(1);
+                addEllipsis();
+                for (let page = totalPages - 4; page <= totalPages; page++) {
+                    addPageButton(page);
+                }
+                return;
+            }
+
+            addPageButton(1);
+            addEllipsis();
+            for (let page = currentPage - 2; page <= currentPage + 2; page++) {
+                addPageButton(page);
+            }
+            addEllipsis();
+            addPageButton(totalPages);
         }
 
         function goToPage(page) {
@@ -519,7 +582,7 @@ $json_data = json_encode($data_array);
                     // Di dalam fungsi openModal() pada bagian perulangan foto:
                     fotoArray.forEach(namaFoto => {
                         const img = document.createElement('img');
-                        img.src = '/desa-padangan/public/uploads/pengaduan/' + namaFoto.trim();
+                        img.src = '/uploads/pengaduan/' + encodeURIComponent(namaFoto.trim());
                         // Ubah ukuran lebar menjadi w-full atau batasi max-w-sm agar rapi ke bawah
                         img.className = 'w-full max-w-xs h-48 object-cover rounded-xl shadow-xs border border-gray-200';
                         containerFoto.appendChild(img);

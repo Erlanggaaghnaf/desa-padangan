@@ -47,7 +47,7 @@ $formatDate = static function ($date) {
 <main class="flex-1 flex flex-col h-screen overflow-y-auto md:ml-64 transition-all relative">
     <header class="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex justify-between items-center sticky top-0 z-30 shadow-sm">
         <div class="flex items-center gap-3">
-            <button onclick="toggleSidebar()" class="md:hidden text-gray-700 hover:text-[#2F855A] focus:outline-none p-1 rounded-lg border border-gray-200">
+            <button type="button" onclick="toggleSidebar()" id="sidebar-open-button" aria-label="Buka menu navigasi" aria-controls="admin-sidebar" aria-expanded="false" class="md:hidden text-gray-700 hover:text-[#2F855A] focus:outline-none p-1 rounded-lg border border-gray-200">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
             <div>
@@ -181,23 +181,51 @@ $formatDate = static function ($date) {
             <?php endif; ?>
         </div>
 
-        <?php if ($totalPages > 1): ?>
-            <nav class="mt-8 flex items-center justify-center gap-2" aria-label="Pagination">
-                <?php $prevDisabled = $currentPage <= 1; ?>
-                <a href="<?= $prevDisabled ? '#' : $base_url . '/index.php?url=admin/berita&page=' . ($currentPage - 1); ?>" class="w-10 h-10 rounded-xl border flex items-center justify-center transition-colors <?= $prevDisabled ? 'border-gray-200 text-gray-300 pointer-events-none' : 'border-gray-200 text-[#2F855A] hover:bg-emerald-50'; ?>" aria-label="Halaman sebelumnya">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                </a>
-
-                <?php for ($page = 1; $page <= $totalPages; $page++): ?>
-                    <a href="<?= $base_url; ?>/index.php?url=admin/berita&page=<?= $page; ?>" class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold <?= $page === $currentPage ? 'bg-[#2F855A] text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'; ?>">
-                        <?= $page; ?>
+        <?php
+        $paginationItems = [];
+        if ($totalPages <= 7) {
+            $paginationItems = range(1, $totalPages);
+        } elseif ($currentPage <= 4) {
+            $paginationItems = array_merge(range(1, 5), ['ellipsis', $totalPages]);
+        } elseif ($currentPage >= $totalPages - 3) {
+            $paginationItems = array_merge([1, 'ellipsis'], range($totalPages - 4, $totalPages));
+        } else {
+            $paginationItems = array_merge([1, 'ellipsis'], range($currentPage - 2, $currentPage + 2), ['ellipsis', $totalPages]);
+        }
+        ?>
+        <?php if ($totalPages >= 1): ?>
+            <nav class="mt-8 flex items-center justify-center gap-2 flex-wrap" aria-label="Pagination">
+                <?php if ($currentPage > 1): ?>
+                    <a href="<?= htmlspecialchars($base_url . '/index.php?url=admin/berita&page=' . ($currentPage - 1), ENT_QUOTES, 'UTF-8'); ?>" class="w-10 h-10 rounded-xl border flex items-center justify-center transition-colors border-gray-200 text-[#2F855A] hover:bg-emerald-50" aria-label="Halaman sebelumnya">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                     </a>
-                <?php endfor; ?>
+                <?php else: ?>
+                    <button type="button" disabled class="w-10 h-10 rounded-xl border border-gray-200 text-gray-300 flex items-center justify-center cursor-not-allowed" aria-label="Tidak ada halaman sebelumnya">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                <?php endif; ?>
 
-                <?php $nextDisabled = $currentPage >= $totalPages; ?>
-                <a href="<?= $nextDisabled ? '#' : $base_url . '/index.php?url=admin/berita&page=' . ($currentPage + 1); ?>" class="w-10 h-10 rounded-xl border flex items-center justify-center transition-colors <?= $nextDisabled ? 'border-gray-200 text-gray-300 pointer-events-none' : 'border-gray-200 text-[#2F855A] hover:bg-emerald-50'; ?>" aria-label="Halaman berikutnya">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                </a>
+                <?php foreach ($paginationItems as $pageItem): ?>
+                    <?php if ($pageItem === 'ellipsis'): ?>
+                        <span class="w-6 h-10 flex items-center justify-center text-gray-400 select-none" aria-hidden="true">&hellip;</span>
+                    <?php else: $page = (int) $pageItem; ?>
+                        <?php if ($page === $currentPage): ?>
+                            <span aria-current="page" class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold bg-[#2F855A] text-white"><?= $page; ?></span>
+                        <?php else: ?>
+                            <a href="<?= htmlspecialchars($base_url . '/index.php?url=admin/berita&page=' . $page, ENT_QUOTES, 'UTF-8'); ?>" class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold border border-gray-200 text-gray-600 hover:bg-gray-50"><?= $page; ?></a>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+
+                <?php if ($currentPage < $totalPages): ?>
+                    <a href="<?= htmlspecialchars($base_url . '/index.php?url=admin/berita&page=' . ($currentPage + 1), ENT_QUOTES, 'UTF-8'); ?>" class="w-10 h-10 rounded-xl border border-gray-200 text-[#2F855A] hover:bg-emerald-50 flex items-center justify-center transition-colors" aria-label="Halaman berikutnya">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </a>
+                <?php else: ?>
+                    <button type="button" disabled class="w-10 h-10 rounded-xl border border-gray-200 text-gray-300 flex items-center justify-center cursor-not-allowed" aria-label="Tidak ada halaman berikutnya">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                <?php endif; ?>
             </nav>
         <?php endif; ?>
     </div>

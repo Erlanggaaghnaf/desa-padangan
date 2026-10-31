@@ -163,7 +163,7 @@ function galeriAdminJson($value)
                 <?php endforeach; ?>
 
                 <?php if ($totalGaleri === 0): ?>
-                    <div class="bg-white border border-gray-200 rounded-2xl h-48 md:h-56 flex flex-col items-center justify-center p-6 text-center sm:col-span-2 md:col-span-3 xl:col-span-4">
+                    <div class="bg-white border border-gray-200 rounded-2xl h-48 md:h-56 flex flex-col items-center justify-center p-6 text-center">
                         <svg class="w-10 h-10 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                             <circle cx="8.5" cy="8.5" r="1.5"></circle>
